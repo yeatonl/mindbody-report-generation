@@ -1,12 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import { HashRouter, Route, Redirect, Switch } from "react-router-dom";
+import store from "store/store.js";
+import {Provider } from "react-redux";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import Home from "views/pages/home/home.jsx";
+import Reports from "views/pages/reports/reports.jsx";
+import Sidebar from "views/components/sidebar/sidebar.jsx";
+import "styles/index.scss";
+import "styles/button.scss";
+import "styles/variables.scss";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+
+ReactDOM.render(<Provider store={store}>
+  <HashRouter>
+    <Sidebar />
+    <Switch>
+      <Redirect exact from="/" to="home" />
+      <Route path="/home" component={Home} />
+      <Route path="/reports" component={Reports} />
+    </Switch>
+  </HashRouter>
+</Provider>, document.getElementById("root"));
