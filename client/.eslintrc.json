@@ -271,7 +271,7 @@
       }
     ],
     "function-call-argument-newline": [
-      "error",
+      "allow",
       "never"
     ],
     "arrow-body-style": [
