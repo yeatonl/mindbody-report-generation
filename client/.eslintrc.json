@@ -9,6 +9,7 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -72,7 +73,7 @@
     "no-iterator": "error",
     "no-labels": "error",
     "no-loop-func": "error",
-    "no-magic-numbers": "off",
+    "no-magic-numbers": "error",
     "no-multi-spaces": "error",
     "no-multi-str": "error",
     "no-new": "error",
