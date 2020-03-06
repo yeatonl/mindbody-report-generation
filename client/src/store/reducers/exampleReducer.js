@@ -1,16 +1,15 @@
-import { bindActionCreators } from "redux";
 import * as Actions from "store/actions";
 import BaseReducer from "./baseReducer";
 
 
 export default class ExampleReducer extends BaseReducer {
   initialState = {
-    exampleField: false
+    exampleField: false,
   };
 
-  [Actions.EXAMPLE_ACTION().type](state, action) {
+  [Actions.EXAMPLE_ACTION().type](state) {
     return {
-      exampleField: !state.exampleField
+      exampleField: !state.exampleField,
     };
   }
 }

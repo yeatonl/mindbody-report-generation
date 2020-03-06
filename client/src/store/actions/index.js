@@ -3,6 +3,6 @@ export const EXAMPLE_ACTION = (payload = {}, error = false, meta = {}) => {
     type: "EXAMPLE_ACTION",
     error,
     meta,
-    payload
-  }
+    payload,
+  };
 };
