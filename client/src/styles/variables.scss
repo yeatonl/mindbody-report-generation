@@ -1,17 +1,4 @@
-/*
-todo:
--stylelintrc
-  -rational order
-  -something else?
--update webpack to not error out on linter errors
--variables
-  -fonts
-    -alegreya sans
-    -barlow condensed
--navlink not link
-
-*/
-:root {
+:root{
   --pcolor-0: #02160d;
   --pcolor-1: #074429;
   --pcolor-2: #0c7244;
@@ -75,7 +62,7 @@ todo:
   --tcolor-8-tri: 186, 247, 189;
   --tcolor-9-tri: 232, 252, 233;
 
-  --alpha-0: 0.00;
+  --alpha-0: 0;
   --alpha-1: 0.05;
   --alpha-2: 0.07;
   --alpha-3: 0.08;
@@ -85,7 +72,7 @@ todo:
   --alpha-7: 0.14;
   --alpha-8: 0.15;
   --alpha-9: 0.16;
-  
+
   --gray-0: #000000;
   --gray-1: #080808;
   --gray-2: #0f0f0f;
@@ -118,6 +105,7 @@ todo:
   --gray-29: #f0f0f0;
   --gray-30: #f7f7f7;
   --gray-31: #ffffff;
+
   --bg-0: #121212;
   --bg-1: #1d1d1d;
   --bg-2: #222222;
@@ -128,6 +116,7 @@ todo:
   --bg-7: #323232;
   --bg-8: #353535;
   --bg-9: #373737;
+
   --spacing-1: 0.146rem;
   --spacing-2: 0.236rem;
   --spacing-3: 0.382rem;
@@ -137,6 +126,7 @@ todo:
   --spacing-7: 2.618rem;
   --spacing-8: 4.235rem;
   --spacing-9: 6.854rem;
+
   --font-size-0: 0.625rem;
   --font-size-1: 0.8125rem;
   --font-size-2: 1rem;
@@ -147,12 +137,14 @@ todo:
   --font-size-7: 4.226rem;
   --font-size-8: 6.804rem;
   --font-size-9: 10.95rem;
+
   --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   --elevation-1-hover: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   --elevation-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   --elevation-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   --elevation-4: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
   --elevation-5: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+
   --primary-font: "Alegreya Sans";
   --secondary-font: "Barlow Condensed";
 }
