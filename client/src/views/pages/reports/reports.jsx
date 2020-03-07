@@ -1,22 +1,45 @@
 import React from "react";
-import { Route, Link } from "react-router-dom";
+import { NavLink, Route } from "react-router-dom";
 import "./reports.scss";
 
 import AttendanceReport from "views/components/reports/attendance/attendance.jsx";
 import SalesReport from "views/components/reports/sales/sales.jsx";
+import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
+
 
 export default class Reports extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      reports: [
+        {
+          id: 1,
+          link: "/reports/sales",
+          label: "Sales",
+          component: SalesReport,
+        },
+        {
+          id: 2,
+          link: "/reports/attendance",
+          label: "Attendance",
+          component: AttendanceReport,
+        },
+
+      ],
+
+    };
+  }
+
   render() {
     return (
       <div className="reports">
-        <div>You are on the: reports page. </div>
-        <div>Select a Report:</div>
-        <nav>
-          <Link className="button" to="/reports/attendance">Attendance Report</Link>
-          <Link className="button" to="/reports/sales">Sales Report</Link>
-        </nav>
-        <Route path="/reports/attendance" component={AttendanceReport} />
-        <Route path="/reports/sales" component={SalesReport} />
+        <SecondarySidebar entries={this.state.reports} header="Available Reports" />
+        {this.state.reports.map((report) => {
+          return (
+            <Route key={report.id} path={report.link} component={report.component} />
+          );
+        })}
       </div>
     );
   }
