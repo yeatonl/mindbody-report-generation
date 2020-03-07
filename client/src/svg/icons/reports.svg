@@ -1,8 +1,8 @@
-<svg viewBox="0 0 206.191 206.191" class="item-icon">
-  <path class="stroke" d="M23.096 203.096v-200h160v200z" stroke-width="6"></path>
-  <path class="stroke" d="M34.713 28.932v60h63.695" stroke-width="4"></path>
-  <path class="stroke" d="M113.096 59.096h60M33.096 119.096h140" stroke-width="4" paint-order="stroke fill markers"></path>
-  <path class="fill" d="M41.021 74.372zm9.659-7.902l-9.272 11.96-.387-.22v5.212h9.8V66.491zM55.72 67.193v16.23h9.8V68.597zM80.218 56.458l-7.122 2.638-2.677 5.857v18.47h9.8zM94.859 37.077L85.118 53.65v29.771h9.8V37.077z" paint-order="stroke fill markers"></path>
-  <path class="fill" d="M92.769 35.027L82.229 52.96l-11.421 4.23-4.118 9.012-17.402-2.493-10.326 13.32 2.446 1.401 9.272-11.96 17.875 2.563 4.54-9.937 11.278-4.177 11.02-18.752z" color="#000" font-weight="400" font-family="sans-serif" overflow="visible" paint-order="stroke fill markers" style="line-height: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-variant-numeric: normal; font-feature-settings: normal; text-indent: 0px; text-align: start; text-decoration: none solid rgb(0, 0, 0); text-transform: none; text-orientation: mixed; white-space: normal; isolation: auto; mix-blend-mode: normal;"></path>
-  <path class="stroke" d="M113.096 29.096h60M113.096 89.096h60M33.096 149.096h140M33.096 179.096h140" stroke-width="4" paint-order="stroke fill markers"></path>
+<svg xmlns="http://www.w3.org/2000/svg" class="item-icon" viewBox="0 0 160 200">
+  <path d="M0 200V0h160v200z" class="stroke" stroke-width="10"/>
+  <path d="M11.617 25.836v60h63.695" class="stroke" stroke-width="4"/>
+  <path d="M90 56h60M10 116h140" class="stroke" paint-order="stroke fill markers" stroke-width="4"/>
+  <path stroke-width="4" d="M17.925 71.276zm9.659-7.902l-9.272 11.96-.387-.22v5.212h9.8V63.395zm5.04.723v16.23h9.8V65.501zm24.498-10.735L50 56l-2.677 5.857v18.47h9.8zm14.641-19.381l-9.741 16.573v29.771h9.8V33.981z" class="fill" paint-order="stroke fill markers"/>
+  <path stroke-width="4" font-weight="400" d="M69.673 31.931l-10.54 17.933-11.421 4.23-4.118 9.012-17.402-2.493-10.326 13.32 2.446 1.401 9.272-11.96 17.875 2.563L49.999 56l11.278-4.177 11.02-18.752z" class="fill" color="#000"/>
+  <path stroke-width="4" d="M90 26h60M90 86h60M10 146h140M10 176h140" class="stroke" paint-order="stroke fill markers"/>
 </svg>
