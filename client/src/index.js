@@ -4,12 +4,16 @@ import { HashRouter, Route, Redirect, Switch } from "react-router-dom";
 import store from "store/store.js";
 import {Provider } from "react-redux";
 
-import Home from "views/pages/home/home.jsx";
-import Reports from "views/pages/reports/reports.jsx";
+import HomePage from "views/pages/home/home.jsx";
+import ReportsPage from "views/pages/reports/reports.jsx";
+import OptionsPage from "views/pages/options/options.jsx";
+import DevPage from "views/pages/dev/dev.jsx";
 import Sidebar from "views/components/sidebar/sidebar.jsx";
+
 import "styles/index.scss";
 import "styles/button.scss";
 import "styles/variables.scss";
+import "styles/header.scss";
 
 
 ReactDOM.render(<Provider store={store}>
@@ -17,8 +21,10 @@ ReactDOM.render(<Provider store={store}>
     <Sidebar />
     <Switch>
       <Redirect exact from="/" to="home" />
-      <Route path="/home" component={Home} />
-      <Route path="/reports" component={Reports} />
+      <Route path="/home" component={HomePage} />
+      <Route path="/reports" component={ReportsPage} />
+      <Route path="/options" component={OptionsPage} />
+      <Route path="/dev" component={DevPage} />
     </Switch>
   </HashRouter>
 </Provider>, document.getElementById("root"));
