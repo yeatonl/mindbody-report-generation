@@ -10,4 +10,4 @@ export default class BaseReducer {
 
     return method.call(this, state, action);
   };
-}
+} 

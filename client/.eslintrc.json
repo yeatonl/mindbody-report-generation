@@ -5,13 +5,13 @@
     "node": true
   },
   "extends": [
-    "eslint:recommended",
     "plugin:react/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -88,7 +88,7 @@
     "no-floating-decimal": "error",
     "no-implicit-coercion": "error",
     "no-implied-eval": "error",
-    "no-invalid-this": "error",
+    "no-invalid-this": "off",
     "no-iterator": "error",
     "no-labels": "error",
     "no-loop-func": "error",
@@ -236,7 +236,13 @@
         "max": 3
       }
     ],
-    "semi": "error",
+    "semi": [
+      "error",
+      "always",
+      {
+        "omitLastInOneLineBlock": true
+      }
+    ],
     "prefer-exponentiation-operator": "error",
     "object-property-newline": [
       "error",

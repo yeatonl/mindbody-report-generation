@@ -1,5 +1,5 @@
-import React from 'react';
-import './attendance.scss';
+import React from "react";
+import "./attendance.scss";
 
 export default class AttendanceReport extends React.Component {
   render = () => {

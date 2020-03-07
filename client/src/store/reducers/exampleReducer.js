@@ -5,12 +5,12 @@ import BaseReducer from "./baseReducer";
 
 export default class ExampleReducer extends BaseReducer {
   initialState = {
-    exampleField: false
+    exampleField: false,
   };
 
   [Actions.EXAMPLE_ACTION().type](state, action) {
     return {
-      exampleField: !state.exampleField
+      exampleField: !state.exampleField,
     };
   }
 }
