@@ -1,6 +1,64 @@
-.sidebar {
+.sidebar{
   display: flex;
-  > :not(:last-child) {
-    margin-right: var(--spacing-4);
+  flex-direction: column;
+  justify-content: space-between;
+
+  background-color: var(--bg-6);
+
+  .prominent-items{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 4rem;
+    padding-top: var(--spacing-3);
+    padding-right: var(--spacing-3);
+    padding-bottom: var(--spacing-3);
+    padding-left: calc(var(--spacing-3) - 4px);
+
+    color: var(--gray-31);
+    font-weight: bold;
+    font-size: var(--font-size-2);
+    font-family: var(--secondary-font);
+    text-transform: uppercase;
+
+    text-decoration: none;
+
+    border-left: 4px solid transparent;
+
+
+    .icon{
+
+      .stroke{
+        fill: none;
+        stroke: var(--gray-31);
+      }
+
+      .fill{
+        fill: var(--gray-31);
+      }
+    }
+
+    &.active, &:hover{
+      color: var(--pcolor-7);
+
+      background-color: rgba(var(--pcolor-5-tri), var(--alpha-1));
+
+      border-left: 4px solid var(--pcolor-7);
+
+      .stroke{
+        fill: none;
+        stroke: var(--pcolor-7);
+      }
+
+      .fill{
+        fill: var(--pcolor-7);
+      }
+    }
   }
 }
