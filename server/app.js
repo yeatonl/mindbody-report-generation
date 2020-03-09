@@ -1,0 +1,47 @@
+const express = require("express");
+//const csvToJson = require("csvtojson");
+const { Parser } = require("json2csv");
+
+var app = express();
+const portNumber = 8080;
+
+//this is an example of an endpoint. When the user requests the root page of the server,
+//like "http://localhost", the server replies by sending a response of "Hello World".
+app.get("/", function(req, response) {
+  response.send("Hello world");
+});
+
+//this is another endpoint. When someone requests "http://localhost/sample.csv", the server
+//responds with this little csv file.q
+app.get("/sample.csv", function(req, res) {
+  var jsonRows = [
+    {
+      "firstName": "Warren",
+      "lastName": "Harrison",
+      "workplace": "PSU",
+    },
+    {
+      "firstName": "John",
+      "lastName": "Schroeder",
+      "workplace": "Amazon",
+    },
+    {
+      "firstName": "Shannon",
+      "lastName": "Gee",
+      "workplace": "Ecdysiast",
+    },
+  ];
+
+  var fields = ["firstName", "lastName", "workplace"];
+  var parser = new Parser({fields});
+  var csv = parser.parse(jsonRows);
+  res.contentType("text/csv");
+  res.send(csv);
+});
+
+
+//start up the server, now that the endpoint handlers are installed.
+app.listen(portNumber, function() {
+  console.log("Mindboy server listening at http://localhost:%s", portNumber);
+});
+
