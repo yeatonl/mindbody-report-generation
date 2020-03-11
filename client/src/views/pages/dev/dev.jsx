@@ -1,7 +1,8 @@
 import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
-import EndpointTester from "views/components/endpointTester/endpointTester.jsx";
+import CsvViewer from "views/components/csvViewer/csvViewer.jsx";
+import JsonViewer from "views/components/jsonViewer/jsonViewer.jsx";
 import "./dev.scss";
 
 export default class Reports extends React.Component {
@@ -11,10 +12,14 @@ export default class Reports extends React.Component {
     this.state = {
       reports: [
         {
-          id: 1,
-          link: "/dev/endpoint-tester",
-          label: "Endpoint tester",
-          component: EndpointTester,
+          link: "/dev/csv-viewer",
+          label: "CSV Viewer",
+          component: CsvViewer,
+        },
+        {
+          link: "/dev/json-viewer",
+          label: "JSON Viewer",
+          component: JsonViewer,
         },
       ],
     };
@@ -24,9 +29,9 @@ export default class Reports extends React.Component {
     return (
       <div className="dev">
         <SecondarySidebar entries={this.state.reports} header="Developer Tools" />
-        {this.state.reports.map((report) => {
+        {this.state.reports.map((report, reportIndex) => {
           return (
-            <Route key={report.id} path={report.link} component={report.component} />
+            <Route key={reportIndex} path={report.link} component={report.component} />
           );
         })}
       </div>
