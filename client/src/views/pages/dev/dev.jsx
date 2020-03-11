@@ -1,11 +1,8 @@
 import React from "react";
 import { NavLink, Route } from "react-router-dom";
-import "./reports.scss";
-
-import AttendanceReport from "views/components/reports/attendance/attendance.jsx";
-import SalesReport from "views/components/reports/sales/sales.jsx";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
-
+import EndpointTester from "views/components/endpointTester/endpointTester.jsx";
+import "./dev.scss";
 
 export default class Reports extends React.Component {
   constructor(props){
@@ -15,26 +12,18 @@ export default class Reports extends React.Component {
       reports: [
         {
           id: 1,
-          link: "/reports/sales",
-          label: "Sales",
-          component: SalesReport,
+          link: "/dev/endpoint-tester",
+          label: "Endpoint tester",
+          component: EndpointTester,
         },
-        {
-          id: 2,
-          link: "/reports/attendance",
-          label: "Attendance",
-          component: AttendanceReport,
-        },
-
       ],
-
     };
   }
 
   render() {
     return (
-      <div className="reports">
-        <SecondarySidebar entries={this.state.reports} header="Available Reports" />
+      <div className="dev">
+        <SecondarySidebar entries={this.state.reports} header="Developer Tools" />
         {this.state.reports.map((report) => {
           return (
             <Route key={report.id} path={report.link} component={report.component} />
