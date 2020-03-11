@@ -135,9 +135,7 @@
     "block-spacing": "error",
     "array-element-newline": [
       "error",
-      {
-        "multiline": true
-      }
+      "consistent"
     ],
     "array-bracket-spacing": [
       "error",
@@ -154,8 +152,8 @@
     "comma-dangle": [
       "error",
       {
-        "arrays": "always",
-        "objects": "always"
+        "arrays": "always-multiline",
+        "objects": "always-multiline"
       }
     ],
     "comma-spacing": [
