@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" class="item-icon" viewBox="0 0 160 200">
+  <path d="M0 200V0h160v200z" class="stroke" stroke-width="10"/>
+  <path d="M11.617 25.836v60h63.695" class="stroke" stroke-width="4"/>
+  <path d="M90 56h60M10 116h140" class="stroke" paint-order="stroke fill markers" stroke-width="4"/>
+  <path stroke-width="4" d="M17.925 71.276zm9.659-7.902l-9.272 11.96-.387-.22v5.212h9.8V63.395zm5.04.723v16.23h9.8V65.501zm24.498-10.735L50 56l-2.677 5.857v18.47h9.8zm14.641-19.381l-9.741 16.573v29.771h9.8V33.981z" class="fill" paint-order="stroke fill markers"/>
+  <path stroke-width="4" font-weight="400" d="M69.673 31.931l-10.54 17.933-11.421 4.23-4.118 9.012-17.402-2.493-10.326 13.32 2.446 1.401 9.272-11.96 17.875 2.563L49.999 56l11.278-4.177 11.02-18.752z" class="fill" color="#000"/>
+  <path stroke-width="4" d="M90 26h60M90 86h60M10 146h140M10 176h140" class="stroke" paint-order="stroke fill markers"/>
+</svg>

@@ -1,114 +1,132 @@
-:root {
-  //static
-  --primary-0: #170c03;
-  --primary-1: #452308;
-  --primary-2: #733b0d;
-  --primary-3: #a15212;
-  --primary-4: #cf6a17;
-  --primary-5: #e88330;
-  --primary-6: #ed9f5e;
-  --primary-7: #f2ba8c;
-  --primary-8: #f7d6ba;
-  --primary-9: #fcf1e8;
+:root{
+  --pcolor-0: #02160d;
+  --pcolor-1: #074429;
+  --pcolor-2: #0c7244;
+  --pcolor-3: #11a060;
+  --pcolor-4: #16ce7b;
+  --pcolor-5: #30e895;
+  --pcolor-6: #5eedac;
+  --pcolor-7: #8cf2c4;
+  --pcolor-8: #baf7db;
+  --pcolor-9: #e8fcf3;
+  --pcolor-0-tri: 2, 22, 13;
+  --pcolor-1-tri: 7, 68, 41;
+  --pcolor-2-tri: 12, 114, 68;
+  --pcolor-3-tri: 17, 160, 96;
+  --pcolor-4-tri: 22, 206, 123;
+  --pcolor-5-tri: 48, 232, 149;
+  --pcolor-6-tri: 94, 237, 172;
+  --pcolor-7-tri: 140, 242, 196;
+  --pcolor-8-tri: 186, 247, 219;
+  --pcolor-9-tri: 232, 252, 243;
 
-  //interaction
-  --secondary-0: #041703;
-  --secondary-1: #0d4508;
-  --secondary-2: #15730d;
-  --secondary-3: #1ea112;
-  --secondary-4: #26cf17;
-  --secondary-5: #40e830;
-  --secondary-6: #6aed5e;
-  --secondary-7: #95f28c;
-  --secondary-8: #bff7ba;
-  --secondary-9: #eafce8;
+  --scolor-0: #021616;
+  --scolor-1: #074244;
+  --scolor-2: #0c6e72;
+  --scolor-3: #119aa0;
+  --scolor-4: #16c7ce;
+  --scolor-5: #30e0e8;
+  --scolor-6: #5ee7ed;
+  --scolor-7: #8ceef2;
+  --scolor-8: #baf4f7;
+  --scolor-9: #e8fbfc;
+  --scolor-0-tri: 2, 22, 22;
+  --scolor-1-tri: 7, 66, 68;
+  --scolor-2-tri: 12, 110, 114;
+  --scolor-3-tri: 17, 154, 160;
+  --scolor-4-tri: 22, 199, 206;
+  --scolor-5-tri: 48, 224, 232;
+  --scolor-6-tri: 94, 231, 237;
+  --scolor-7-tri: 140, 238, 242;
+  --scolor-8-tri: 186, 244, 247;
+  --scolor-9-tri: 232, 251, 252;
 
-  //important
-  //--tertiary-1: ;
-  //--tertiary-2: ;
-  //--tertiary-3: ;
-  //--tertiary-4: ;
-  //--tertiary-5: ;
-  //--tertiary-6: ;
-  //--tertiary-7: ;
-  //--tertiary-8: ;
-  //--tertiary-9: ;
+  --tcolor-0: #021603;
+  --tcolor-1: #07440b;
+  --tcolor-2: #0c7212;
+  --tcolor-3: #11a019;
+  --tcolor-4: #16ce21;
+  --tcolor-5: #30e83a;
+  --tcolor-6: #5eed66;
+  --tcolor-7: #8cf291;
+  --tcolor-8: #baf7bd;
+  --tcolor-9: #e8fce9;
+  --tcolor-0-tri: 2, 22, 3;
+  --tcolor-1-tri: 7, 68, 11;
+  --tcolor-2-tri: 12, 114, 18;
+  --tcolor-3-tri: 17, 160, 25;
+  --tcolor-4-tri: 22, 206, 33;
+  --tcolor-5-tri: 48, 232, 58;
+  --tcolor-6-tri: 94, 237, 102;
+  --tcolor-7-tri: 140, 242, 145;
+  --tcolor-8-tri: 186, 247, 189;
+  --tcolor-9-tri: 232, 252, 233;
 
-  --danger-0: #180101;
-  --danger-1: #490404;
-  --danger-2: #790606;
-  --danger-3: #aa0909;
-  --danger-4: #da0b0b;
-  --danger-5: #f42525;
-  --danger-6: #f65555;
-  --danger-7: #f98686;
-  --danger-8: #fbb6b6;
-  --danger-9: #fee7e7;
+  --alpha-0: 0;
+  --alpha-1: 0.05;
+  --alpha-2: 0.07;
+  --alpha-3: 0.08;
+  --alpha-4: 0.09;
+  --alpha-5: 0.11;
+  --alpha-6: 0.12;
+  --alpha-7: 0.14;
+  --alpha-8: 0.15;
+  --alpha-9: 0.16;
 
-  --gray-0: #000000; //0
-  --gray-1: #080808; //3
-  --gray-2: #0f0f0f; //6
-  --gray-3: #171717; //9
-  --gray-4: #212121; //13
-  --gray-5: #292929; //16
-  --gray-6: #303030; //19
-  --gray-7: #383838; //22
-  --gray-8: #424242; //26
-  --gray-9: #4a4a4a; //29
-  --gray-10: #525252; //32
-  --gray-11: #595959; //35
-  --gray-12: #636363; //39
-  --gray-13: #6b6b6b; //42
-  --gray-14: #737373; //45
-  --gray-15: #7a7a7a; //48
-  --gray-16: #858585; //52
-  --gray-17: #8c8c8c; //55
-  --gray-18: #949494; //58
-  --gray-19: #9c9c9c; //61
-  --gray-20: #a6a6a6; //65
-  --gray-21: #adadad; //68
-  --gray-22: #b5b5b5; //71
-  --gray-23: #bdbdbd; //74
-  --gray-24: #c7c7c7; //78
-  --gray-25: #cfcfcf; //81
-  --gray-26: #d6d6d6; //84
-  --gray-27: #dedede; //87
-  --gray-28: #e8e8e8; //91
-  --gray-29: #f0f0f0; //94
-  --gray-30: #f7f7f7; //97
-  --gray-31: #ffffff; //100
+  --gray-0: #000000;
+  --gray-1: #080808;
+  --gray-2: #0f0f0f;
+  --gray-3: #171717;
+  --gray-4: #212121;
+  --gray-5: #292929;
+  --gray-6: #303030;
+  --gray-7: #383838;
+  --gray-8: #424242;
+  --gray-9: #4a4a4a;
+  --gray-10: #525252;
+  --gray-11: #595959;
+  --gray-12: #636363;
+  --gray-13: #6b6b6b;
+  --gray-14: #737373;
+  --gray-15: #7a7a7a;
+  --gray-16: #858585;
+  --gray-17: #8c8c8c;
+  --gray-18: #949494;
+  --gray-19: #9c9c9c;
+  --gray-20: #a6a6a6;
+  --gray-21: #adadad;
+  --gray-22: #b5b5b5;
+  --gray-23: #bdbdbd;
+  --gray-24: #c7c7c7;
+  --gray-25: #cfcfcf;
+  --gray-26: #d6d6d6;
+  --gray-27: #dedede;
+  --gray-28: #e8e8e8;
+  --gray-29: #f0f0f0;
+  --gray-30: #f7f7f7;
+  --gray-31: #ffffff;
 
-  --space-tiny: 0.391rem;
-  --space-small: 0.625rem;
-  --space-medium: 1rem;
-  --space-large: 1.6rem;
-  --space-huge: 2.56rem;
+  --bg-0: #121212;
+  --bg-1: #1d1d1d;
+  --bg-2: #222222;
+  --bg-3: #242424;
+  --bg-4: #272727;
+  --bg-5: #2c2c2c;
+  --bg-6: #2d2d2d;
+  --bg-7: #323232;
+  --bg-8: #353535;
+  --bg-9: #373737;
 
-  //apply these to the component you want to be small (the sidebar)
-  //the other component should be 1
-  --flex-base: 1;
-  --flex-1: 0.62; //1/(1.61^1)
-  --flex-2: 0.38; //1/(1.61^2)
-  --flex-3: 0.23; //1/(1.61^3)
-  --flex-4: 0.14; //1/(1.61^4)
-  --flex-5: 0.09; //1/(1.61^5)
-
-  //
-  --spacing-1: 0.146rem; //1/1.61^4
-  --spacing-2: 0.236rem; //1/1.61^3
-  --spacing-3: 0.382rem; //1/1.61^2
-  --spacing-4: 0.618rem; //1/1.61^1
+  --spacing-1: 0.146rem;
+  --spacing-2: 0.236rem;
+  --spacing-3: 0.382rem;
+  --spacing-4: 0.618rem;
   --spacing-5: 1rem;
-  --spacing-6: 1.618rem; //1*1.61^1
-  --spacing-7: 2.618rem; //1*1.61^2
-  --spacing-8: 4.235rem; //1*1.61^3
-  --spacing-9: 6.854rem; //1*1.61^4
+  --spacing-6: 1.618rem;
+  --spacing-7: 2.618rem;
+  --spacing-8: 4.235rem;
+  --spacing-9: 6.854rem;
 
-  //font sizes
-  //line-height varies based on both font-size and content widht
-  //short = 1/4 of screen
-  //medium = 1/2 of screen
-  //long = full screen
   --font-size-0: 0.625rem;
   --font-size-1: 0.8125rem;
   --font-size-2: 1rem;
@@ -119,4 +137,14 @@
   --font-size-7: 4.226rem;
   --font-size-8: 6.804rem;
   --font-size-9: 10.95rem;
+
+  --elevation-1: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --elevation-1-hover: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  --elevation-2: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  --elevation-3: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  --elevation-4: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  --elevation-5: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+
+  --primary-font: "Alegreya Sans";
+  --secondary-font: "Barlow Condensed";
 }
