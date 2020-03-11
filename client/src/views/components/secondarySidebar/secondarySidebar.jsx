@@ -9,9 +9,9 @@ export default class SecondarySidebar extends React.Component {
       <aside className="secondary-sidebar">
         <div className="content">
           <div className="header">{this.props.header}</div>
-          {this.props.entries.map((entry) => {
+          {this.props.entries.map((entry, entryIndex) => {
             return (
-              <NavLink key={entry.id} className="item" activeClassName="active" to={entry.link}>{entry.label}</NavLink>
+              <NavLink key={entryIndex} className="item" activeClassName="active" to={entry.link}>{entry.label}</NavLink>
             );
           })}
         </div>
