@@ -14,6 +14,7 @@ import "styles/index.scss";
 import "styles/button.scss";
 import "styles/variables.scss";
 import "styles/header.scss";
+import "styles/scrollbar.scss";
 
 
 ReactDOM.render(<Provider store={store}>
