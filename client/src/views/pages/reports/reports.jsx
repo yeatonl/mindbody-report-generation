@@ -14,13 +14,11 @@ export default class Reports extends React.Component {
     this.state = {
       reports: [
         {
-          id: 1,
           link: "/reports/sales",
           label: "Sales",
           component: SalesReport,
         },
         {
-          id: 2,
           link: "/reports/attendance",
           label: "Attendance",
           component: AttendanceReport,
@@ -35,9 +33,9 @@ export default class Reports extends React.Component {
     return (
       <div className="reports">
         <SecondarySidebar entries={this.state.reports} header="Available Reports" />
-        {this.state.reports.map((report) => {
+        {this.state.reports.map((report, reportIndex) => {
           return (
-            <Route key={report.id} path={report.link} component={report.component} />
+            <Route key={reportIndex} path={report.link} component={report.component} />
           );
         })}
       </div>
