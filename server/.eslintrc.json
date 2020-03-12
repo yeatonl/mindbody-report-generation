@@ -143,7 +143,7 @@
       "1tbs"
     ],
     "capitalized-comments": [
-      "warning",
+      "warn",
       "never"
     ],
     "comma-dangle": [
@@ -195,6 +195,10 @@
     ],
     "space-before-function-paren": [
       "error",
+      "never"
+    ],
+    "spaced-comment": [
+      "warn",
       "never"
     ],
     "switch-colon-spacing": [
