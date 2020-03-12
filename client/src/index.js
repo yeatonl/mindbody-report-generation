@@ -11,7 +11,6 @@ import DevPage from "views/pages/dev/dev.jsx";
 import Sidebar from "views/components/sidebar/sidebar.jsx";
 
 import "styles/index.scss";
-import "styles/button.scss";
 import "styles/variables.scss";
 import "styles/header.scss";
 import "styles/scrollbar.scss";
