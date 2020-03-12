@@ -52,7 +52,7 @@ export default class CsvViewer extends React.Component {
       })
       .then((data) => {
         console.log("Loaded data from API endpoint", url, data);
-        this.setState({data: data.data});
+        this.setState({data: data.data, headers: data.headers});
       })
       .catch((error) => {
         console.error(error);
