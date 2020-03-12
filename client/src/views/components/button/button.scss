@@ -1,0 +1,63 @@
+.button{
+  /*General Button Style*/
+
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3) var(--spacing-3);
+
+  color: var(--gray-0);
+  font-weight: bold;
+  font-size: var(--font-size-2);
+  font-family: var(--primary-font);
+  line-height: 1em;
+  white-space: nowrap;
+
+  text-transform: uppercase;
+  text-decoration: none;
+
+
+  background-color: var(--pcolor-4);
+
+  border: none;
+
+  box-shadow: var(--elevation-2);
+
+  transition: all 0.25s ease-in-out;
+
+  user-select: none;
+
+  &:hover{
+    background-color: var(--pcolor-8);
+    box-shadow: var(--elevation-4);
+  }
+
+  &:active{
+    background-color: var(--pcolor-6);
+    box-shadow: var(--elevation-0);
+  }
+
+  &:focus{
+    outline: none;
+  }
+
+  &.danger{
+    color: var(--danger-5);
+
+    border-color: var(--danger-5);
+
+    &:hover{
+      color: var(--gray-0);
+
+      background-color: var(--danger-5);
+    }
+  }
+
+  &.disabled{
+    filter: grayscale(100%);
+
+    pointer-events: none;
+  }
+}
