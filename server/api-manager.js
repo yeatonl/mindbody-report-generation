@@ -63,6 +63,8 @@ class mindbodyQueries {
     this.AUTH_TOKEN = null;
   }
 
+  // Gets authentication
+  // Returns a promise that will eventually resolve
   getAuth() {
     var req = new MindbodyRequest(
       this.URL_AUTH,
@@ -71,9 +73,15 @@ class mindbodyQueries {
       "POST",
       "{'Username': '" + USERNAME + "','Password': '" + PASSWORD + "'}"
     );
-    return req.makeRequest();
+    this.requestNum++;
+    if (!this.atLimit()) {
+      return req.makeRequest();
+    }
+    return this.returnError("Request limit reached");
   }
 
+  // Gets clients
+  // Returns a promise that will eventually resolve
   getClients() {
     var req = new MindbodyRequest(
       this.URL_CLIENTS,
@@ -83,7 +91,25 @@ class mindbodyQueries {
       ""
     );
     req.addAuth(this.AUTH_TOKEN);
-    return req.makeRequest();
+    this.requestNum++;
+    if (!this.atLimit()) {
+      return req.makeRequest();
+    }
+    return this.returnError("Request limit reached");
+  }
+
+  // May be changed later
+  atLimit() {
+    if (this.requestNum >= 800) {
+      return true;
+    }
+    return false;
+  }
+
+  returnError(errString) {
+    return new Promise(() => {
+      throw new Error(errString);
+    });
   }
 }
 
