@@ -7,6 +7,7 @@ import getTextWidth from "functions/getTextWidth.js";
 /*
 props:
 -disabled: true if the element is disabled
+-destructive: true if the element's function is destructive, such as erase, delete, clear, reset, etc
 -onClick: function to call on click
 -className: css class to add to the button
 -label: default label
@@ -33,6 +34,7 @@ export default class Button extends React.Component {
     onClick: PropTypes.func,
     tempLabel: PropTypes.string,
     title: PropTypes.string,
+    destructive: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -43,12 +45,16 @@ export default class Button extends React.Component {
     onClick: null,
     tempLabel: "",
     title: null,
+    destructive: false,
   }
 
   render = () => {
     let className = "button " + this.props.className;
     if (this.props.disabled || this.state.showTempLabel){
       className += " disabled";
+    }
+    if (this.props.destructive){
+      className += " destructive";
     }
 
     let label = this.props.label;

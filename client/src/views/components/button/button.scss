@@ -19,7 +19,7 @@
   text-decoration: none;
 
 
-  background-color: var(--pcolor-4);
+  background-color: var(--pcolor-6);
 
   border: none;
 
@@ -35,7 +35,7 @@
   }
 
   &:active{
-    background-color: var(--pcolor-6);
+    background-color: var(--pcolor-4);
     box-shadow: var(--elevation-0);
   }
 
@@ -43,15 +43,16 @@
     outline: none;
   }
 
-  &.danger{
-    color: var(--danger-5);
-
-    border-color: var(--danger-5);
+  &.destructive{
+    background-color: var(--danger-6);
 
     &:hover{
-      color: var(--gray-0);
+      background-color: var(--danger-7);
+    }
 
+    &:active{
       background-color: var(--danger-5);
+      box-shadow: var(--elevation-0);
     }
   }
 
