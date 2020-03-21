@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
 import CsvViewer from "views/components/csvViewer/csvViewer.jsx";
-import JsonViewer from "views/components/jsonViewer/jsonViewer.jsx";
+import TestArea from "views/components/testArea/testArea.jsx";
 import "./dev.scss";
 
 export default class Reports extends React.Component {
@@ -17,9 +17,9 @@ export default class Reports extends React.Component {
           component: CsvViewer,
         },
         {
-          link: "/dev/json-viewer",
-          label: "JSON Viewer",
-          component: JsonViewer,
+          link: "/dev/test-area",
+          label: "Test Area",
+          component: TestArea,
         },
       ],
     };
