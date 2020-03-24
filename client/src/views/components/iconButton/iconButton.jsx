@@ -1,9 +1,11 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import "./iconButton.scss";
 import PropTypes from "prop-types";
 import unfocus from "functions/unfocus";
 
+/**
+@augments {React.Component<Props, State>}
+*/
 export default class IconButton extends React.Component {
   constructor(props){
     super(props);
@@ -11,16 +13,17 @@ export default class IconButton extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
+    /**must be an SVG ReactComponent. ```import {ReactComponent as YOUR-NAME-HERE} from "SVG/FILEPATH.svg"```*/
+    icon: PropTypes.instanceOf(Element).isRequired,
     onClick: PropTypes.func,
     title: PropTypes.string,
-    icon: PropTypes.instanceOf(Element).isRequired,
   };
 
   static defaultProps = {
     className: "",
+    icon: null,
     onClick: () => {},
     title: "",
-    icon: null,
   }
 
   render = () => {

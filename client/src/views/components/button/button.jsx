@@ -1,20 +1,11 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import "./button.scss";
 import PropTypes from "prop-types";
 import getTextWidth from "functions/getTextWidth.js";
 
-/*
-props:
--disabled: true if the element is disabled
--destructive: true if the element's function is destructive, such as erase, delete, clear, reset, etc
--onClick: function to call on click
--className: css class to add to the button
--label: default label
--disabledLabel: label to show if disabled prop is true
--tempLabel: label to show for 3s after being clicked
+/**
+@augments {React.Component<Props, State>}
 */
-
 export default class Button extends React.Component {
   constructor(props){
     super(props);
@@ -27,25 +18,28 @@ export default class Button extends React.Component {
   }
 
   static propTypes = {
-    className: PropTypes.string,
+    className: PropTypes.string.isRequired,
+    /**true if the button represents a destruction function, such as erase, delete, destroy, clear, reset, etc. */
+    destructive: PropTypes.bool,
     disabled: PropTypes.bool,
+    /**shown if disabled is true*/
     disabledLabel: PropTypes.string,
     label: PropTypes.string,
     onClick: PropTypes.func,
+    /**shown for 3s after a click*/
     tempLabel: PropTypes.string,
     title: PropTypes.string,
-    destructive: PropTypes.bool,
   };
 
   static defaultProps = {
     className: "",
+    destructive: false,
     disabled: false,
     disabledLabel: "",
     label: "",
     onClick: () => {},
     tempLabel: "",
     title: null,
-    destructive: false,
   }
 
   render = () => {

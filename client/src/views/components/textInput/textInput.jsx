@@ -1,8 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import "./textInput.scss";
 import PropTypes from "prop-types";
 
+/**
+@augments {React.Component<Props, State>}
+*/
 export default class TextInput extends React.Component {
   constructor(props){
     super(props);
@@ -11,21 +13,24 @@ export default class TextInput extends React.Component {
   }
 
   static propTypes = {
-    label: PropTypes.string,
-    onDelayedChange: PropTypes.func,
-    minimal: PropTypes.bool,
     className: PropTypes.string,
-    title: PropTypes.string,
+    label: PropTypes.string,
+    /**if true, disable hover/focus/active and only show bottom border */
+    minimal: PropTypes.bool,
+    /**called after the user stops typing with the current value */
+    onDelayedChange: PropTypes.func,
+    /**called when the users presses enter */
     onEnter: PropTypes.func,
+    title: PropTypes.string,
   };
 
   static defaultProps = {
-    label: "!!FIX ME!!",
-    onDelayedChange: null,
-    minimal: false,
     className: "",
-    title: "",
+    label: "!!FIX ME!!",
+    minimal: false,
+    onDelayedChange: null,
     onEnter: null,
+    title: "",
   }
 
   render = () => {

@@ -1,4 +1,4 @@
-.grid{
+.gd-grid{
   --grid-fg: rgba(var(--gray-31-tri), 0.05);
 
   display: flex;
@@ -8,18 +8,18 @@
 
   border: 4px solid var(--grid-fg);
 
-  .cell{
+  .gd-cell{
     padding: var(--spacing-3);
   }
 
-  .header{
+  .gd-header{
     font-size: var(--font-size-3);
 
     background-color: var(--grid-fg);
     border-bottom: 4px solid transparent; //this is just a spacer, the bg-color will shine through
 
 
-    .cell{
+    .gd-cell{
       display: flex;
       align-items: center;
       margin: var(--spacing-1);
@@ -32,12 +32,12 @@
     }
   }
 
-  .body{
+  .gd-body{
     display: grid;
     overflow-y: overlay;
   }
 
-  .row{
+  .gd-row{
     display: grid;
 
     &:nth-child(even){

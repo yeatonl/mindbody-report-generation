@@ -6,14 +6,10 @@ import getTextWidth from "functions/getTextWidth.js";
 import {ReactComponent as CheckmarkIcon} from "svg/icons/checkmark.svg";
 import unfocus from "functions/unfocus.js";
 
-/*
-props:
-  label
-  className
-  disabled
+/**
+@augments {React.Component<Props, State>}
 */
-
-export default class Button extends React.Component {
+export default class Checkbox extends React.Component {
   constructor(props){
     super(props);
 
@@ -25,16 +21,16 @@ export default class Button extends React.Component {
   }
 
   static propTypes = {
-    label: PropTypes.string,
     className: PropTypes.string,
     disabled: PropTypes.bool,
+    label: PropTypes.string,
     onChange: PropTypes.func,
   };
 
   static defaultProps = {
-    label: "",
     className: "",
     disabled: false,
+    label: "",
     onChange: null,
   }
 

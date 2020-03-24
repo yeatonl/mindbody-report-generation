@@ -5,13 +5,8 @@ import TextInput from "views/components/textInput/textInput.jsx";
 import IconButton from "views/components/iconButton/iconButton.jsx";
 import {ReactComponent as SortIcon} from "svg/icons/sort.svg";
 
-
-/*
-props:
--headers: array of strings representing the headers
--data: 2D array of body data. each array is a row. each cell is a string
--sort: a function called when the user sorts a column. called with the index of the column to sort by
--className
+/**
+@augments {React.Component<Props, State>}
 */
 export default class Table extends React.Component {
   constructor(props){
@@ -24,18 +19,16 @@ export default class Table extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
+    /**array of strings representing the headers*/
     headers: PropTypes.array,
-    data: PropTypes.array, //2d array
-    sort: PropTypes.func,
-    filter: PropTypes.func,
+    /**2D array of body data. each array is a row. each cell is a string*/
+    data: PropTypes.array,
   };
 
   static defaultProps = {
     className: "",
     headers: [],
     data: [],
-    sort: null,
-    filter: null,
   }
 
 
@@ -64,10 +57,10 @@ export default class Table extends React.Component {
     }
 
     return (
-      <div className={"grid " + this.props.className}>
-        <div className="row header" style={subGridHeaderStyle}>
+      <div className={"gd-grid " + this.props.className}>
+        <div className="gd-row gd-header" style={subGridHeaderStyle}>
           {this.props.headers.map((cell, cellIndex) => {
-            return <div key={cellIndex} className="cell">
+            return <div key={cellIndex} className="gd-cell">
               <TextInput
                 minimal
                 onDelayedChange={(value) => {
@@ -92,13 +85,13 @@ export default class Table extends React.Component {
             </div>;
           })}
         </div>
-        <div className="body" style={subGridStyle}>
+        <div className="gd-body" style={subGridStyle}>
           {data.map((row, rowIndex) => {
             return (
-              <div className="row" key={rowIndex} style={subGridStyle}>
+              <div className="gd-row" key={rowIndex} style={subGridStyle}>
                 {row.map((cell, cellIndex) => {
                   return (
-                    <div className="cell" key={String(rowIndex) + String(cellIndex)}>{cell}</div>
+                    <div className="gd-cell" key={String(rowIndex) + String(cellIndex)}>{cell}</div>
                   );
                 })}
               </div>
