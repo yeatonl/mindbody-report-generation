@@ -52,7 +52,11 @@ export default class Table extends React.Component {
 
     for (const [key, value] of Object.entries(this.state.filters)){
       data = data.filter((element) => {
-        return element[key].match(value);
+        if (value.match(/^\/.*\/$/)){ //filter is a regex
+          let onlyRegex = value.slice(1).slice(0, value.length - 2); //remove the leading and trailing /
+          return element[key].match(onlyRegex);
+        }
+        return element[key].toLowerCase().startsWith(value);
       });
     }
 
@@ -72,7 +76,7 @@ export default class Table extends React.Component {
                   });
                 }}
                 label={cell}
-                title="Filter data (regex)"
+                title="Filter data. Enclose string in / to activate regex mode. Ex: /somestring/"
               />
               <IconButton
                 className={this.state.sortedColumn === cellIndex ? "active" : ""}
