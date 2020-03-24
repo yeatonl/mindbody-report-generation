@@ -6,6 +6,8 @@
   background-color: var(--bg-7);
   box-shadow: var(--elevation-7);
 
+  user-select: none;
+
   .prominent-items{
     display: flex;
     flex-direction: column;
