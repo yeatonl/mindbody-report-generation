@@ -13,16 +13,29 @@ export default class TextInput extends React.Component {
   static propTypes = {
     label: PropTypes.string,
     onDelayedChange: PropTypes.func,
+    minimal: PropTypes.bool,
+    className: PropTypes.string,
+    title: PropTypes.string,
+    onEnter: PropTypes.func,
   };
 
   static defaultProps = {
     label: "!!FIX ME!!",
     onDelayedChange: null,
+    minimal: false,
+    className: "",
+    title: "",
+    onEnter: null,
   }
 
   render = () => {
+    let className = "text-input " + this.props.className;
+    if (this.props.minimal){
+      className += " minimal";
+    }
+
     return (
-      <label className="text-input">
+      <label className={className} title={this.props.title}>
         <input
           placeholder=" "
           onChange={(e) => {
@@ -33,10 +46,12 @@ export default class TextInput extends React.Component {
             }, 500);
           }}
           onKeyDown={(e) => {
-            let value = e.target.value;
-            if (e.keyCode === 13){ //enter
-              clearTimeout(this.timeout);
-              this.props.onEnter(value);
+            if (this.props.onEnter){
+              let value = e.target.value;
+              if (e.keyCode === 13){ //enter
+                clearTimeout(this.timeout);
+                this.props.onEnter(value);
+              }
             }
           }}
         ></input>
