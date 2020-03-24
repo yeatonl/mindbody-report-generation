@@ -73,6 +73,7 @@ export default class Button extends React.Component {
 
     return (
       <button
+        tabIndex="0"
         className={className}
         onClick={(event) => {
           if (this.props.tempLabel){

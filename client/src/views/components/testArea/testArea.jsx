@@ -286,6 +286,7 @@ export default class JsonViewer extends React.Component {
         <div className="row">
           <Button destructive label="Delete" onClick={() => {}}/>
           <Button destructive label="No onclick"/>
+          <Button label="test"/>
         </div>
         <Checkbox label="tick me" onChange={(val) => {
           console.log("Checkbox changed", val);
