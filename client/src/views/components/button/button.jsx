@@ -42,7 +42,7 @@ export default class Button extends React.Component {
     disabled: false,
     disabledLabel: "",
     label: "",
-    onClick: null,
+    onClick: () => {},
     tempLabel: "",
     title: null,
     destructive: false,

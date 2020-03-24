@@ -6,4 +6,11 @@
   > *{
     margin: var(--spacing-4);
   }
+
+  .row{
+    display: flex;
+    > *{
+      margin: var(--spacing-3);
+    }
+  }
 }
