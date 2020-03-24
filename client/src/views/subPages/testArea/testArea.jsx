@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import Button from "views/components/button/button.jsx";
 import Checkbox from "views/components/checkbox/checkbox.jsx";
 import Grid from "views/components/grid/grid.jsx";
-import IconButton from "../iconButton/iconButton";
+import IconButton from "views/components/iconButton/iconButton";
 
 export default class JsonViewer extends React.Component {
   constructor(props){

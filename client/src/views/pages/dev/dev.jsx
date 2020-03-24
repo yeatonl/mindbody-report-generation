@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
-import CsvViewer from "views/components/csvViewer/csvViewer.jsx";
-import TestArea from "views/components/testArea/testArea.jsx";
+import CsvViewer from "views/subPages/csvViewer/csvViewer.jsx";
+import TestArea from "views/subPages/testArea/testArea.jsx";
 import "./dev.scss";
 
 export default class Reports extends React.Component {
