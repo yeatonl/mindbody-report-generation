@@ -13,6 +13,10 @@
     margin-bottom: var(--spacing-4);
   }
 
+  footer.controls *{
+    flex-grow: 1;
+  }
+
   .controls{
     display: flex;
     flex-direction: row;
@@ -20,45 +24,6 @@
 
     > *:not(:last-child){
       margin-right: var(--spacing-3);
-    }
-  }
-
-  footer.controls *{
-    flex-grow: 1;
-  }
-
-  .grid{
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    overflow-y: auto;
-
-
-    background: var(--bg-1);
-    border: 4px solid var(--scolor-2);
-
-    .header{
-
-      font-size: var(--font-size-3);
-
-      background: var(--scolor-2);
-    }
-
-    .body{
-      display: grid;
-      overflow-y: overlay;
-    }
-
-    .row{
-      display: grid;
-
-      &:nth-child(even){
-        background: var(--bg-3);
-      }
-    }
-
-    .cell{
-      padding: var(--spacing-3);
     }
   }
 }

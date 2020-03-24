@@ -4,6 +4,7 @@ import "./csvViewer.scss";
 import PropTypes from "prop-types";
 import TextInput from "views/components/textInput/textInput.jsx";
 import Button from "views/components/button/button.jsx";
+import Grid from "views/components/grid/grid.jsx";
 
 export default class CsvViewer extends React.Component {
   constructor(props){
@@ -16,11 +17,6 @@ export default class CsvViewer extends React.Component {
     };
   }
 
-  sortData = (index) => {
-    this.setState({data: this.state.data.sort((first, second) => {
-      return String(first[index]).localeCompare(String(second[index]));
-    })});
-  }
 
   rowToTabbedData = async(row) => {
     return String(row) + "\n";
@@ -60,19 +56,6 @@ export default class CsvViewer extends React.Component {
   }
 
   render = () => {
-    //make the grid have as many columns as implicitly defined in our data
-    //each element in the grid is actually a row containing a bunch of cells
-    //this lets us color alternate rows differently, but we need each row to span all available cells
-    let subGridStyle = {
-      gridColumn: `span ${this.state.headers.length}`,
-      gridTemplateColumns: `repeat(${this.state.headers.length}, 1fr)`,
-    };
-
-    let subGridHeaderStyle = {
-      gridColumn: `span ${this.state.headers.length}`,
-      gridTemplateColumns: `repeat(${this.state.headers.length}, 1fr)`,
-    };
-
     return (
       <main className="csv-viewer">
         <header className="controls">
@@ -100,33 +83,10 @@ export default class CsvViewer extends React.Component {
           />
         </header>
         {this.state.data && this.state.data.length > 0 &&
-          <div className="grid">
-            <div className="row header" style={subGridHeaderStyle}>
-              {this.state.headers.map((cell, cellIndex) => {
-                return <div
-                  title="Click to sort"
-                  className="cell"
-                  key={cellIndex}
-                  onClick={() => {
-                    this.sortData(cellIndex);
-                  }}
-                >{cell}</div>;
-              })}
-            </div>
-            <div className="body" style={subGridStyle}>
-              {this.state.data.map((row, rowIndex) => {
-                return (
-                  <div className="row" key={rowIndex} style={subGridStyle}>
-                    {row.map((cell, cellIndex) => {
-                      return (
-                        <div className="cell" key={String(rowIndex) + String(cellIndex)}>{cell}</div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          <Grid
+            data={this.state.data}
+            headers={this.state.headers}
+          />
         }
       </main>
     );
