@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: space-between;
 
-  background-color: var(--bg-7);
+  background-color: var(--gray-2);
   box-shadow: var(--elevation-7);
 
   user-select: none;
@@ -26,7 +26,7 @@
     padding-bottom: var(--spacing-3);
     padding-left: calc(var(--spacing-3) - 4px);
 
-    color: var(--gray-31);
+    color: var(--gray-15);
     font-weight: bold;
     font-size: var(--font-size-2);
     font-family: var(--secondary-font);
@@ -41,11 +41,11 @@
 
       .stroke{
         fill: none;
-        stroke: var(--gray-31);
+        stroke: var(--gray-15);
       }
 
       .fill{
-        fill: var(--gray-31);
+        fill: var(--gray-15);
       }
     }
 
