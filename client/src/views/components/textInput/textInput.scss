@@ -1,4 +1,8 @@
 .text-input{
+  --base-color: var(--pcolor-7);
+  --active-color: var(--pcolor-7);
+  --danger-color: var(--danger-6);
+  --initial-color: var(--gray-15);
 
   position: relative;
 
@@ -16,7 +20,7 @@
     height: 1em;
     padding-left: var(--spacing-3);
 
-    color: var(--gray-25);
+    color: var(--base-color);
     font-weight: bold;
 
     font-size: var(--font-size-2);
@@ -29,22 +33,6 @@
     pointer-events: none;
   }
 
-  input:not(:placeholder-shown) ~ .label, input:focus ~ .label{
-    top: 0;
-
-    padding-top: var(--spacing-2);
-
-    font-size: var(--font-size-1);
-  }
-
-  &:not(.minimal) input:hover ~ .label{
-    color: var(--pcolor-7);
-  }
-
-  &:not(.minimal) input:focus ~ .label{
-    color: var(--pcolor-5);
-  }
-
 
   input{
     box-sizing: border-box;
@@ -54,37 +42,51 @@
     padding-right: var(--spacing-3);
     padding-left: var(--spacing-3);
 
-    color: var(--gray-15);
+    color: var(--base-color);
     font-size: var(--font-size-2);
     font-family: var(--primary-font);
     vertical-align: bottom;
 
     background: transparent;
-    border: 2px solid var(--gray-15);
+    border: 2px solid var(--initial-color);
 
-    &:hover{
-      border-color: var(--pcolor-7);
-    }
-
-    &:focus{
-      border-color: var(--pcolor-5);
+    &:hover, &:focus, &:active{
+      border-color: var(--active-color);
       outline: none;
     }
   }
 
   &.minimal{
+    .label{
+      padding-left: 0;
+
+      color: var(--initial-color);
+    }
     input{
       padding-left: 0;
 
-      color: var(--gray-15);
+      color: var(--initial-color);
 
       border-top: none;
       border-right: none;
       border-left: 0;
     }
-    .label{
-      padding-left: 0;
-    }
+  }
+
+  input:not(:placeholder-shown) ~ .label, input:focus ~ .label{
+    top: 0;
+
+    padding-top: var(--spacing-2);
+
+    font-size: var(--font-size-1);
+  }
+  input:hover ~ .label, input:focus ~ .label{
+    color: var(--active-color);
   }
 }
 
+body.light .text-input{
+  --base-color: var(--pcolor-7);
+  --initial-color: var(--gray-0);
+  --active-color: var(--pcolor-4);
+}
