@@ -20,12 +20,15 @@
     height: 1em;
     padding-left: var(--spacing-3);
 
-    color: var(--base-color);
+    color: var(--initial-color);
     font-weight: bold;
 
     font-size: var(--font-size-2);
     line-height: 1em;
     white-space: nowrap;
+
+    filter: brightness(80%);
+
 
     transition: font-size 0.1s ease-out, top 0.1s ease-out;
 
@@ -42,7 +45,7 @@
     padding-right: var(--spacing-3);
     padding-left: var(--spacing-3);
 
-    color: var(--base-color);
+    color: var(--initial-color);
     font-size: var(--font-size-2);
     font-family: var(--primary-font);
     vertical-align: bottom;
