@@ -3,15 +3,7 @@
   --initial-color: var(--gray-15);
   --hover-color: var(--pcolor-7);
   --transition-time: 0.1s;
-}
 
-body.light .checkbox{
-  --checked-color: var(--pcolor-4);
-  --initial-color: var(--gray-0);
-  --hover-color: var(--pcolor-4);
-}
-
-.checkbox{
   display: flex;
   flex-grow: 0;
   flex-shrink: 0;
@@ -109,4 +101,10 @@ body.light .checkbox{
 
     pointer-events: none;
   }
+}
+
+body.light .checkbox{
+  --checked-color: var(--pcolor-4);
+  --initial-color: var(--gray-0);
+  --hover-color: var(--pcolor-4);
 }
