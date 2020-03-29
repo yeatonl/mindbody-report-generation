@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: space-between;
 
-  background-color: var(--gray-2);
+  background-color: var(--gray-4);
   box-shadow: var(--elevation-5);
 
   user-select: none;
@@ -50,19 +50,19 @@
     }
 
     &.active, &:hover{
-      color: var(--pcolor-7);
+      color: var(--pcolor-8);
 
       background-color: rgba(var(--pcolor-5-tri), var(--alpha-1));
 
-      border-left: 4px solid var(--pcolor-7);
+      border-left: 4px solid var(--pcolor-8);
 
       .stroke{
         fill: none;
-        stroke: var(--pcolor-7);
+        stroke: var(--pcolor-8);
       }
 
       .fill{
-        fill: var(--pcolor-7);
+        fill: var(--pcolor-8);
       }
     }
   }
