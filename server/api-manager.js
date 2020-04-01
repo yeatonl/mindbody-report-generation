@@ -1,124 +1,78 @@
-/* eslint-disable comma-spacing */
+/*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
-// const URL_USER_TOKEN = "BASE+usertoken/issue";
-// const BASE = "https://api.mindbodyonline.com/public/v6/";
-// const URL_CLIENTS = BASE + "client/clients?ClientIds=";
-// const URL_LOCATIONS = BASE + "site/locations";
-// const URL_SESSIONS = BASE + "site/sessiontypes";
-// const URL_APPOINTMENTS = BASE + "appointment/activesessiontimes";
-const USERNAME = "Siteowner";
-const PASSWORD = "apitest1234";
 
+const USERNAME = "";
+const PASSWORD = "";
 
-// fetch(URL_USER_TOKEN, REQUEST_TOKEN)
-//   .then((response) => {
-//     return response.json();
-//   })
-//   .then((data) => {
-//     REQUEST_CLIENTS.headers.Authorization = data.AccessToken;
-//     fetch(URL_CLIENTS, REQUEST_CLIENTS)
-//       .then((response) => {
-//         return response.json();
-//       })
-//       .then((data2) => {
-//         //console.log(data2);
-//       });
-//     REQUEST_LOCATIONS.headers.Authorization = data.AccessToken;
-//     // let locationPromise = fetch(URL_LOCATIONS, REQUEST_LOCATIONS)
-//     //   .then((response) => {
-//     //     return response.json();
-//     //   });
-//     fetch(URL_SESSIONS, REQUEST_LOCATIONS)
-//       .then((response) => {
-//         return response.json();
-//       })
-//       .then((values) => {
-//         let allApts = [];
-//         for (let i = 0; i < values.SessionTypes.length - 1; i++) {
-//           fetch(URL_APPOINTMENTS + "?SessionTypeIds=" + values.SessionTypes[i].Id, REQUEST_LOCATIONS)
-//             .then((response) => {
-//               return response.json();
-//             })
-//             .then((data3) => {
-//               //console.log(data3); lots
-//               allApts[i] = data3;
-//             });
-//         }
-//         logCSV(allApts);/e
-//       });
-//   });
+//see commit 52f3c1d0c984db4582830a4ce08b31491cbf4f8e for old code
+
+const BASE = "https://api.mindbodyonline.com/public/v6/";
+const URL_AUTH = BASE + "usertoken/issue";
+const URL_CLIENTS = BASE + "client/clients?ClientIds=";
+const URL_LOCATIONS = BASE + "site/locations";
+const URL_SESSIONS = BASE + "site/sessiontypes";
+const URL_APPOINTMENTS = BASE + "appointment/activesessiontimes";
+const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
+const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
-class mindbodyQueries {
+class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
-    this.BASE = "https://api.mindbodyonline.com/public/v6/";
-    this.URL_AUTH = this.BASE + "usertoken/issue";
-    this.URL_CLIENTS = this.BASE + "client/clients?ClientIds=";
-    this.URL_LOCATIONS = this.BASE + "site/locations";
-    this.URL_SESSIONS = this.BASE + "site/sessiontypes";
-    this.URL_APPOINTMENTS = this.BASE + "appointment/activesessiontimes";
-    this.APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
-    this.SITEID = "-99";
-    this.AUTH_TOKEN = null;
+    this.authToken = null;
   }
 
-  // Gets authentication
-  // Returns a promise that will eventually resolve
+  //gets authentication
+  //returns a promise that will eventually resolve
   getAuth() {
     var req = new MindbodyRequest(
-      this.URL_AUTH,
-      this.APIKEY,
-      this.SITEID,
+      URL_AUTH,
+      APIKEY,
+      SITEID,
       "POST",
-      "{'Username': '" + USERNAME + "','Password': '" + PASSWORD + "'}"
+      { "Username": USERNAME,
+        "Password": PASSWORD }
     );
     this.requestNum++;
     if (!this.atLimit()) {
       return req.makeRequest();
     }
-    return this.returnError("Request limit reached");
+    return Promise.reject(Error("Request limit reached"));
   }
 
-  // Gets clients
-  // Returns a promise that will eventually resolve
+  //gets clients
+  //returns a promise that will eventually resolve
   getClients() {
     var req = new MindbodyRequest(
-      this.URL_CLIENTS,
-      this.APIKEY,
-      this.SITEID,
+      URL_CLIENTS,
+      APIKEY,
+      SITEID,
       "GET",
       ""
     );
-    req.addAuth(this.AUTH_TOKEN);
+    req.addAuth(this.authToken);
     this.requestNum++;
     if (!this.atLimit()) {
       return req.makeRequest();
     }
-    return this.returnError("Request limit reached");
+    return Promise.reject(Error("Request limit reached"));
   }
 
-  // May be changed later
+  //may be changed later
   atLimit() {
     if (this.requestNum >= 800) {
       return true;
     }
     return false;
   }
-
-  returnError(errString) {
-    return new Promise(() => {
-      throw new Error(errString);
-    });
-  }
 }
 
-/* Example code
-var x = new mindbodyQueries();
-x.getAuth()
+/*example code
+var client = new mindbodyQueries();
+client.getAuth()
   .then((value) => {
-    x.AUTH_TOKEN = value.AccessToken;
-    return x.getClients();
+    client.AUTH_TOKEN = value.AccessToken;
+    return client.getClients();
   })
   .then((value) => {
     console.log(value);

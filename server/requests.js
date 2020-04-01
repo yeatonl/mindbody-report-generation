@@ -2,44 +2,44 @@
 import fetch from "node-fetch";
 export default class MindbodyRequest {
   constructor(url, apiKey, siteId, verb, body) {
-    this.URL = url;
-    this.APIKEY = apiKey;
-    this.SITEID = siteId;
-    this.HEADERS = this.unauthedheaders();
-    this.AUTH = null;
-    this.VERB = verb;
-    this.BODY = body;
+    this.url = url;
+    this.apiKey = apiKey;
+    this.siteId = siteId;
+    this.headers = this.unauthedheaders();
+    this.auth = null;
+    this.verb = verb;
+    this.body = body;
   }
 
   unauthedheaders() {
     return {
       "Content-Type": "application/json",
-      "Api-Key": this.APIKEY,
-      "SiteId": this.SITEID,
+      "Api-Key": this.apiKey,
+      "SiteId": this.siteId,
       "User-Agent": "MindBody-reports-Capstone",
     };
   }
 
   addAuth(auth){
-    this.AUTH = auth;
+    this.auth = auth;
   }
 
   makeRequest() {
     var headers = this.unauthedheaders();
-    if (this.AUTH !== null) {
-      headers.Authorization = this.AUTH;
+    if (this.auth !== null) {
+      headers.Authorization = this.auth;
     }
     var request = {
-      "method": this.VERB,
+      "method": this.verb,
       "headers": headers,
     };
-    if (this.BODY !== "") {
-      request.body = this.BODY;
+    if (this.body !== "") {
+      request.body = this.body;
     }
-    var p = fetch(this.URL, request)
+    var responsePromise = fetch(this.url, request)
       .then((response) => {
-        return response.json();
+        response.json();
       });
-    return p;
+    return responsePromise;
   }
 }
