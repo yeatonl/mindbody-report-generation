@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 /**
 @augments {React.Component<Props, State>}
 */
+
 export default class TextInput extends React.Component {
   constructor(props){
     super(props);
@@ -41,6 +42,7 @@ export default class TextInput extends React.Component {
 
     return (
       <label className={className} title={this.props.title}>
+
         <input
           placeholder=" "
           onChange={(e) => {

@@ -1,8 +1,10 @@
 import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
+
 import CsvViewer from "views/subPages/csvViewer/csvViewer.jsx";
 import TestArea from "views/subPages/testArea/testArea.jsx";
+
 import "./dev.scss";
 
 export default class Reports extends React.Component {
@@ -20,6 +22,7 @@ export default class Reports extends React.Component {
           link: "/dev/test-area",
           label: "Test Area",
           component: TestArea,
+
         },
       ],
     };
