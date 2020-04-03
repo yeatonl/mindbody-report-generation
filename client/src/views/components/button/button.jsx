@@ -2,6 +2,7 @@ import React from "react";
 import "./button.scss";
 import PropTypes from "prop-types";
 import getTextWidth from "functions/getTextWidth.js";
+import unfocus from "functions/unfocus.js";
 
 /**
 @augments {React.Component<Props, State>}
@@ -69,6 +70,7 @@ export default class Button extends React.Component {
       <button
         tabIndex="0"
         className={className}
+        onMouseLeave={unfocus}
         onClick={(event) => {
           if (this.props.tempLabel){
             this.setState({showTempLabel: true});
