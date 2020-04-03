@@ -30,7 +30,7 @@ export default connect((state) => {
   }
 
   render(){
-    return <div id="root" className={this.props.theme}>
+    return <div id="app" className={this.props.theme}>
       <HashRouter>
         <Sidebar />
         <Switch>
