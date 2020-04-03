@@ -66,7 +66,7 @@
   }
 }
 
-body.light .button{
+#root.light .button{
   --base-color: var(--pcolor-5);
   --text-color: var(--gray-15);
   --danger-color: var(--danger-5);
