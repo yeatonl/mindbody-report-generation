@@ -1,23 +1,37 @@
 import React from "react";
-import { NavLink, Route } from "react-router-dom";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import "./options.scss";
 import Checkbox from "views/components/checkbox/checkbox.jsx";
+import * as themes from "constants/themes.js";
+import * as actions from "store/actions/index.js";
 
-export default class Options extends React.Component {
-  render() {
+
+export default connect((state) => {
+  return {
+    theme: state.settings.theme,
+  };
+}, null)(class Options extends React.Component {
+  static propTypes = {
+    theme: PropTypes.string,
+  }
+
+  static defaultProps = {
+    theme: "dark",
+  }
+
+  render = () => {
     return (
       <div className="options">
         <section>
           <div className="header">Appearance</div>
           <div className="content">
-            <Checkbox label="Light theme" onChange={(val) => {
+            <Checkbox checked={this.props.theme === themes.LIGHT} label="Light theme" onChange={(val) => {
+              let theme = themes.DARK;
               if (val){
-                document.body.classList.add("light");
-                document.body.classList.remove("dark");
-              } else {
-                document.body.classList.remove("light");
-                document.body.classList.add("dark");
+                theme = themes.LIGHT;
               }
+              actions.setTheme(theme);
             }}/>
           </div>
         </section>
@@ -38,4 +52,4 @@ export default class Options extends React.Component {
       </div>
     );
   }
-}
+});
