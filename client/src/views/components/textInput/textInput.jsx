@@ -28,7 +28,7 @@ export default class TextInput extends React.Component {
     className: "",
     label: "!!FIX ME!!",
     minimal: false,
-    onDelayedChange: null,
+    onDelayedChange: () => {},
     onEnter: null,
     title: "",
   }
