@@ -6,6 +6,7 @@ import getTextWidth from "functions/getTextWidth.js";
 /**
 @augments {React.Component<Props, State>}
 */
+
 export default class Button extends React.Component {
   constructor(props){
     super(props);
@@ -38,6 +39,7 @@ export default class Button extends React.Component {
     disabledLabel: "",
     label: "",
     onClick: () => {},
+
     tempLabel: "",
     title: null,
   }
