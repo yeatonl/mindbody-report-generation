@@ -64,6 +64,10 @@ export default class Button extends React.Component {
       label = this.props.disabledLabel || this.props.label;
     }
 
+    let tabIndex = "0";
+    if (this.props.disabled){
+      tabIndex = "-1";
+    }
 
     //this is only an approximation to reduce resizing as we change labels
     //kinda hacky, if weird things happen with widths investigate here first
@@ -73,7 +77,7 @@ export default class Button extends React.Component {
 
     return (
       <button
-        tabIndex="0"
+        tabIndex={tabIndex}
         className={className}
         onMouseLeave={unfocus}
         onClick={(event) => {

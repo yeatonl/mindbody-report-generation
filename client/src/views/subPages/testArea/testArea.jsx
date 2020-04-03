@@ -290,6 +290,7 @@ export default class JsonViewer extends React.Component {
           <Button destructive label="No onclick"/>
           <Button label="test" />
           <Button ghost label="ghost test" />
+          <Button disabled ghost label="disabled" />
         </div>
         <TextInput label="placeholder goes here"onDelayedChange={() => {}}onEnter={() => {}}/>
         <TextInput label="no onDelayedChange" onEnter={() => {}}/>
