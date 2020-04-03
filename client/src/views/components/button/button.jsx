@@ -30,6 +30,8 @@ export default class Button extends React.Component {
     /**shown for 3s after a click*/
     tempLabel: PropTypes.string,
     title: PropTypes.string,
+    /**enable ghost button (transparent bg) */
+    ghost: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -41,6 +43,7 @@ export default class Button extends React.Component {
     onClick: () => {},
     tempLabel: "",
     title: null,
+    ghost: false,
   }
 
   render = () => {
@@ -49,7 +52,9 @@ export default class Button extends React.Component {
       className += " disabled";
     }
     if (this.props.destructive){
-      className += " destructive";
+      className += " destructive ghost";
+    } else if (this.props.ghost){
+      className += " ghost";
     }
 
     let label = this.props.label;
