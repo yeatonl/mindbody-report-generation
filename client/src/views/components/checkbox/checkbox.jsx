@@ -42,10 +42,13 @@ export default class Checkbox extends React.Component {
       className += " disabled";
     }
 
-
+    let tabIndex = "0";
+    if (this.props.disabled){
+      tabIndex = "-1";
+    }
 
     return (
-      <label className={className} tabIndex="0" onMouseLeave={unfocus}>
+      <label className={className} tabIndex={tabIndex} onMouseLeave={unfocus}>
         <input type="checkbox" checked={this.props.checked} onChange={(e) => {
           if (this.props.onChange){
             this.props.onChange(e.target.checked);
