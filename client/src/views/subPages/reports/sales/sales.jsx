@@ -5,7 +5,7 @@ export default class Sales extends React.Component {
   render = () => {
     return (
       <div className="sales">
-        Sales Report
+        Sales Report1
       </div>
     );
   }

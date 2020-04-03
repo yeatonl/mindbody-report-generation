@@ -1,0 +1,42 @@
+.icon-button{
+  flex-grow: 0;
+  flex-shrink: 0;
+  box-sizing: content-box;
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0;
+  padding: 0.5em; //extra padding for easier clicking since 1.5em is kinda small
+
+  background-color: transparent;
+
+  border: none;
+
+  .stroke{
+    fill: none;
+    stroke: var(--gray-31);
+  }
+  .fill{
+    stroke: var(--gray-31);
+  }
+
+  &:hover{
+    .stroke{
+      stroke: var(--pcolor-7);
+    }
+
+    .fill{
+      fill: var(--pcolor-7);
+    }
+  }
+
+  &:focus, &:active, &.active{
+    outline: none;
+    .stroke{
+      stroke: var(--pcolor-5);
+    }
+
+    .fill{
+      fill: var(--pcolor-5);
+    }
+  }
+}

@@ -72,7 +72,7 @@ module.exports = function(webpackEnv) {
         //css is located in `static/css`, use '../../' to locate index.html folder
         //in production `paths.publicUrlOrPath` can be a relative path
         options: paths.publicUrlOrPath.startsWith(".")
-          ? { publicPath: "../../", }
+          ? { publicPath: "../../" }
           : {},
       },
       {
@@ -252,7 +252,7 @@ module.exports = function(webpackEnv) {
               : false,
           },
           cssProcessorPluginOptions: {
-            preset: ["default", { minifyFontValues: { removeQuotes: false, }, }, ],
+            preset: ["default", { minifyFontValues: { removeQuotes: false } }],
           },
         }),
       ],
@@ -277,7 +277,7 @@ module.exports = function(webpackEnv) {
       //we placed these paths second because we want `node_modules` to "win"
       //if there are any conflicts. This matches Node resolution mechanism.
       //https://github.com/facebook/create-react-app/issues/253
-      modules: ["node_modules", paths.appNodeModules, ].concat(modules.additionalModulePaths || []),
+      modules: ["node_modules", paths.appNodeModules].concat(modules.additionalModulePaths || []),
       //these are the reasonable defaults supported by the Node ecosystem.
       //we also include JSX as a common component filename extension to support
       //some tools, although we do not recommend using it, see:
@@ -311,7 +311,7 @@ module.exports = function(webpackEnv) {
         //to fix this, we prevent you from importing files out of src/ -- if you'd like to,
         //please link the files into your node_modules/ and let module-resolution kick in.
         //make sure your source files are compiled, as they will not be processed in any way.
-        new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson, ]),
+        new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
       ],
     },
     resolveLoader: {
@@ -325,7 +325,7 @@ module.exports = function(webpackEnv) {
       strictExportPresence: true,
       rules: [
         //disable require.ensure as it's not a standard language feature.
-        { parser: { requireEnsure: false, }, },
+        { parser: { requireEnsure: false } },
 
         //first, run the linter.
         //it's important to do this before Babel processes the JS.
@@ -340,6 +340,7 @@ module.exports = function(webpackEnv) {
                 eslintPath: require.resolve("eslint"),
                 resolvePluginsRelativeTo: __dirname,
                 emitWarning: true,
+                configFile: ".eslintrc.json",
 
               },
               loader: require.resolve("eslint-loader"),
@@ -356,7 +357,7 @@ module.exports = function(webpackEnv) {
             //smaller than specified limit in bytes as data URLs to avoid requests.
             //a missing `test` is equivalent to a match.
             {
-              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/, ],
+              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
               loader: require.resolve("url-loader"),
               options: {
                 limit: imageInlineSizeLimit,
@@ -404,7 +405,7 @@ module.exports = function(webpackEnv) {
                 babelrc: false,
                 configFile: false,
                 compact: false,
-                presets: [[require.resolve("babel-preset-react-app/dependencies"), { helpers: true, },], ],
+                presets: [[require.resolve("babel-preset-react-app/dependencies"), { helpers: true }]],
                 cacheDirectory: true,
                 //see #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
@@ -489,7 +490,7 @@ module.exports = function(webpackEnv) {
               //its runtime that would otherwise be processed through "file" loader.
               //also exclude `html` and `json` extensions so they get processed
               //by webpacks internal loaders.
-              exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/, ],
+              exclude: [/\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
               options: {
                 name: "static/media/[name].[hash:8].[ext]",
               },
@@ -528,7 +529,7 @@ module.exports = function(webpackEnv) {
       //https://github.com/facebook/create-react-app/issues/5358
       isEnvProduction &&
         shouldInlineRuntimeChunk &&
-        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/, ]),
+        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
       //makes some environment variables available in index.html.
       //the public URL is available as %PUBLIC_URL% in index.html, e.g.:
       //<link rel="icon" href="%PUBLIC_URL%/favicon.ico">
@@ -598,7 +599,7 @@ module.exports = function(webpackEnv) {
       isEnvProduction &&
         new WorkboxWebpackPlugin.GenerateSW({
           clientsClaim: true,
-          exclude: [/\.map$/, /asset-manifest\.json$/, ],
+          exclude: [/\.map$/, /asset-manifest\.json$/],
           importWorkboxFrom: "cdn",
           navigateFallback: paths.publicUrlOrPath + "index.html",
           navigateFallbackBlacklist: [
@@ -627,7 +628,7 @@ module.exports = function(webpackEnv) {
             ? `${__dirname}/pnpTs.js`
             : undefined,
           tsconfig: paths.appTsConfig,
-          reportFiles: ["**", "!**/__tests__/**", "!**/?(*.)(spec|test).*", "!**/src/setupProxy.*", "!**/src/setupTests.*",],
+          reportFiles: ["**", "!**/__tests__/**", "!**/?(*.)(spec|test).*", "!**/src/setupProxy.*", "!**/src/setupTests.*"],
           silent: true,
           //the formatter is invoked directly in WebpackDevServerUtils during development
           formatter: isEnvProduction ? typescriptFormatter : undefined,

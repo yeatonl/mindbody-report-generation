@@ -2,8 +2,8 @@ import React from "react";
 import { NavLink, Route } from "react-router-dom";
 import "./reports.scss";
 
-import AttendanceReport from "views/components/reports/attendance/attendance.jsx";
-import SalesReport from "views/components/reports/sales/sales.jsx";
+import AttendanceReport from "views/subPages/reports/attendance/attendance.jsx";
+import SalesReport from "views/subPages/reports/sales/sales.jsx";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
 
 

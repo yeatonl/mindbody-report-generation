@@ -1,7 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import "./textInput.scss";
 import PropTypes from "prop-types";
+
+/**
+@augments {React.Component<Props, State>}
+*/
 
 export default class TextInput extends React.Component {
   constructor(props){
@@ -11,18 +14,35 @@ export default class TextInput extends React.Component {
   }
 
   static propTypes = {
+    className: PropTypes.string,
     label: PropTypes.string,
+    /**if true, disable hover/focus/active and only show bottom border */
+    minimal: PropTypes.bool,
+    /**called after the user stops typing with the current value */
     onDelayedChange: PropTypes.func,
+    /**called when the users presses enter */
+    onEnter: PropTypes.func,
+    title: PropTypes.string,
   };
 
   static defaultProps = {
+    className: "",
     label: "!!FIX ME!!",
+    minimal: false,
     onDelayedChange: null,
+    onEnter: null,
+    title: "",
   }
 
   render = () => {
+    let className = "text-input " + this.props.className;
+    if (this.props.minimal){
+      className += " minimal";
+    }
+
     return (
-      <label className="text-input">
+      <label className={className} title={this.props.title}>
+
         <input
           placeholder=" "
           onChange={(e) => {
@@ -33,10 +53,12 @@ export default class TextInput extends React.Component {
             }, 500);
           }}
           onKeyDown={(e) => {
-            let value = e.target.value;
-            if (e.keyCode === 13){ //enter
-              clearTimeout(this.timeout);
-              this.props.onEnter(value);
+            if (this.props.onEnter){
+              let value = e.target.value;
+              if (e.keyCode === 13){ //enter
+                clearTimeout(this.timeout);
+                this.props.onEnter(value);
+              }
             }
           }}
         ></input>
