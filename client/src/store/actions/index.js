@@ -9,3 +9,13 @@ export const setTheme = (theme) => {
     payload: {theme},
   });
 };
+
+export const setInterfaceEntry = (key, value) => {
+  store.dispatch({
+    type: actionTypes.SET_INTERFACE_ENTRY,
+    error: null,
+    meta: null,
+    payload: {key, value},
+  });
+};
+
