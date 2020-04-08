@@ -48,6 +48,6 @@ app.get("/reports/commission", commissionRpt.handleExpressRequest);
 
 //start up the server, now that the endpoint handlers are installed.
 app.listen(portNumber, function() {
-  console.log("Mindboy server listening at http://localhost:%s", portNumber);
+  console.log("Mindbody report server listening at http://localhost:%s", portNumber);
 });
 
