@@ -12,27 +12,31 @@ export default class ReportParameters extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     parameters: PropTypes.array,
+    onChange: PropTypes.func,
   };
 
   static defaultProps = {
     className: "",
     parameters: [],
+    onChange: () => {},
   }
 
-  renderParameter = (param, key) => {
+  renderParameter = (param, index) => {
     if (param.type === Parameters.INPUT_TEXT || param.type === Parameters.INPUT_DATE){
-      return this.renderTextInput(param, key);
+      return this.renderTextInput(param, index);
     }
     return null;
   }
 
-  renderTextInput = (param, key) => {
+  renderTextInput = (param, index) => {
     return <TextInput
       style={{gridColumn: "span " + param.span}}
-      key={key}
+      key={index}
       label={param.label}
       title={param.tooltip}
-      onDelayedChange={() => {}}
+      onDelayedChange={(value) => {
+        this.props.onChange(param.key, value);
+      }}
       onEnter={() => {}}
     />;
   }
