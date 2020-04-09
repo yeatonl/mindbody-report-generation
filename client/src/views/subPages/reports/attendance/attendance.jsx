@@ -10,34 +10,34 @@ import * as Urls from "constants/urls.js";
 import * as Reports from "constants/reports.js";
 import * as Actions from "store/actions/index.js";
 import { fetchReportData } from "store/actions";
-import copyToClipboard from "functions/copyToClipboard";
+import copyToClipboard from "functions/copyToClipboard.js";
+import encodeQueryParameters from "functions/encodeQueryParameters.js";
 
 
 export default connect((state) => {
   return {
     data: state.reports[Reports.ATTENDANCE]?.data,
     headers: state.reports[Reports.ATTENDANCE]?.headers,
-    parameters: state.reports[Reports.ATTENDANCE]?.parameters,
+    parametersInfo: state.reports[Reports.ATTENDANCE]?.parameters,
   };
 }, null)(class AttendanceReport extends React.Component {
   static propTypes = {
     data: PropTypes.array,
     headers: PropTypes.array,
-    parameters: PropTypes.array,
+    parametersInfo: PropTypes.array,
   }
 
   static defaultProps = {
     data: [],
     headers: [],
-    parameters: [],
+    parametersInfo: [],
   }
 
   constructor(props){
     super(props);
 
     this.state = {
-      startDate: "",
-      endDate: "",
+      parametersData: {},
     };
   }
 
@@ -46,7 +46,7 @@ export default connect((state) => {
   }
 
   copyDataToClipboard = () => {
-    Promise.all(this.props.data.map((row) => {
+    Promise.all(this.props.data.map(async(row) => {
       return row.join("\t");
     }))
       .then((values) => {
@@ -59,14 +59,21 @@ export default connect((state) => {
   }
 
   loadDataFromEndpoint = () => {
-    Actions.fetchReportData(Urls.ATTENDANCE_REPORT_URL_JSON, Reports.ATTENDANCE);
+    let url = encodeQueryParameters(Urls.ATTENDANCE_REPORT_URL_JSON, this.state.parametersData);
+    Actions.fetchReportData(url, Reports.ATTENDANCE);
   }
 
   render = () => {
     return (
       <main className="attendance-report">
         <header>
-          <ReportParameters parameters={this.props.parameters} />
+          <ReportParameters parameters={this.props.parametersInfo} onChange={(key, value) => {
+            this.setState((oldState) => {
+              return {
+                parametersData: {...oldState.parametersData, [key]: value},
+              };
+            });
+          }} />
           <div className="buttons">
             <Button
               label="Fetch"
