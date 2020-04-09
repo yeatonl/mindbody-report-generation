@@ -79,6 +79,7 @@ export default class Table extends React.Component {
                 title="Filter data. Enclose string in / to activate regex mode. Ex: /somestring/"
               />
               <IconButton
+                inline
                 className={this.state.sortedColumn === cellIndex ? "active" : ""}
                 icon={<SortIcon/>}
                 onClick={() => {
