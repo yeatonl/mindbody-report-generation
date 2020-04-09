@@ -265,7 +265,7 @@
   "reportsAttendanceParameters": {
     "parameters": [
       {
-        "name": "startdate",
+        "key": "startdate",
         "type": "DATE",
         "label": "Start date",
         "description": "This parameter will [blah blah blah]",
@@ -277,7 +277,7 @@
         "data": {}
       },
       {
-        "name": "enddate",
+        "key": "enddate",
         "type": "DATE",
         "label": "End date",
         "description": "This parameter will [blah blah blah]",
