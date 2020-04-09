@@ -1,11 +1,11 @@
 // module "commission-report"
-const { Parser } = require("json2csv");
+import json2csvExports from "json2csv";
 
 
 /* A handy request URLS for testing:
 http://localhost:8080/reports/commission?format=csv&startdate=111&enddate=2222
 */
-function handleExpressRequest(request, response) {
+export function handleCommissionRptRequest(request, response) {
 
   //console.log("handleExpressRequest:");
   //console.log("request: " + request.baseUrl + " - " + JSON.stringify(request.query));
@@ -61,7 +61,7 @@ function handleExpressRequest(request, response) {
   // Generate output
   if (format === "csv") {
     let fields = ["paramName", "value"];
-    let parser = new Parser({fields});
+    let parser = new json2csvExports.Parser({fields});
     let csv = parser.parse(rptJsonRowsAsJson);
     let fileName = "CommissionReport.csv";
     //TODO: As a user, I'd appreciate a more unique filename with the date range embedded
@@ -72,7 +72,4 @@ function handleExpressRequest(request, response) {
     response.json(rptJsonRowsAsJson);
   }
 }
-
-
-module.exports = {handleExpressRequest};
 
