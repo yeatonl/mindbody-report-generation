@@ -1,7 +1,7 @@
-const express = require("express");
-//const csvToJson = require("csvtojson");
-const { Parser } = require("json2csv");
-const commissionRpt = require("./reports/commission/commission-report.js");
+import express from "express";
+import json2csvExports from "json2csv";
+import {handleCommissionRptRequest} from "./reports/commission/commission-report.js";
+
 
 var app = express();
 const portNumber = 8080;
@@ -36,14 +36,14 @@ app.get("/sample.csv", function(req, res) {
   ];
 
   var fields = ["firstName", "lastName", "workplace"];
-  var parser = new Parser({fields});
+  var parser = new json2csvExports.Parser({fields});
   var csv = parser.parse(jsonRows);
   res.contentType("text/csv");
   res.send(csv);
 });
 
 
-app.get("/reports/commission", commissionRpt.handleExpressRequest);
+app.get("/reports/commission", handleCommissionRptRequest);
 
 
 //start up the server, now that the endpoint handlers are installed.
