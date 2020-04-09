@@ -1,6 +1,7 @@
 const express = require("express");
 //const csvToJson = require("csvtojson");
 const { Parser } = require("json2csv");
+const commissionRpt = require("./reports/commission/commission-report.js");
 
 var app = express();
 const portNumber = 8080;
@@ -11,8 +12,10 @@ app.get("/", function(req, response) {
   response.send("Hello world");
 });
 
+//TODO: Remove the sample endpoints? By 4/15, we should have real endpoints, so these will be useless.
+
 //this is another endpoint. When someone requests "http://localhost/sample.csv", the server
-//responds with this little csv file.q
+//responds with this little csv file.
 app.get("/sample.csv", function(req, res) {
   var jsonRows = [
     {
@@ -40,8 +43,11 @@ app.get("/sample.csv", function(req, res) {
 });
 
 
+app.get("/reports/commission", commissionRpt.handleExpressRequest);
+
+
 //start up the server, now that the endpoint handlers are installed.
 app.listen(portNumber, function() {
-  console.log("Mindboy server listening at http://localhost:%s", portNumber);
+  console.log("Mindbody report server listening at http://localhost:%s", portNumber);
 });
 
