@@ -1,3 +1,22 @@
-.attendance {
-color: goldenrod;
+.attendance-report{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  header{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: var(--spacing-4);
+
+
+    .buttons{
+      display: flex;
+      flex-direction: row;
+      margin-top: var(--spacing-5);
+      > *:not(:last-child){
+        margin-right: var(--spacing-2);
+      }
+    }
+  }
 }
