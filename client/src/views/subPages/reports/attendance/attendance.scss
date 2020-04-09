@@ -13,10 +13,17 @@
     .buttons{
       display: flex;
       flex-direction: row;
-      margin-top: var(--spacing-5);
+      margin-top: var(--spacing-4);
       > *:not(:last-child){
         margin-right: var(--spacing-2);
       }
     }
+  }
+
+  .gd-grid{
+    margin-top: var(--spacing-5);
+    margin-right: var(--spacing-4);
+    margin-bottom: var(--spacing-4);
+    margin-left: var(--spacing-4);
   }
 }
