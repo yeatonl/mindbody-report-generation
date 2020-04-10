@@ -57,12 +57,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   //takes parameters as ?<>=<>&<>=<> etc. Either SessionTypeIds or ScheduleType must be provided.
@@ -84,12 +79,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   //gets AppointmentOptions, takes no parameters
@@ -101,12 +91,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -129,12 +114,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -153,12 +133,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -178,12 +153,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -210,12 +180,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -237,12 +202,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -263,12 +223,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -284,12 +239,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -308,12 +258,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -333,12 +278,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -357,12 +297,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -385,12 +320,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -409,12 +339,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -429,12 +354,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -453,12 +373,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -474,12 +389,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -494,12 +404,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -519,12 +424,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -539,12 +439,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -571,12 +466,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -600,12 +490,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -621,12 +506,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -640,12 +520,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -659,12 +534,7 @@ class MindbodyQueries {
       "GET",
       ""
     );
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
+    return this.decorateAndMake(request);
   }
 
   /* eslint-disable *//**
@@ -685,6 +555,10 @@ class MindbodyQueries {
       "GET",
       ""
     );
+    return this.decorateAndMake(request);
+  }
+
+  decorateAndMake(request) {
     request.addAuth(this.authToken);
     this.requestNum++;
     if (!this.atLimit()) {
