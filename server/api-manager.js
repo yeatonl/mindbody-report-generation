@@ -558,6 +558,7 @@ class MindbodyQueries {
     return this.decorateAndMake(request);
   }
 
+  //@TODO implement caching based on hashes of url's here
   decorateAndMake(request) {
     request.addAuth(this.authToken);
     this.requestNum++;
