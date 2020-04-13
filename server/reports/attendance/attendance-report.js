@@ -41,9 +41,6 @@ function attendanceRequestHandler(request, response) {
 
   if (format === "csv") {
     const csv = J2C(dummyData, {fields: ["paramName", "value"]});
-    //let fileName = "CommissionReport.csv";
-    //res.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
-    //res.contentType("text/csv");
     response.send(csv);
   } else {
     response.json(dummyData);
