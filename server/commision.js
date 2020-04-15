@@ -1,13 +1,15 @@
 const https = require("https");
 const querystring = require("querystring");
+const util = require("util");
 const key = "bfc05de4947f464f85ecd85deff6895e";
 
-var auth = "0d376182ad1f4e0cbff6711199f8ac8a8147e2f805f547da9f908ad819ac03de";
+var auth = "5c44ce49f6c8499399f53174536beb2602b74eaf41af4cd29e5df1c3db8db6ba";
+//var auth = "";
 //printAuthorizationKey("Siteowner", "apitest1234");
 
 function getRequest(path, payload, callback) {
   var options = getOptions(path);
-  options.method = "GET"; 
+  options.method = "GET";
   options.path += "?" + querystring.stringify(payload);
   console.log("GET " + options.host + options.path);
   const req = https.request(options, callback);
@@ -17,7 +19,7 @@ function getRequest(path, payload, callback) {
 
 function postRequest(path, payload, callback) {
   var options = getOptions(path);
-  options.method = "POST"; 
+  options.method = "POST";
   payload = JSON.stringify(payload);
   options.headers["Content-Length"] = payload.length;
   console.log("POST " + options.host + options.path);
@@ -42,10 +44,10 @@ function getOptions(path) {
 
 function printAuthorizationKey(username, password) {
   var payload = {
-    "Username": username, 
+    "Username": username,
     "Password": password
   };
-  postRequest("usertoken/issue", payload, res => { 
+  postRequest("usertoken/issue", payload, res => {
     res.on("data", d => console.log(JSON.parse(d)));
   });
 }
@@ -57,7 +59,7 @@ class CommissionReport {
     this.visits = {};
     this.products = {};
     this.services = {};
-  } 
+  }
 
   setStartDate(date) {
     this.startDate = date;
@@ -74,6 +76,12 @@ class CommissionReport {
   /** Return a promise for the revenue of each instructor.
   Value format: {staff_name: {service_name/product_name: revenue}} */
   merge() {
+    var params = {showHidden: false, depth: null};
+    console.log("sales:", util.inspect(this.sales, params));
+    console.log("services:", util.inspect(this.services, params));
+    console.log("products:", util.inspect(this.products, params));
+    console.log("visits:", util.inspect(this.visits, params));
+
     return new Promise((resolve, reject) => {
       var staff = {};
       for (const clientID in this.visits) {
@@ -92,13 +100,13 @@ class CommissionReport {
       var serviceID = visits[i].ServiceId;
 
       if (serviceID in this.services == false) {
-        console.warn(`${serviceID} not in services`); 
+        console.warn(`${serviceID} not in services`);
         continue;
       }
 
       if (staffID in staff == false)
         staff[staffID] = {};
-      if (serviceID in staff[staffID] == false) 
+      if (serviceID in staff[staffID] == false)
         staff[staffID][serviceID] = 0.0;
 
       var service = this.services[serviceID];
@@ -107,7 +115,7 @@ class CommissionReport {
       else
         payment = service.Price / service.Count;
 
-      staff[staffID][serviceID] += payment; 
+      staff[staffID][serviceID] += payment;
     }
   }
 
@@ -122,7 +130,7 @@ class CommissionReport {
 
   /** Divide product revenues among staff based on client visits. */
   updateProductRevenue(staff, clientID) {
-    var staffIDs = []; 
+    var staffIDs = [];
     var visits = this.visits[clientID];
     for (let i = 0; i < visits.length; i++) {
       var staffID = visits[i].StaffId;
@@ -130,23 +138,24 @@ class CommissionReport {
       if (staffID in staff == false)
         staff[staffID] = {};
     }
-    
+
     var sales = this.sales[clientID];
     for (let i = 0; i < sales.length; i++) {
       var purchases = sales[i].PurchasedItems;
       for (let j = 0; j < purchases.length; j++)
-        if (!purchases[j].isService) 
-          this.distributeProductRevenue(staff, purchases[j].Id, staffIDs);
+        if (purchases[j].BarcodeId in this.products)
+          this.distributeProductRevenue(
+            staff, purchases[j].BarcodeId, staffIDs);
     }
   }
 
   /** Distribute revenue for a product among instructors. */
-  distributeProductRevenue(staff, productID, staffIDs) { 
+  distributeProductRevenue(staff, productID, staffIDs) {
     if (productID in this.products == false) {
-      console.warn(`${productID} not in products`); 
+      console.warn(`${productID} not in products`);
       return;
     }
-   
+
     var price = this.products[productID].Price;
     for (let i = 0; i < staffIDs.length; i++) {
       var staffID = staffIDs[i];
@@ -165,15 +174,15 @@ class CommissionReport {
       for (let i = 0; i < sales.length; i++) {
         var items = sales[i].PurchasedItems;
         for (let j = 0; j < items.length; j++) {
-          if (items[j].IsService)
-            serviceIDs.add(items[j].Id);
+          if (items[j].BarcodeId)
+            productIDs.add(items[j].BarcodeId);
           else
-            productIDs.add(items[j].Id);
+            serviceIDs.add(items[j].Id);
         }
       }
     }
     return Promise.all([
-      this.requestProducts(Array.from(productIDs)), 
+      this.requestProducts(Array.from(productIDs)),
       this.requestServices(Array.from(serviceIDs))
     ]);
   }
@@ -194,7 +203,11 @@ class CommissionReport {
   requestSales() {
     var self = this;
     return new Promise((resolve, reject) => {
-      getRequest("sale/sales", {}, resp => {
+      var payload = {
+        StartDateTime: this.startDate,
+        PaymentMethodId: 1 // REMOVE
+      };
+      getRequest("sale/sales", payload, resp => {
         var data = "";
         resp.on("data", chunk => data += chunk);
         resp.on("error", reject);
@@ -208,7 +221,7 @@ class CommissionReport {
 
   /** Return a promise for all visit information using client sales. */
   requestVisits() {
-    var clientVisits = []; 
+    var clientVisits = [];
     for (const clientID in this.sales)
       clientVisits.push(this.requestClientVisits(clientID));
     return Promise.all(clientVisits);
@@ -221,7 +234,7 @@ class CommissionReport {
       var payload = {
         ClientId: clientID,
         StartDateTime: this.startDate
-      }; 
+      };
       getRequest("client/clientvisits", payload, resp => {
         var data = "";
         resp.on("data", chunk => data += chunk);
@@ -276,5 +289,69 @@ class CommissionReport {
 }
 
 var report = new CommissionReport();
-//report.setStartDate("2020-03-01T00:00:00");
+report.setStartDate("2020-04-09T00:00:00");
 report.generate().then(staff => console.log(staff));
+
+//getRequest("sale/sales", {
+//    Limit:200,
+//    PaymentMethodId:1
+//    StartSaleDateTime:"2020-04-09T12:00:00Z",
+//    EndSaleDateTime:"2020-04-09T23:59:00Z"
+//}, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    console.log(JSON.parse(data));
+//    var sales = JSON.parse(data).Sales;
+//    for (let i = 0; i < sales.length; i++)
+//      console.log(sales[i]);
+//  });
+//});
+//
+//getRequest("sale/products", {}, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    var x = JSON.parse(data).Products;
+//    for (let i = 0; i < x.length; i++)
+//      console.log(x[i]);
+//  });
+//});
+//
+//getRequest("sale/services", {}, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    var x = JSON.parse(data).Services;
+//    for (let i = 0; i < x.length; i++)
+//      console.log(x[i]);
+//  });
+//});
+//
+//var cart = {
+//  Test: false,
+//  ClientId: 100014871,
+//  Items: [
+//    {Item: {Type: "Product", Metadata: {Id: "0001"}}, Quantity: 22},
+//    {Item: {Type: "Product", Metadata: {Id: "0002"}}, Quantity: 6}
+//  ],
+//  InStore: true,
+//  Payments: [
+//    {
+//      Type: "Cash",
+//      Metadata: {
+//        Amount: 53.52,
+//        Notes: "Tip"
+//      }
+//    }
+//  ],
+//  LocationId: 1
+//};
+//
+//postRequest("sale/checkoutshoppingcart", cart, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    console.log(JSON.parse(data));
+//  });
+//});
