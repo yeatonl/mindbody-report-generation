@@ -11,12 +11,15 @@ const URL_AUTH = BASE + "usertoken/issue";
 const URL_CLIENTS = BASE + "client";
 const URL_CLASS = BASE + "class";
 const URL_SITE = BASE + "site";
+const URL_SALE = BASE + "sale";
+const URL_STAFF = BASE + "staff";
 const URL_ENROLLMENT = BASE + "enrollment";
 const URL_APPOINTMENT = BASE + "appointment";
 const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
 const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
+import QueryString from "query-string";
 class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
@@ -41,6 +44,18 @@ class MindbodyQueries {
     return Promise.reject(Error("Request limit reached"));
   }
 
+  /**@returns Activation code. Requires mindbody to approve you for live customer data */
+  getActivationCode() {
+    var request = new MindbodyRequest(
+      URL_SITE + "activationcode",
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
   /* eslint-disable *//**
   * Optional:
   *  @param ClientIds
@@ -50,8 +65,9 @@ class MindbodyQueries {
   *  @param LastModifiedDate
   *//*eslint-enable */
   getClients(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clients" + parameters,
+      URL_CLIENTS + "/clients" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -72,8 +88,9 @@ class MindbodyQueries {
   * @param EndTime
   *//*eslint-enable */
   getActiveSessionTimes(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_APPOINTMENT + "/activesessiontimes" + parameters,
+      URL_APPOINTMENT + "/activesessiontimes" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -107,8 +124,9 @@ class MindbodyQueries {
   *  @param IgnoreDefaultSessionLength
   *//*eslint-enable */
   getBookableItems(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_APPOINTMENT + "/bookableitems" + parameters,
+      URL_APPOINTMENT + "/bookableitems" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -126,8 +144,9 @@ class MindbodyQueries {
   *  @param   IgnorePrepFinishTimes
   *//*eslint-enable */
   getScheduleItems(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_APPOINTMENT + "/scheduleitems" + parameters,
+      URL_APPOINTMENT + "/scheduleitems" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -146,8 +165,9 @@ class MindbodyQueries {
   *  @param ClientId
   *//*eslint-enable */
   getStaffAppointments(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_APPOINTMENT + "/staffappointments" + parameters,
+      URL_APPOINTMENT + "/staffappointments" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -173,8 +193,9 @@ class MindbodyQueries {
   *  @param LastModifiedDate
   *//*eslint-enable */
   getClasses(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLASS + "/classes" + parameters,
+      URL_CLASS + "/classes" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -195,8 +216,9 @@ class MindbodyQueries {
   *  @param LocationId
   *//*eslint-enable */
   getClassDescriptions(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLASS + "/classdescriptions" + parameters,
+      URL_CLASS + "/classdescriptions" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -216,8 +238,9 @@ class MindbodyQueries {
   *  @param StaffIds
   *//*eslint-enable */
   getClassSchedules(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLASS + "/classschedules" + parameters,
+      URL_CLASS + "/classschedules" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -232,8 +255,9 @@ class MindbodyQueries {
   *  @param LastModifiedDate
   *//*eslint-enable */
   getClassVisits(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLASS + "/classvisits" + parameters,
+      URL_CLASS + "/classvisits" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -251,8 +275,9 @@ class MindbodyQueries {
   *  @param WaitlistEntryIds
   *//*eslint-enable */
   getWaitlistEntries(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLASS + "/waitlistentries" + parameters,
+      URL_CLASS + "/waitlistentries" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -271,8 +296,9 @@ class MindbodyQueries {
   *  @param ClientAssociatedSitesOffset
   *//*eslint-enable */
   getActiveClientMemberships(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/activeclientmemberships" + parameters,
+      URL_CLIENTS + "/activeclientmemberships" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -290,8 +316,9 @@ class MindbodyQueries {
   *  @param ClassId
   *//*eslint-enable */
   getClientAccountBalances(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientaccountbalances" + parameters,
+      URL_CLIENTS + "/clientaccountbalances" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -313,8 +340,9 @@ class MindbodyQueries {
   *  @param SubtypeIds
   *//*eslint-enable */
   getContactLogs(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/contactlogs" + parameters,
+      URL_CLIENTS + "/contactlogs" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -332,8 +360,9 @@ class MindbodyQueries {
   *  @param ClientAssociatedSitesOffset
   *//*eslint-enable */
   getClientContracts(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientcontracts" + parameters,
+      URL_CLIENTS + "/clientcontracts" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -347,8 +376,9 @@ class MindbodyQueries {
   *  @param ClientId
   *//*eslint-enable */
   getClientDirectDebitInfo(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientdirectdebitinfo" + parameters,
+      URL_CLIENTS + "/clientdirectdebitinfo" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -366,8 +396,9 @@ class MindbodyQueries {
   *  @param Email
   *//*eslint-enable */
   getClientDuplicates(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientduplicates" + parameters,
+      URL_CLIENTS + "/clientduplicates" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -382,8 +413,9 @@ class MindbodyQueries {
   *  @param AppointmentId
   *//*eslint-enable */
   getClientFormulaNotes(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientformulanotes" + parameters,
+      URL_CLIENTS + "/clientformulanotes" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -397,8 +429,9 @@ class MindbodyQueries {
   *  @param RequiredOnly
   *//*eslint-enable */
   getClientIndexes(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientindexes" + parameters,
+      URL_CLIENTS + "/clientindexes" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -417,8 +450,9 @@ class MindbodyQueries {
   *  @param SaleId
   *//*eslint-enable */
   getClientPurchases(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientpurchases" + parameters,
+      URL_CLIENTS + "/clientpurchases" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -432,8 +466,9 @@ class MindbodyQueries {
   *  @param IncludeInactive
   *//*eslint-enable */
   getClientReferralTypes(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientreferraltypes" + parameters,
+      URL_CLIENTS + "/clientreferraltypes" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -459,8 +494,9 @@ class MindbodyQueries {
   *  @param SessionTypeId
   *//*eslint-enable */
   getClientServices(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientservices" + parameters,
+      URL_CLIENTS + "/clientservices" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -483,8 +519,9 @@ class MindbodyQueries {
   *  @param CrossRegionalLookup
   *//*eslint-enable */
   getClientVisits(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientvisits" + parameters,
+      URL_CLIENTS + "/clientvisits" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -499,8 +536,9 @@ class MindbodyQueries {
   *  @param Email
   *//*eslint-enable */
   getCrossRegionalClientAssociations(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/crossregionalclientassociations" + parameters,
+      URL_CLIENTS + "/crossregionalclientassociations" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -513,8 +551,9 @@ class MindbodyQueries {
   * This is probably what ecdysiast is using for custom stuff.
   *//*eslint-enable */
   getCustomClientFields(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/customclientfields" + parameters,
+      URL_CLIENTS + "/customclientfields" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -527,8 +566,9 @@ class MindbodyQueries {
   * Gets the list of fields that a new client has to fill out in business mode, specifically for the sign-up process. AddClient and UpdateClient validate against these fields.
   *//*eslint-enable */
   getRequiredClientFields(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/requiredclientfields" + parameters,
+      URL_CLIENTS + "/requiredclientfields" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -548,8 +588,9 @@ class MindbodyQueries {
   *  @param StaffIds
   *//*eslint-enable */
   getEnrollments(parameters) {
+    var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_ENROLLMENT + "/enrollments" + parameters,
+      URL_ENROLLMENT + "/enrollments" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -557,6 +598,319 @@ class MindbodyQueries {
     );
     return this.decorateAndMake(request);
   }
+
+  /* eslint-disable *//**
+  * @returns     
+  *  Visa,
+  *  MasterCard,
+  *  Discover,
+  *  AMEX
+  *//*eslint-enable */
+  getAcceptedCardTypes() {
+    var request = new MindbodyRequest(
+      URL_SALE + "acceptedcardtypes",
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Required:
+  *  @param LocationId  
+  * Optional:
+  *  @param ContractIds 
+  *  @param SoldOnline 
+  *  @param ConsumerId 
+  *//*eslint-enable */
+  getContracts(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SALE + "contracts" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /**@returns Who knows, no docs*/
+  getCustomPaymentMethods() {
+    var request = new MindbodyRequest(
+      URL_SALE + "custompaymentmethods",
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Required:
+  *  @param barcodeId  
+  *//*eslint-enable */
+  getGiftCardBalance(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SALE + "giftcardbalance" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param Ids  
+  *  @param LocationId  
+  *  @param SoldOnline  
+  *//*eslint-enable */
+  getGiftCards(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SALE + "giftcards" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param SellOnline  
+  *  @param PackageIds  
+  *//*eslint-enable */
+  getPackages(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SALE + "packages" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param ProductIds   
+  *  @param SearchText     
+  *  @param CategoryIds      
+  *  @param SubCategoryIds      
+  *  @param SellOnline 
+  *  @param LocationId    
+  *//*eslint-enable */
+  getProducts(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SALE + "products" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param SaleId    
+  *  @param StartSaleDateTime      
+  *  @param EndSaleDateTime       
+  *  @param PaymentMethodId        
+  *//*eslint-enable */
+  getSales(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SALE + "sales" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param ProgramIds    
+  *  @param SessionTypeIds      
+  *  @param ServiceIds       
+  *  @param ClassId        
+  *  @param ClassScheduleId        
+  *  @param SellOnline        
+  *  @param LocationId        
+  *  @param HideRelatedPrograms        
+  *  @param StaffId        
+  *//*eslint-enable */
+  getServices(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SALE + "services" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /**@returns custom gender options*/
+  getGenders() {
+    var request = new MindbodyRequest(
+      URL_SITE + "genders",
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /**@returns Locations, e.g stores*/
+  getLocations() {
+    var request = new MindbodyRequest(
+      URL_SITE + "locations",
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Required:
+  *  @param MembershipIds     
+  *//*eslint-enable */
+  getMemberships(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SITE + "memberships" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param ScheduleType
+  *  @param OnlineOnly
+  *//*eslint-enable */
+  getPrograms(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SITE + "programs" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param SessionTypeIds
+  *  @param LocationId
+  *  @param StartDateTime 
+  *  @param EndDateTime 
+  *//*eslint-enable */
+  getResources(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SITE + "resources" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param ProgramIds
+  *  @param OnlineOnly
+  *//*eslint-enable */
+  getSessionTypes(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SITE + "sessiontypes" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Optional:
+  *  @param SiteIds 
+  *//*eslint-enable */
+  getSites(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SITE + "sites" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Required:
+  *  @param SessionTypeId 
+  * Optional:
+  *  @param Filters  
+  *  @param StaffIds  
+  *  @param StaffIds  
+  *  @param LocationId  
+  *//*eslint-enable */
+  getStaff(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SITE + "staff" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+  /* eslint-disable *//**
+  * Required:
+  *  @param StaffId 
+  *//*eslint-enable */
+  getStaffPermissions(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_SITE + "staffpermissions" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
+
 
   //@TODO implement caching based on hashes of url's here
   decorateAndMake(request) {
