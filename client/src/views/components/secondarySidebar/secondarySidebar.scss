@@ -1,7 +1,12 @@
 .secondary-sidebar{
   z-index: 70;
 
+
+  flex-grow: 0;
+  flex-shrink: 0;
+
   width: 8rem;
+  max-width: 8rem;
   height: 100vh;
 
   color: var(--gray-15);
@@ -13,7 +18,6 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    width: 100%;
     height: 100vh;
 
     background-color: rgba(var(--pcolor-5-tri), var(--alpha-1));
