@@ -13,8 +13,8 @@ export default class IconButton extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
-    /**must be an SVG ReactComponent. ```import {ReactComponent as YOUR-NAME-HERE} from "SVG/FILEPATH.svg"```*/
-    icon: PropTypes.instanceOf(Element).isRequired,
+    /**must be an SVG ReactComponent. ```import {ReactComponent as YOUR-NAME-HERE} from "PATH/TO/ICON.svg"```*/
+    icon: PropTypes.instanceOf(Object).isRequired,
     onClick: PropTypes.func,
     title: PropTypes.string,
     /**if true, will be small and have padding */
