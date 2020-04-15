@@ -885,7 +885,7 @@ class MindbodyQueries {
   getStaff(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SITE + "staff" + query,
+      URL_STAFF + "staff" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -901,7 +901,7 @@ class MindbodyQueries {
   getStaffPermissions(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SITE + "staffpermissions" + query,
+      URL_STAFF + "staffpermissions" + query,
       APIKEY,
       SITEID,
       "GET",
