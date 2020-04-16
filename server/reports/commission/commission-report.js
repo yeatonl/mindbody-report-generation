@@ -1,6 +1,6 @@
 // module "commission-report"
 import json2csvExports from "json2csv";
-
+import MindbodyAccess from "../../api-manager.js";
 
 /* A handy request URLS for testing:
 http://localhost:8080/reports/commission?format=csv&startdate=111&enddate=2222
