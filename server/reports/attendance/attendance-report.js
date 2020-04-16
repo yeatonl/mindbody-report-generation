@@ -1,6 +1,6 @@
 import J2C from "json2csv";
 
-//returns current date without slashes
+//return current date without slashes
 function getDate() {
   let today = new Date();
   let dd = String(today.getDate()).padStart(2, '0');
