@@ -20,7 +20,7 @@ const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
 import QueryString from "query-string";
-class MindbodyQueries {
+export default class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
@@ -879,7 +879,7 @@ class MindbodyQueries {
   * Optional:
   *  @param Filters  
   *  @param StaffIds  
-  *  @param StaffIds  
+  *  @param StartDateTime   
   *  @param LocationId  
   *//*eslint-enable */
   getStaff(parameters) {
@@ -925,9 +925,8 @@ class MindbodyQueries {
 
   //may be changed later
   atLimit() {
-    /*eslint-disable no-magic-numbers */
-    if (this.requestNum >= 800) {
-    /*eslint-enable no-magic-numbers */
+    const MAX_QUERIES = 800;
+    if (this.requestNum >= MAX_QUERIES) {
       return true;
     }
     return false;
