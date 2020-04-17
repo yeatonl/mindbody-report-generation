@@ -47,7 +47,7 @@ export default class MindbodyQueries {
   /**@returns Activation code. Requires mindbody to approve you for live customer data */
   getActivationCode() {
     var request = new MindbodyRequest(
-      URL_SITE + "activationcode",
+      URL_SITE + "/activationcode",
       APIKEY,
       SITEID,
       "GET",
@@ -608,7 +608,7 @@ export default class MindbodyQueries {
   *//*eslint-enable */
   getAcceptedCardTypes() {
     var request = new MindbodyRequest(
-      URL_SALE + "acceptedcardtypes",
+      URL_SALE + "/acceptedcardtypes",
       APIKEY,
       SITEID,
       "GET",
@@ -628,7 +628,7 @@ export default class MindbodyQueries {
   getContracts(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SALE + "contracts" + query,
+      URL_SALE + "/contracts" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -640,7 +640,7 @@ export default class MindbodyQueries {
   /**@returns Who knows, no docs*/
   getCustomPaymentMethods() {
     var request = new MindbodyRequest(
-      URL_SALE + "custompaymentmethods",
+      URL_SALE + "/custompaymentmethods",
       APIKEY,
       SITEID,
       "GET",
@@ -656,7 +656,7 @@ export default class MindbodyQueries {
   getGiftCardBalance(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SALE + "giftcardbalance" + query,
+      URL_SALE + "/giftcardbalance" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -674,7 +674,7 @@ export default class MindbodyQueries {
   getGiftCards(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SALE + "giftcards" + query,
+      URL_SALE + "/giftcards" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -691,7 +691,7 @@ export default class MindbodyQueries {
   getPackages(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SALE + "packages" + query,
+      URL_SALE + "/packages" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -712,7 +712,7 @@ export default class MindbodyQueries {
   getProducts(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SALE + "products" + query,
+      URL_SALE + "/products" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -731,7 +731,7 @@ export default class MindbodyQueries {
   getSales(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SALE + "sales" + query,
+      URL_SALE + "/sales" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -755,7 +755,7 @@ export default class MindbodyQueries {
   getServices(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SALE + "services" + query,
+      URL_SALE + "/services" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -767,7 +767,7 @@ export default class MindbodyQueries {
   /**@returns custom gender options*/
   getGenders() {
     var request = new MindbodyRequest(
-      URL_SITE + "genders",
+      URL_SITE + "/genders",
       APIKEY,
       SITEID,
       "GET",
@@ -779,7 +779,7 @@ export default class MindbodyQueries {
   /**@returns Locations, e.g stores*/
   getLocations() {
     var request = new MindbodyRequest(
-      URL_SITE + "locations",
+      URL_SITE + "/locations",
       APIKEY,
       SITEID,
       "GET",
@@ -795,7 +795,7 @@ export default class MindbodyQueries {
   getMemberships(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SITE + "memberships" + query,
+      URL_SITE + "/memberships" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -812,7 +812,7 @@ export default class MindbodyQueries {
   getPrograms(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SITE + "programs" + query,
+      URL_SITE + "/programs" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -831,7 +831,7 @@ export default class MindbodyQueries {
   getResources(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SITE + "resources" + query,
+      URL_SITE + "/resources" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -848,7 +848,7 @@ export default class MindbodyQueries {
   getSessionTypes(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SITE + "sessiontypes" + query,
+      URL_SITE + "/sessiontypes" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -864,7 +864,7 @@ export default class MindbodyQueries {
   getSites(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_SITE + "sites" + query,
+      URL_SITE + "/sites" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -885,7 +885,7 @@ export default class MindbodyQueries {
   getStaff(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_STAFF + "staff" + query,
+      URL_STAFF + "/staff" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -901,7 +901,7 @@ export default class MindbodyQueries {
   getStaffPermissions(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_STAFF + "staffpermissions" + query,
+      URL_STAFF + "/staffpermissions" + query,
       APIKEY,
       SITEID,
       "GET",
