@@ -25,6 +25,7 @@ export default class Checkbox extends React.Component {
     disabled: PropTypes.bool,
     label: PropTypes.string,
     onChange: PropTypes.func,
+    checked: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -32,6 +33,7 @@ export default class Checkbox extends React.Component {
     disabled: false,
     label: "",
     onChange: null,
+    checked: false,
   }
 
   render = () => {
@@ -42,7 +44,7 @@ export default class Checkbox extends React.Component {
 
     return (
       <label className={className} tabIndex="0" onClick={unfocus}>
-        <input type="checkbox" onChange={(e) => {
+        <input type="checkbox" checked={this.props.checked} onChange={(e) => {
           if (this.props.onChange){
             this.props.onChange(e.target.checked);
           }

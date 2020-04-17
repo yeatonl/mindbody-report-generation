@@ -5,8 +5,8 @@
   flex-direction: column;
   justify-content: space-between;
 
-  background-color: var(--bg-7);
-  box-shadow: var(--elevation-7);
+  background-color: var(--gray-4);
+  box-shadow: var(--elevation-5);
 
   user-select: none;
 
@@ -26,7 +26,7 @@
     padding-bottom: var(--spacing-3);
     padding-left: calc(var(--spacing-3) - 4px);
 
-    color: var(--gray-31);
+    color: var(--gray-15);
     font-weight: bold;
     font-size: var(--font-size-2);
     font-family: var(--secondary-font);
@@ -41,28 +41,28 @@
 
       .stroke{
         fill: none;
-        stroke: var(--gray-31);
+        stroke: var(--gray-15);
       }
 
       .fill{
-        fill: var(--gray-31);
+        fill: var(--gray-15);
       }
     }
 
     &.active, &:hover{
-      color: var(--pcolor-7);
+      color: var(--pcolor-8);
 
       background-color: rgba(var(--pcolor-5-tri), var(--alpha-1));
 
-      border-left: 4px solid var(--pcolor-7);
+      border-left: 4px solid var(--pcolor-8);
 
       .stroke{
         fill: none;
-        stroke: var(--pcolor-7);
+        stroke: var(--pcolor-8);
       }
 
       .fill{
-        fill: var(--pcolor-7);
+        fill: var(--pcolor-8);
       }
     }
   }

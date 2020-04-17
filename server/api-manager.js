@@ -932,6 +932,8 @@ export default class MindbodyQueries {
     return false;
   }
 }
+const MindbodyAccess = new MindbodyQueries();
+export default MindbodyAccess;
 
 /*example code
 var client = new mindbodyQueries();
