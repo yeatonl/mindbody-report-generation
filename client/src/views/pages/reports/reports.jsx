@@ -19,16 +19,15 @@ export default connect((state) => {
     this.state = {
       reports: [
         {
-          link: "/reports/sales",
-          label: "Sales",
-          component: SalesReport,
-        },
-        {
           link: "/reports/attendance",
           label: "Attendance",
           component: AttendanceReport,
         },
-
+        {
+          link: "/reports/sales",
+          label: "Sales",
+          component: SalesReport,
+        },
       ],
 
     };

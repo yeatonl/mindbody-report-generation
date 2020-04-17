@@ -22,6 +22,7 @@ export default class TextInput extends React.Component {
     /**called when the users presses enter */
     onEnter: PropTypes.func,
     title: PropTypes.string,
+    style: PropTypes.object,
   };
 
   static defaultProps = {
@@ -31,6 +32,7 @@ export default class TextInput extends React.Component {
     onDelayedChange: () => {},
     onEnter: null,
     title: "",
+    style: {},
   }
 
   render = () => {
@@ -40,7 +42,7 @@ export default class TextInput extends React.Component {
     }
 
     return (
-      <label className={className} title={this.props.title}>
+      <label className={className} title={this.props.title} style={this.props.style}>
         <input
           placeholder=" "
           onChange={(e) => {
