@@ -1,1 +1,2 @@
 export const SET_THEME = "SET_THEME";
+export const SET_INTERFACE_ENTRY = "SET_INTERFACE_ENTRY";
