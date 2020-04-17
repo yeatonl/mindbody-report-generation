@@ -1,8 +1,11 @@
-export const EXAMPLE_ACTION = (payload = {}, error = false, meta = {}) => {
-  return {
-    type: "EXAMPLE_ACTION",
-    error,
-    meta,
-    payload,
-  };
+import store from "store/store.js";
+import * as actionTypes from "store/types.js";
+
+export const setTheme = (theme) => {
+  store.dispatch({
+    type: actionTypes.SET_THEME,
+    error: null,
+    meta: null,
+    payload: {theme},
+  });
 };
