@@ -2,6 +2,7 @@ import React from "react";
 import "./button.scss";
 import PropTypes from "prop-types";
 import getTextWidth from "functions/getTextWidth.js";
+import unfocus from "functions/unfocus.js";
 
 /**
 @augments {React.Component<Props, State>}
@@ -30,6 +31,8 @@ export default class Button extends React.Component {
     /**shown for 3s after a click*/
     tempLabel: PropTypes.string,
     title: PropTypes.string,
+    /**enable ghost button (transparent bg) */
+    ghost: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -42,6 +45,7 @@ export default class Button extends React.Component {
 
     tempLabel: "",
     title: null,
+    ghost: false,
   }
 
   render = () => {
@@ -50,7 +54,9 @@ export default class Button extends React.Component {
       className += " disabled";
     }
     if (this.props.destructive){
-      className += " destructive";
+      className += " destructive ghost";
+    } else if (this.props.ghost){
+      className += " ghost";
     }
 
     let label = this.props.label;
@@ -60,6 +66,10 @@ export default class Button extends React.Component {
       label = this.props.disabledLabel || this.props.label;
     }
 
+    let tabIndex = "0";
+    if (this.props.disabled){
+      tabIndex = "-1";
+    }
 
     //this is only an approximation to reduce resizing as we change labels
     //kinda hacky, if weird things happen with widths investigate here first
@@ -69,8 +79,9 @@ export default class Button extends React.Component {
 
     return (
       <button
-        tabIndex="0"
+        tabIndex={tabIndex}
         className={className}
+        onMouseLeave={unfocus}
         onClick={(event) => {
           if (this.props.tempLabel){
             this.setState({showTempLabel: true});

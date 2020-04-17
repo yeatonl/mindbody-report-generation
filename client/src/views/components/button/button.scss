@@ -1,7 +1,10 @@
 .button{
   --base-color: var(--pcolor-7);
   --text-color: var(--gray-0);
-  --danger-color: var(--danger-6);
+
+  &.destructive{
+    --base-color: var(--danger-6);
+  }
 
   display: flex;
   flex-grow: 0;
@@ -20,16 +23,22 @@
   text-decoration: none;
 
   background-color: var(--base-color);
-  border: none;
-  box-shadow: var(--elevation-1);
 
+  border: none;
+
+  &:not(.ghost){
+    box-shadow: var(--elevation-1);
+  }
   transition: all 0.25s ease-in-out;
 
   user-select: none;
 
+
   &:hover{
-    box-shadow: var(--elevation-2);
-    filter: brightness(125%);
+    &:not(.ghost){
+      box-shadow: var(--elevation-2);
+    }
+    filter: brightness(140%);
   }
 
   &:active, &:focus{
@@ -38,23 +47,22 @@
     filter: brightness(90%);
   }
 
-  &.destructive{
-    color: var(--danger-color);
+  &.ghost{
+    color: var(--base-color);
 
     background-color: transparent;
-    border: 2px solid var(--danger-color);
-
+    border: 2px solid var(--base-color);
     &:hover{
       color: var(--text-color);
 
-      background-color: var(--danger-color);
+      background-color: var(--base-color);
       filter: brightness(100%);
     }
 
     &:active, &:focus{
       color: var(--text-color);
 
-      background-color: var(--danger-color);
+      background-color: var(--base-color);
       filter: brightness(100%);
     }
   }
@@ -69,5 +77,8 @@
 #app.light .button{
   --base-color: var(--pcolor-5);
   --text-color: var(--gray-15);
-  --danger-color: var(--danger-5);
+
+  &.destructive{
+    --base-color: var(--danger-5);
+  }
 }
