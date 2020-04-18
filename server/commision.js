@@ -1,9 +1,19 @@
 import https from "https";
 import querystring from "querystring";
 import util from "util";
-
+/*
+const https = require("https");
+const querystring = require("querystring");
+const util = require("util");
+*/
 const key = "bfc05de4947f464f85ecd85deff6895e";
-var auth = "bf423f7b7f224ba589d42eb982856640d1e847d7608e4cb5a55f530909fc3c70";
+
+var auth = "19b20391c7274b2ca5ad8bb1287d5cf2ffee5950235f40cc9332d9db2b28ca24";
+//to authenticate with MB during debugging, you need to uncomment these next few lines.
+//submit a blank auth_key to MB and use printAuthorizationKey to request a new auth_key.
+//then, take the returned new auth_key and paste it into var auth = "..." above.
+//eventually, this kludge method will be replaced by MindbodyQueries which will do this
+//more cleanly.
 //var auth = "";
 //printAuthorizationKey("Siteowner", "apitest1234");
 
@@ -27,7 +37,7 @@ function postRequest(path, payload, callback) {
   options.headers["Content-Length"] = payload.length;
   console.log("POST " + options.host + options.path);
   const req = https.request(options, callback);
-  req.on("error", e => conosle.log(e));
+  req.on("error", e => console.log(e));
   req.write(payload);
   req.end();
 }
@@ -45,7 +55,7 @@ function getOptions(path) {
   };
 }
 
-function printAuthorizationKey(username, password) {
+export function printAuthorizationKey(username, password) {
   var payload = {
     "Username": username,
     "Password": password
@@ -55,7 +65,7 @@ function printAuthorizationKey(username, password) {
   });
 }
 
-class CommissionReport {
+export class CommissionReport {
   constructor() {
     this.startDate = "";
     //a different start date is used to determine all the previous
@@ -288,6 +298,73 @@ class CommissionReport {
   }
 }
 
-var report = new CommissionReport();
-report.setStartDate("2020-04-09T00:00:00");
-report.generate().then(staff => console.log(staff));
+// var report = new CommissionReport();
+// report.setStartDate("2020-04-09T00:00:00");
+// report.generate().then(staff => console.log(staff));
+
+//todo: Floris had this code below to populate the server with sales data for 
+//testing. Daniel wants to leave it in for a few more commits until he's done 
+//testing the commission report output.
+//getRequest("sale/sales", {
+//    Limit:200,
+//    PaymentMethodId:1
+//    StartSaleDateTime:"2020-04-09T12:00:00Z",
+//    EndSaleDateTime:"2020-04-09T23:59:00Z"
+//}, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    console.log(JSON.parse(data));
+//    var sales = JSON.parse(data).Sales;
+//    for (let i = 0; i < sales.length; i++)
+//      console.log(sales[i]);
+//  });
+//});
+//
+//getRequest("sale/products", {}, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    var x = JSON.parse(data).Products;
+//    for (let i = 0; i < x.length; i++)
+//      console.log(x[i]);
+//  });
+//});
+//
+//getRequest("sale/services", {}, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    var x = JSON.parse(data).Services;
+//    for (let i = 0; i < x.length; i++)
+//      console.log(x[i]);
+//  });
+//});
+//
+//var cart = {
+//  Test: false,
+//  ClientId: 100014871,
+//  Items: [
+//    {Item: {Type: "Product", Metadata: {Id: "0001"}}, Quantity: 22},
+//    {Item: {Type: "Product", Metadata: {Id: "0002"}}, Quantity: 6}
+//  ],
+//  InStore: true,
+//  Payments: [
+//    {
+//      Type: "Cash",
+//      Metadata: {
+//        Amount: 53.52,
+//        Notes: "Tip"
+//      }
+//    }
+//  ],
+//  LocationId: 1
+//};
+//
+//postRequest("sale/checkoutshoppingcart", cart, resp => {
+//  var data = "";
+//  resp.on("data", chunk => data += chunk);
+//  resp.on("end", () => {
+//    console.log(JSON.parse(data));
+//  });
+//});
