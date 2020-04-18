@@ -1,6 +1,6 @@
 .checkbox{
-  --checked-color: var(--pcolor-5);
-  --initial-color: var(--gray-30);
+  --checked-color: var(--pcolor-7);
+  --initial-color: var(--gray-15);
   --hover-color: var(--pcolor-7);
   --transition-time: 0.1s;
 
@@ -97,8 +97,14 @@
   }
 
   &.disabled{
-    filter: grayscale(100%) brightness(75%);
+    filter: grayscale(100%) contrast(50%);
 
     pointer-events: none;
   }
+}
+
+#app.light .checkbox{
+  --checked-color: var(--pcolor-4);
+  --initial-color: var(--gray-0);
+  --hover-color: var(--pcolor-4);
 }

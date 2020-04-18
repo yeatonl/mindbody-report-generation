@@ -1,4 +1,8 @@
 .button{
+  --base-color: var(--pcolor-7);
+  --text-color: var(--gray-0);
+  --danger-color: var(--danger-6);
+
   display: flex;
   flex-grow: 0;
   flex-shrink: 0;
@@ -6,49 +10,52 @@
   justify-content: center;
   padding: var(--spacing-3) var(--spacing-3);
 
-  color: var(--gray-0);
+  color: var(--text-color);
   font-weight: bold;
   font-size: var(--font-size-2);
   font-family: var(--primary-font);
   line-height: 1em;
   white-space: nowrap;
-
   text-transform: uppercase;
   text-decoration: none;
 
-
-  background-color: var(--pcolor-6);
-
+  background-color: var(--base-color);
   border: none;
-
-  box-shadow: var(--elevation-2);
+  box-shadow: var(--elevation-1);
 
   transition: all 0.25s ease-in-out;
 
   user-select: none;
 
   &:hover{
-    background-color: var(--pcolor-8);
-    box-shadow: var(--elevation-4);
+    box-shadow: var(--elevation-2);
+    filter: brightness(125%);
   }
 
   &:active, &:focus{
-    background-color: var(--pcolor-4);
     outline: none;
     box-shadow: var(--elevation-0);
+    filter: brightness(90%);
   }
 
   &.destructive{
-    background-color: var(--danger-6);
+    color: var(--danger-color);
+
+    background-color: transparent;
+    border: 2px solid var(--danger-color);
 
     &:hover{
-      background-color: var(--danger-7);
+      color: var(--text-color);
+
+      background-color: var(--danger-color);
+      filter: brightness(100%);
     }
 
     &:active, &:focus{
-      background-color: var(--danger-5);
-      box-shadow: var(--elevation-0);
+      color: var(--text-color);
 
+      background-color: var(--danger-color);
+      filter: brightness(100%);
     }
   }
 
@@ -57,4 +64,10 @@
 
     pointer-events: none;
   }
+}
+
+#app.light .button{
+  --base-color: var(--pcolor-5);
+  --text-color: var(--gray-15);
+  --danger-color: var(--danger-5);
 }

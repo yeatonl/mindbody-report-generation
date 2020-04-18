@@ -1,6 +1,7 @@
 import express from "express";
 import json2csvExports from "json2csv";
 import {handleCommissionRptRequest} from "./reports/commission/commission-report.js";
+import {attendanceRequestHandler} from "./reports/attendance/attendance-report.js";
 
 
 var app = express();
@@ -13,7 +14,6 @@ app.get("/", function(req, response) {
 });
 
 //TODO: Remove the sample endpoints? By 4/15, we should have real endpoints, so these will be useless.
-
 //this is another endpoint. When someone requests "http://localhost/sample.csv", the server
 //responds with this little csv file.
 app.get("/sample.csv", function(req, res) {
@@ -41,6 +41,11 @@ app.get("/sample.csv", function(req, res) {
   res.contentType("text/csv");
   res.send(csv);
 });
+
+//endpoint for attendance report 
+app.get("/reports/attendance", attendanceRequestHandler);
+
+app.get("/reports/commission", handleCommissionRptRequest);
 
 
 app.get("/reports/commission", handleCommissionRptRequest);

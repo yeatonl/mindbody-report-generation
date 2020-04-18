@@ -1,4 +1,8 @@
 .icon-button{
+  --base-color: var(--scolor-10);
+  --active-color: var(--scolor-8);
+  --initial-color: var(--gray-15);
+
   flex-grow: 0;
   flex-shrink: 0;
   box-sizing: content-box;
@@ -13,30 +17,36 @@
 
   .stroke{
     fill: none;
-    stroke: var(--gray-31);
+    stroke: var(--initial-color);
   }
   .fill{
-    stroke: var(--gray-31);
+    stroke: var(--initial-color);
   }
 
   &:hover{
     .stroke{
-      stroke: var(--pcolor-7);
+      stroke: var(--base-color);
     }
 
     .fill{
-      fill: var(--pcolor-7);
+      fill: var(--base-color);
     }
   }
 
   &:focus, &:active, &.active{
     outline: none;
     .stroke{
-      stroke: var(--pcolor-5);
+      stroke: var(--active-color);
     }
 
     .fill{
-      fill: var(--pcolor-5);
+      fill: var(--active-color);
     }
   }
+}
+
+#app.light .icon-button{
+  --base-color: var(--scolor-6);
+  --active-color: var(--scolor-8);
+  --initial-color: var(--gray-0);
 }
