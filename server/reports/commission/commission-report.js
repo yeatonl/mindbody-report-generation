@@ -1,6 +1,5 @@
 //module "commission-report"
 import json2csvExports from "json2csv";
-//import MindbodyAccess from "../../api-manager.js";
 import {printAuthorizationKey, CommissionReport} from "../../commision.js";
 
 /*a handy request URLS for testing:
