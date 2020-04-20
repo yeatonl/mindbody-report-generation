@@ -6,6 +6,8 @@ const URL = "https://api.mindbodyonline.com/public/v6/client";
 const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
 const SITEID = "-99";
 
+const fileName = process.argv.slice(2)[0];
+
 function addClient(parameters) {
     var request = new MindbodyRequest(
         URL + "/addclient",
@@ -18,7 +20,7 @@ function addClient(parameters) {
     return request.makeRequest();
 }
 
-fs.readFile('./server/test/clients.json', 'utf8', (err, jsonString) => {
+fs.readFile('./server/test/' + fileName, 'utf8', (err, jsonString) => {
     if (err) {
         console.log("File read failed:", err)
         return
