@@ -292,8 +292,20 @@ export default class JsonViewer extends React.Component {
           <Button ghost label="ghost test" />
           <Button disabled ghost label="disabled" />
         </div>
-        <TextInput label="placeholder goes here"onDelayedChange={() => {}}onEnter={() => {}}/>
-        <TextInput label="no onDelayedChange" onEnter={() => {}}/>
+        <div className="row">
+          <TextInput label="placeholder goes here"onDelayedChange={() => {}}onEnter={() => {}}/>
+          <TextInput label="no onDelayedChange" onEnter={() => {}}/>
+        </div>
+        <div className="row">
+          <TextInput label="try '123', '?', 'abc', '#', ''" validation={[
+            {regex: "^[0-9]+$", result: true, message: "Good work"},
+            {regex: "[A-z]", result: false, message: "Letters are prohibited"},
+            {regex: "\\?", result: false, message: "Question marks are prohibited"},
+            {regex: "\\#", result: false, message: "Hashtags are prohibited"},
+            {regex: "^$", result: false, message: "Empty input is prohibited"},
+            {regex: "^.*$", result: false, message: "Invalid input"},
+          ]}/>
+        </div>
         <Checkbox label="tick me" onChange={(val) => {
           console.log("Checkbox changed", val);
         }}/>

@@ -1,95 +1,129 @@
-.text-input{
-  --base-color: var(--pcolor-7);
-  --active-color: var(--pcolor-7);
-  --danger-color: var(--danger-6);
-  --initial-color: var(--gray-15);
-
-  position: relative;
-
+.text-input-wrapper{
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  justify-content: flex-end;
-  height: 2.25rem;
-
-  .label{
-    position: absolute;
-    top: calc(50% - 0.5em);
-    left: 0;
-
-    height: 1em;
-    padding-left: var(--spacing-3);
-
-    color: var(--initial-color);
-    font-weight: bold;
-
-    font-size: var(--font-size-2);
-    line-height: 1em;
-    white-space: nowrap;
-
-    filter: brightness(80%);
 
 
-    transition: font-size 0.1s ease-out, top 0.1s ease-out;
+  .text-input{
+    position: relative;
 
-    user-select: none;
-    pointer-events: none;
-  }
-
-
-  input{
-    box-sizing: border-box;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-end;
     height: 2.25rem;
-    padding-top: 1em;
-    padding-right: var(--spacing-3);
-    padding-left: var(--spacing-3);
 
-    color: var(--initial-color);
-    font-size: var(--font-size-2);
-    font-family: var(--primary-font);
-    vertical-align: bottom;
-
-    background: transparent;
-    border: 2px solid var(--initial-color);
-
-    &:hover, &:focus, &:active{
-      border-color: var(--active-color);
-      outline: none;
-    }
-  }
-
-  &.minimal{
     .label{
-      padding-left: 0;
+      position: absolute;
+      top: calc(50% - 0.5em);
+      left: 0;
+
+      height: 1em;
+      padding-left: var(--spacing-3);
 
       color: var(--initial-color);
+      font-weight: bold;
+
+      font-size: var(--font-size-2);
+      line-height: 1em;
+      white-space: nowrap;
+
+      filter: brightness(80%);
+
+
+      transition: font-size 0.1s ease-out, top 0.1s ease-out;
+
+      user-select: none;
+      pointer-events: none;
     }
+
     input{
-      padding-left: 0;
+      box-sizing: border-box;
+      width: 100%;
+      height: 2.25rem;
+      padding-top: 1em;
+      padding-right: var(--spacing-3);
+      padding-left: var(--spacing-3);
 
-      color: var(--initial-color);
+      color: var(--text-color);
+      font-size: var(--font-size-2);
+      font-family: var(--primary-font);
+      vertical-align: bottom;
 
-      border-top: none;
-      border-right: none;
-      border-left: 0;
+      background: transparent;
+      border: 2px solid var(--initial-color);
+
+      &:hover, &:focus, &:active{
+        border-color: var(--active-color);
+        outline: none;
+      }
+    }
+
+    &.minimal{
+      .label{
+        padding-left: 0;
+
+        color: var(--initial-color);
+      }
+      input{
+        padding-left: 0;
+
+        color: var(--initial-color);
+
+        border-top: none;
+        border-right: none;
+        border-left: 0;
+      }
+    }
+
+    input:not(:placeholder-shown) ~ .label, input:focus ~ .label{
+      top: 0;
+
+      padding-top: var(--spacing-2);
+
+      font-size: var(--font-size-1);
+    }
+    input:hover ~ .label, input:focus ~ .label{
+      color: var(--active-color);
     }
   }
 
-  input:not(:placeholder-shown) ~ .label, input:focus ~ .label{
-    top: 0;
-
-    padding-top: var(--spacing-2);
-
+  .validation-message{
+    color: var(--initial-color);
     font-size: var(--font-size-1);
-  }
-  input:hover ~ .label, input:focus ~ .label{
-    color: var(--active-color);
   }
 }
 
-#app.light .text-input{
+#app.dark{
+  .text-input-wrapper{
+    --base-color: var(--pcolor-7);
+    --active-color: var(--pcolor-7);
+    --danger-color: var(--danger-6);
+    --initial-color: var(--gray-15);
+    --text-color: var(--gray-15);
+  }
+
+  .text-input-wrapper.valid{
+    --base-color: var(--success-7);
+    --active-color: var(--success-7);
+    --danger-color: var(--danger-6);
+    --initial-color: var(--success-6);
+    --text-color: var(--gray-15);
+  }
+
+  .text-input-wrapper.invalid{
+    --base-color: var(--danger-7);
+    --active-color: var(--danger-7);
+    --danger-color: var(--danger-6);
+    --initial-color: var(--danger-7);
+    --text-color: var(--gray-15);
+  }
+}
+
+
+#app.light .text-input-wrapper{
   --base-color: var(--pcolor-7);
   --initial-color: var(--gray-0);
   --active-color: var(--pcolor-4);
+  --text-color: var(--gray-0);
 }
