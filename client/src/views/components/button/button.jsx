@@ -7,6 +7,7 @@ import unfocus from "functions/unfocus.js";
 /**
 @augments {React.Component<Props, State>}
 */
+
 export default class Button extends React.Component {
   constructor(props){
     super(props);
@@ -41,6 +42,7 @@ export default class Button extends React.Component {
     disabledLabel: "",
     label: "",
     onClick: () => {},
+
     tempLabel: "",
     title: null,
     ghost: false,

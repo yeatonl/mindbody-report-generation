@@ -2,8 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { NavLink, Route } from "react-router-dom";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
+
 import CsvViewer from "views/subPages/csvViewer/csvViewer.jsx";
 import TestArea from "views/subPages/testArea/testArea.jsx";
+
 import "./dev.scss";
 import * as Actions from "store/actions/index.js";
 
@@ -26,6 +28,7 @@ export default connect((state) => {
           link: "/dev/test-area",
           label: "Test Area",
           component: TestArea,
+
         },
       ],
     };

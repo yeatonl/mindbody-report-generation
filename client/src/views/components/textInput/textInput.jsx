@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 /**
 @augments {React.Component<Props, State>}
 */
+
 export default class TextInput extends React.Component {
   constructor(props){
     super(props);
