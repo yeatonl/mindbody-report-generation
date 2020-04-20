@@ -6,9 +6,10 @@ const https = require("https");
 const querystring = require("querystring");
 const util = require("util");
 */
-const key = "bfc05de4947f464f85ecd85deff6895e";
+//const key = "bfc05de4947f464f85ecd85deff6895e";
+const key = "7db287c206374b2f911ddc918879983d"; // Dan's API key
 
-var auth = "19b20391c7274b2ca5ad8bb1287d5cf2ffee5950235f40cc9332d9db2b28ca24";
+var auth = "6d56943c257c4bd4add5e8a17e4e84897a41cac1f1364e0c9c5d3f4faeebd04f";
 //to authenticate with MB during debugging, you need to uncomment these next few lines.
 //submit a blank auth_key to MB and use printAuthorizationKey to request a new auth_key.
 //then, take the returned new auth_key and paste it into var auth = "..." above.
@@ -200,6 +201,9 @@ export class CommissionReport {
   //format: {client: sales}
   parseSales(sales) {
     var clients = {};
+    if (!sales) {
+      sales = [];
+    }
     for (let i = 0; i < sales.length; i++) {
       var clientID = sales[i].ClientId;
       if (clientID in clients == false)
@@ -292,79 +296,95 @@ export class CommissionReport {
   //return a dictionary for easier product lookups
   productListToDict(products) {
     var result = {};
+    if (!products) {
+      products = [];
+    }
     for (let i = 0; i < products.length; i++)
       result[products[i].Id] = products[i];
     return result;
   }
+
+  //todo: Floris had this code below to populate the server with sales data for 
+  //testing. Daniel wants to leave it in for a few more commits until he's done 
+  //testing the commission report output.
+  addFakeSalesDataForTesting() {
+    getRequest("sale/sales", {
+      Limit:200,
+      PaymentMethodId:1,
+      StartSaleDateTime:"2020-04-09T12:00:00Z",
+      EndSaleDateTime:"2020-04-09T23:59:00Z"
+    }, resp => {
+      var data = "";
+      resp.on("data", chunk => data += chunk);
+      resp.on("end", () => {
+        console.log(JSON.parse(data));
+        var sales = JSON.parse(data).Sales;
+        if (!sales) {
+          sales = [];
+        }
+        for (let i = 0; i < sales.length; i++)
+          console.log(sales[i]);
+      });
+    });
+    
+    getRequest("sale/products", {}, resp => {
+      var data = "";
+      resp.on("data", chunk => data += chunk);
+      resp.on("end", () => {
+        var x = JSON.parse(data).Products;
+        if (!x) {
+          x = [];
+        }
+        for (let i = 0; i < x.length; i++)
+          console.log(x[i]);
+      });
+    });
+    
+    getRequest("sale/services", {}, resp => {
+      var data = "";
+      resp.on("data", chunk => data += chunk);
+      resp.on("end", () => {
+        var x = JSON.parse(data).Services;
+        if (!x) {
+          x = [];
+        }
+        for (let i = 0; i < x.length; i++)
+          console.log(x[i]);
+      });
+    });
+    
+    var cart = {
+      Test: false,
+      ClientId: 100014871,
+      Items: [
+        {Item: {Type: "Product", Metadata: {Id: "0001"}}, Quantity: 22},
+        {Item: {Type: "Product", Metadata: {Id: "0002"}}, Quantity: 6}
+      ],
+      InStore: true,
+      Payments: [
+        {
+          Type: "Cash",
+          Metadata: {
+            Amount: 53.52,
+            Notes: "Tip"
+          }
+        }
+      ],
+      LocationId: 1
+      };
+      
+      postRequest("sale/checkoutshoppingcart", cart, resp => {
+      var data = "";
+      resp.on("data", chunk => data += chunk);
+      resp.on("end", () => {
+        console.log(JSON.parse(data));
+      });
+    });
+  }
+
 }
 
 // var report = new CommissionReport();
 // report.setStartDate("2020-04-09T00:00:00");
 // report.generate().then(staff => console.log(staff));
 
-//todo: Floris had this code below to populate the server with sales data for 
-//testing. Daniel wants to leave it in for a few more commits until he's done 
-//testing the commission report output.
-//getRequest("sale/sales", {
-//    Limit:200,
-//    PaymentMethodId:1
-//    StartSaleDateTime:"2020-04-09T12:00:00Z",
-//    EndSaleDateTime:"2020-04-09T23:59:00Z"
-//}, resp => {
-//  var data = "";
-//  resp.on("data", chunk => data += chunk);
-//  resp.on("end", () => {
-//    console.log(JSON.parse(data));
-//    var sales = JSON.parse(data).Sales;
-//    for (let i = 0; i < sales.length; i++)
-//      console.log(sales[i]);
-//  });
-//});
-//
-//getRequest("sale/products", {}, resp => {
-//  var data = "";
-//  resp.on("data", chunk => data += chunk);
-//  resp.on("end", () => {
-//    var x = JSON.parse(data).Products;
-//    for (let i = 0; i < x.length; i++)
-//      console.log(x[i]);
-//  });
-//});
-//
-//getRequest("sale/services", {}, resp => {
-//  var data = "";
-//  resp.on("data", chunk => data += chunk);
-//  resp.on("end", () => {
-//    var x = JSON.parse(data).Services;
-//    for (let i = 0; i < x.length; i++)
-//      console.log(x[i]);
-//  });
-//});
-//
-//var cart = {
-//  Test: false,
-//  ClientId: 100014871,
-//  Items: [
-//    {Item: {Type: "Product", Metadata: {Id: "0001"}}, Quantity: 22},
-//    {Item: {Type: "Product", Metadata: {Id: "0002"}}, Quantity: 6}
-//  ],
-//  InStore: true,
-//  Payments: [
-//    {
-//      Type: "Cash",
-//      Metadata: {
-//        Amount: 53.52,
-//        Notes: "Tip"
-//      }
-//    }
-//  ],
-//  LocationId: 1
-//};
-//
-//postRequest("sale/checkoutshoppingcart", cart, resp => {
-//  var data = "";
-//  resp.on("data", chunk => data += chunk);
-//  resp.on("end", () => {
-//    console.log(JSON.parse(data));
-//  });
-//});
