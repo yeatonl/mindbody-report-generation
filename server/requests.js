@@ -31,31 +31,11 @@ export default class MindbodyRequest {
     }
     var request = {
       "method": this.verb,
-      "body": JSON.stringify(this.body),
       "headers": headers,
     };
     if (this.body !== "") {
-      request.body = this.body;
+      request.body = JSON.stringify(this.body);
     }
-    return fetch(this.url, request)
-      .then((response) => {
-        return response.json();
-      }).then((json) => {
-        return json;
-      });
-    //return responsePromise;
-  }
-
-  makePostRequest() {
-    var headers = this.unauthedheaders();
-    if (this.auth != null) {
-      headers.Authorization = this.auth;
-    }
-    var request = {
-      "method": this.verb,
-      "body": JSON.stringify(this.body),
-      "headers": headers,
-    };
     return fetch(this.url, request)
       .then((response) => {
         return response.json();

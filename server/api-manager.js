@@ -1,8 +1,8 @@
 /*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
 
-const USERNAME = "Siteowner";
-const PASSWORD = "apitest1234";
+const USERNAME = "";
+const PASSWORD = "";
 
 //see commit 52f3c1d0c984db4582830a4ce08b31491cbf4f8e for old code
 
@@ -20,7 +20,7 @@ const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
 import QueryString from "query-string";
-class MindbodyQueries {
+export default class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
@@ -910,29 +910,7 @@ class MindbodyQueries {
     return this.decorateAndMake(request);
   }
 
-/* eslint-disable *//**
-  * Required:
-  *  @param FirstName 
-  *  @param LastName 
-  *  @param AddressLine1 
-  *  @param State 
-  *  @param City 
-  *  @param PostalCode 
-  *  @param ReferredBy 
-  *  @param BirthDate
-  *  @param MobilePhone 
-  *//*eslint-enable */
-  postAddClient(parameters) {
-    var query = QueryString.stringify(parameters);
-    var request = new MindbodyRequest(
-      URL_CLIENTS + "/addclient",
-      APIKEY,
-      SITEID,
-      "POST",
-      parameters,
-    );
-    return this.decorateAndMakePost(request);
-  }
+
 
   //@TODO implement caching based on hashes of url's here
   decorateAndMake(request) {
@@ -940,15 +918,6 @@ class MindbodyQueries {
     this.requestNum++;
     if (!this.atLimit()) {
       return request.makeRequest();
-    }
-    return Promise.reject(Error("Request limit reached"));
-  }
-
-  decorateAndMakePost(request) {
-    request.addAuth(this.authToken);
-    this.requestNum++;
-    if (!this.atLimit()) {
-      return request.makePostRequest();
     }
     return Promise.reject(Error("Request limit reached"));
   }
@@ -966,24 +935,12 @@ class MindbodyQueries {
 const MindbodyAccess = new MindbodyQueries();
 export default MindbodyAccess;
 
-//example code
-var client = new MindbodyQueries();
+/*example code
+var client = new mindbodyQueries();
 client.getAuth()
   .then((value) => {
     client.AUTH_TOKEN = value.AccessToken;
-    var newClient = {
-      "FirstName": "Ethan",
-      "LastName": "Smith",
-      "AddressLine1": "1234 Coast Dr.",
-      "State": "NY",
-      "City": "New York City",
-      "PostalCode": "10026",
-      "Email": "example@gmail.com",
-      "ReferredBy": "John",
-      "BirthDate": "4/14/1992",
-      "MobilePhone": "2324673309",
-    };
-    return client.postAddClient(newClient);
+    return client.getClients();
   })
   .then((value) => {
     console.log(value);
@@ -991,7 +948,7 @@ client.getAuth()
   .catch((m) => {
     console.log(m);
   });
-  
+  */
 
 
 
