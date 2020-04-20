@@ -20,26 +20,48 @@ export default class MindbodyRequest {
     };
   }
 
-  addAuth(auth){
+  addAuth(auth) {
     this.auth = auth;
   }
 
   makeRequest() {
     var headers = this.unauthedheaders();
-    if (this.auth !== null) {
+    if (this.auth != null) {
       headers.Authorization = this.auth;
     }
     var request = {
       "method": this.verb,
+      "body": JSON.stringify(this.body),
       "headers": headers,
     };
     if (this.body !== "") {
       request.body = this.body;
     }
-    var responsePromise = fetch(this.url, request)
+    return fetch(this.url, request)
       .then((response) => {
-        response.json();
+        return response.json();
+      }).then((json) => {
+        return json;
       });
-    return responsePromise;
+    //return responsePromise;
+  }
+
+  makePostRequest() {
+    var headers = this.unauthedheaders();
+    if (this.auth != null) {
+      headers.Authorization = this.auth;
+    }
+    var request = {
+      "method": this.verb,
+      "body": JSON.stringify(this.body),
+      "headers": headers,
+    };
+    return fetch(this.url, request)
+      .then((response) => {
+        return response.json();
+      }).then((json) => {
+        return json;
+      });
+    //return responsePromise;
   }
 }
