@@ -1,8 +1,8 @@
 /*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
 
-const USERNAME = "";
-const PASSWORD = "";
+const USERNAME = "Siteowner";
+const PASSWORD = "apitest1234";
 
 //see commit 52f3c1d0c984db4582830a4ce08b31491cbf4f8e for old code
 
@@ -15,12 +15,13 @@ const URL_SALE = BASE + "sale";
 const URL_STAFF = BASE + "staff";
 const URL_ENROLLMENT = BASE + "enrollment";
 const URL_APPOINTMENT = BASE + "appointment";
-const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
+//const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
+const APIKEY = "7db287c206374b2f911ddc918879983d";
 const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
 import QueryString from "query-string";
-export default class MindbodyQueries {
+export class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
@@ -39,7 +40,10 @@ export default class MindbodyQueries {
     );
     this.requestNum++;
     if (!this.atLimit()) {
-      return request.makeRequest();
+      let requestPromise = request.makeRequest();
+      //todo: Store the new authToken so that class users don't need to?
+      //requestPromise.then(authResponse => this.authToken = authResponse.AccessToken);
+      return requestPromise;
     }
     return Promise.reject(Error("Request limit reached"));
   }
@@ -885,7 +889,7 @@ export default class MindbodyQueries {
   getStaff(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_STAFF + "/staff" + query,
+      URL_STAFF + "/staff?" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -939,7 +943,7 @@ export default MindbodyAccess;
 var client = new mindbodyQueries();
 client.getAuth()
   .then((value) => {
-    client.AUTH_TOKEN = value.AccessToken;
+    client.authToken = value.AccessToken;
     return client.getClients();
   })
   .then((value) => {

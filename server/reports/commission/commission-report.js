@@ -28,13 +28,13 @@ export function handleCommissionRptRequest(request, response) {
     response.send("Missing \"startdate\" parameter.");
     return;
   }
-  
+
   let endDate = request.query.enddate;
   if (!endDate) {
     response.send("Missing \"enddate\" parameter.");
     return;
   }
-  
+
 
   //pass validated input params to report generator
   let rptGenerator = new CommissionReport();
@@ -42,38 +42,42 @@ export function handleCommissionRptRequest(request, response) {
   //rptGenerator.setEndDate(endDate);
   //rptGenerator.addFakeSalesDataForTesting();
 
-  rptGenerator.generate().then((results) => {
-    //console.log("CommissionReport.generate() returned this data: ");
-    //console.log(JSON.stringify(results));
-    // Results look like this: {"100000283":{"123456789":1.25}}
-    // which I think is: {staffID: {productSold: commissionAmount, secondProduct: secondAmount}}
+  var rawReportData;
+   rptGenerator.generate()
+    .then(reportTemp => {
+      rawReportData = reportTemp;
+      //console.log("CommissionReport.generate() returned this data: " + JSON.stringify(rawReportData));
+      return MindbodyAccess.getAuth();
+    }).then((authToken) => {
+      MindbodyAccess.authToken = authToken.AccessToken;
+      return MindbodyAccess.getStaff({StaffIds: Object.keys(rawReportData)});
+    }).then((getStaffResponse) => {
+      //console.log("getStaff returned: " + JSON.stringify(getStaffResponse));
 
-    //lookup staff names from the IDs returned by CommissionReport
-    MindbodyAccess.getAuth()
-    .then(MindbodyAccess.getStaff({StaffIds: Object.keys(results)}))
-    .then(staffResponse => {
-      /* The response from MindbodyAccess is currently: {"size":0,"timeout":0},
-      so we have no valid StaffMembers to interact with here.
+      //lookup staff names from the IDs returned by CommissionReport
       let staffIdToNameDict = {};
-      for (let staffInfo in staffResponse.StaffMembers) {
+      staffIdToNameDict[CommissionReport.keyForSalesWithNoPriorInstructor] = "- Sales with no prior instructor -";
+      for (let staffInfo in getStaffResponse.StaffMembers) {
         staffIdToNameDict[staffInfo.Id] = staffInfo.FirstName + " " + staffInfo.LastName;
       }
-      */
 
       //generate output
       if (format === "csv") {
         let csvRows = [];
         let totalCommission = 0.0;
-        for (let staffId in results) {
-          //the value for results[staffId] is a dict of commission amounts that we must now total
+        for (let staffId in rawReportData) {
+          //the value for rawReportData[staffId] is a dict of commission amounts that we must now total
           let commission = 0.0;
-          for (let item in results[staffId]) {
-            commission += results[staffId][item];
+          for (let item in rawReportData[staffId]) {
+            commission += rawReportData[staffId][item];
           }
           csvRows.push({
-            "Instructor": staffId,  // staffIdToNameDict[staffId]
+            "Instructor": staffIdToNameDict[staffId],   // staffId,
             "Commission": commission,
           });
+          //if (!(staffId === CommissionReport.keyForSalesWithNoPriorInstructor)) {
+            //todo: exclude SalesWithNoPriorInstructor? The requirements aren't clear here
+          //}
           totalCommission += commission
         }
         // Additionally, add an extra row for totals
@@ -91,9 +95,12 @@ export function handleCommissionRptRequest(request, response) {
         response.contentType("text/csv");
         response.send(csv);
       } else if (format === "json") {
-        response.json(results);
+        response.json(rawReportData);
       }
-    })
-  });
-}
+    }).catch(error => {
+      //todo: generate some error message page... especially handling "exceeded 1000 requests/day" error
+      console.log("Caught error in CommissionReport");
+      response.send(error.toString());
+    });
+  }
 

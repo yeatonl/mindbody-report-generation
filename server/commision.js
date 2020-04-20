@@ -9,7 +9,7 @@ const util = require("util");
 //const key = "bfc05de4947f464f85ecd85deff6895e";
 const key = "7db287c206374b2f911ddc918879983d"; // Dan's API key
 
-var auth = "6d56943c257c4bd4add5e8a17e4e84897a41cac1f1364e0c9c5d3f4faeebd04f";
+var auth = "939094d5c42a409bbbfa7fe9f5bc065521ecfa58a75b47d2bdb4383fd53a00e7";
 //to authenticate with MB during debugging, you need to uncomment these next few lines.
 //submit a blank auth_key to MB and use printAuthorizationKey to request a new auth_key.
 //then, take the returned new auth_key and paste it into var auth = "..." above.
@@ -92,12 +92,13 @@ export class CommissionReport {
 
   //return a promise for the revenue of each instructor.
   //format: {staff_name: {service_name/product_name: revenue}}
+  //         ^^^ staff_name of 0 is a special value, keyForSalesWithNoPriorInstructor
   merge() {
     var params = {showHidden: false, depth: null};
-    console.log("sales:", util.inspect(this.sales, params));
-    console.log("services:", util.inspect(this.services, params));
-    console.log("products:", util.inspect(this.products, params));
-    console.log("visits:", util.inspect(this.visits, params));
+    //console.log("sales:", util.inspect(this.sales, params));
+    //console.log("services:", util.inspect(this.services, params));
+    //console.log("products:", util.inspect(this.products, params));
+    //console.log("visits:", util.inspect(this.visits, params));
 
     return new Promise((resolve, reject) => {
       var staff = {};
@@ -105,7 +106,11 @@ export class CommissionReport {
         this.incorporateSales(staff, clientID);
       resolve(staff);
     });
-  }
+  };
+
+  static get keyForSalesWithNoPriorInstructor() {
+    return "0";
+  };
 
   //add sales to staff members
   incorporateSales(staff, clientID) {
@@ -171,7 +176,7 @@ export class CommissionReport {
     }
     //still mention purchases even if there was no previous instructor
     if (staffIDs.length == 0)
-      staffIDs.push(0);
+      staffIDs.push(CommissionReport.keyForSalesWithNoPriorInstructor);
     return staffIDs;
   }
 
