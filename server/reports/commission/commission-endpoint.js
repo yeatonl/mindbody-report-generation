@@ -56,7 +56,7 @@ export function handleCommissionRptRequest(request, response) {
 
       //lookup staff names from the IDs returned by CommissionReport
       let staffIdToNameDict = {};
-      staffIdToNameDict[CommissionReport.keyForSalesWithNoPriorInstructor] = "- Sales with no prior instructor -";
+      staffIdToNameDict[CommissionReport.noPriorInstructorKey] = "- Sales with no prior instructor -";
       for (let staffInfo in getStaffResponse.StaffMembers) {
         staffIdToNameDict[staffInfo.Id] = staffInfo.FirstName + " " + staffInfo.LastName;
       }
@@ -75,7 +75,7 @@ export function handleCommissionRptRequest(request, response) {
             "Instructor": staffIdToNameDict[staffId],   // staffId,
             "Commission": commission,
           });
-          //if (!(staffId === CommissionReport.keyForSalesWithNoPriorInstructor)) {
+          //if (!(staffId === CommissionReport.noPriorInstructorKey)) {
             //todo: exclude SalesWithNoPriorInstructor? The requirements aren't clear here
           //}
           totalCommission += commission

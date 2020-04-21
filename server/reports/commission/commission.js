@@ -92,7 +92,7 @@ export class CommissionReport {
 
   //return a promise for the revenue of each instructor.
   //format: {staff_name: {service_name/product_name: revenue}}
-  //         ^^^ staff_name of 0 is a special value, keyForSalesWithNoPriorInstructor
+  //         ^^^ staff_name of 0 is a special value, noPriorInstructorKey
   merge() {
     var params = {showHidden: false, depth: null};
     //console.log("sales:", util.inspect(this.sales, params));
@@ -108,7 +108,7 @@ export class CommissionReport {
     });
   };
 
-  static get keyForSalesWithNoPriorInstructor() {
+  static get noPriorInstructorKey() {
     return "0";
   };
 
@@ -176,7 +176,7 @@ export class CommissionReport {
     }
     //still mention purchases even if there was no previous instructor
     if (staffIDs.length == 0)
-      staffIDs.push(CommissionReport.keyForSalesWithNoPriorInstructor);
+      staffIDs.push(CommissionReport.noPriorInstructorKey);
     return staffIDs;
   }
 
