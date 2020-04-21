@@ -1,8 +1,8 @@
 /*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
 
-const USERNAME = "";
-const PASSWORD = "";
+const USERNAME = "Siteowner";
+const PASSWORD = "apitest1234";
 
 //see commit 52f3c1d0c984db4582830a4ce08b31491cbf4f8e for old code
 
