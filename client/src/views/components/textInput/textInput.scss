@@ -91,6 +91,7 @@
   .validation-message{
     color: var(--initial-color);
     font-size: var(--font-size-1);
+    white-space: nowrap;
   }
 }
 
