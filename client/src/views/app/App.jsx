@@ -9,11 +9,6 @@ import OptionsPage from "views/pages/options/options.jsx";
 import DevPage from "views/pages/dev/dev.jsx";
 import Sidebar from "views/components/sidebar/sidebar.jsx";
 
-import "styles/index.scss";
-import "styles/variables.scss";
-import "styles/header.scss";
-import "styles/scrollbar.scss";
-
 export default connect((state) => {
   return {
     theme: state.settings.theme,
