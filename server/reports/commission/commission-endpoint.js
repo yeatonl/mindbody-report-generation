@@ -7,7 +7,6 @@ import MindbodyAccess from "../../api-manager.js";
 http://localhost:8080/reports/commission?format=csv&startdate=2020-03-01T00:00:00&enddate=2020-03-031T00:00:00
 */
 export function handleCommissionRptRequest(request, response) {
-
   //console.log("handleCommissionRptRequest:");
   //console.log("request: " + request.baseUrl + " - " + JSON.stringify(request.query));
 
@@ -15,7 +14,7 @@ export function handleCommissionRptRequest(request, response) {
   //query string looks like: ?format=[json|csv]&startdate=[whatever]&enddate=[whatever]
   let format = request.query.format;
   if (!format) {
-    response.send("Missing \"startdate\" parameter.");
+    response.send("Missing \"format\" parameter.");
     return;
   }
   if (!(format === "json" || format === "csv")) {
@@ -43,16 +42,17 @@ export function handleCommissionRptRequest(request, response) {
   //rptGenerator.addFakeSalesDataForTesting();
 
   var rawReportData;
-   rptGenerator.generate()
-    .then(reportTemp => {
+  rptGenerator.generate()
+    .then((reportTemp) => {
       rawReportData = reportTemp;
-      //console.log("CommissionReport.generate() returned this data: " + JSON.stringify(rawReportData));
+      console.log("CommissionReport.generate() returned this data: " + JSON.stringify(rawReportData));
       return MindbodyAccess.getAuth();
-    }).then((authToken) => {
-      MindbodyAccess.authToken = authToken.AccessToken;
+    }).then(() => {
+      console.log(MindbodyAccess.auth);
       return MindbodyAccess.getStaff({StaffIds: Object.keys(rawReportData)});
-    }).then((getStaffResponse) => {
-      //console.log("getStaff returned: " + JSON.stringify(getStaffResponse));
+    })
+    .then((getStaffResponse) => {
+      console.log("getStaff returned: " + JSON.stringify(getStaffResponse));
 
       //lookup staff names from the IDs returned by CommissionReport
       let staffIdToNameDict = {};
@@ -72,18 +72,18 @@ export function handleCommissionRptRequest(request, response) {
             commission += rawReportData[staffId][item];
           }
           csvRows.push({
-            "Instructor": staffIdToNameDict[staffId],   // staffId,
+            "Instructor": staffIdToNameDict[staffId], //staffId,
             "Commission": commission,
           });
           //if (!(staffId === CommissionReport.noPriorInstructorKey)) {
-            //todo: exclude SalesWithNoPriorInstructor? The requirements aren't clear here
+          //todo: exclude SalesWithNoPriorInstructor? The requirements aren't clear here
           //}
-          totalCommission += commission
+          totalCommission += commission;
         }
-        // Additionally, add an extra row for totals
+        //additionally, add an extra row for totals
         csvRows.push({
-            "Instructor": "Total",
-            "Commission": totalCommission,
+          "Instructor": "Total",
+          "Commission": totalCommission,
         });
 
         let fields = ["Instructor", "Commission"];
@@ -97,10 +97,12 @@ export function handleCommissionRptRequest(request, response) {
       } else if (format === "json") {
         response.json(rawReportData);
       }
-    }).catch(error => {
+    })
+    .catch((error) => {
       //todo: generate some error message page... especially handling "exceeded 1000 requests/day" error
       console.log("Caught error in CommissionReport");
+      console.log(error);
       response.send(error.toString());
     });
-  }
+}
 
