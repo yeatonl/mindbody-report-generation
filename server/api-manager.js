@@ -21,7 +21,7 @@ const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
 import QueryString from "query-string";
-export class MindbodyQueries {
+class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
