@@ -1,12 +1,128 @@
 import React from "react";
+import { connect } from "react-redux";
 import "./attendance.scss";
+import Grid from "views/components/grid/grid.jsx";
+import PropTypes from "prop-types";
+import TextInput from "views/components/textInput/textInput.jsx";
+import Button from "views/components/button/button.jsx";
+import IconButton from "views/components/iconButton/iconButton.jsx";
+import ReportParameters from "views/components/reportParameters/reportParameters.jsx";
+import ParameterDocumentation from "views/components/parameterDocumentation/parameterDocumentation.jsx";
+import * as Urls from "constants/urls.js";
+import * as Reports from "constants/reports.js";
+import * as Actions from "store/actions/index.js";
+import { fetchReportData } from "store/actions";
+import copyToClipboard from "functions/copyToClipboard.js";
+import encodeQueryParameters from "functions/encodeQueryParameters.js";
+import {ReactComponent as InfoIcon} from "svg/icons/info.svg";
 
-export default class AttendanceReport extends React.Component {
+
+export default connect((state) => {
+  return {
+    data: state.reports[Reports.ATTENDANCE]?.data,
+    headers: state.reports[Reports.ATTENDANCE]?.headers,
+    parametersInfo: state.reports[Reports.ATTENDANCE]?.parameters,
+  };
+}, null)(class AttendanceReport extends React.Component {
+  static propTypes = {
+    data: PropTypes.array,
+    headers: PropTypes.array,
+    parametersInfo: PropTypes.array,
+  }
+
+  static defaultProps = {
+    data: [],
+    headers: [],
+    parametersInfo: [],
+  }
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      parametersData: {},
+      showParameterDocumentation: false,
+    };
+  }
+
+  componentDidMount = () => {
+    Actions.fetchReportParameters(Urls.ATTENDANCE_REPORT_URL_PARAMETERS, Reports.ATTENDANCE);
+  }
+
+  copyDataToClipboard = () => {
+    Promise.all(this.props.data.map(async(row) => {
+      return row.join("\t");
+    }))
+      .then((values) => {
+        copyToClipboard(values.join("\n"));
+      });
+  }
+
+  downloadData = () => {
+    //tbd
+  }
+
+  loadDataFromEndpoint = () => {
+    let url = encodeQueryParameters(Urls.ATTENDANCE_REPORT_URL_JSON, this.state.parametersData);
+    Actions.fetchReportData(url, Reports.ATTENDANCE);
+  }
+
   render = () => {
     return (
-      <div className="attendance">
-        Attendance Report1
-      </div>
+      <main className="attendance-report">
+        <header>
+          <ReportParameters parameters={this.props.parametersInfo} onChange={(key, value) => {
+            this.setState((oldState) => {
+              return {
+                parametersData: {...oldState.parametersData, [key]: value},
+              };
+            });
+          }} />
+          <div className="buttons">
+            <Button
+              label="Fetch"
+              onClick={this.loadDataFromEndpoint}
+              title="Fetch CSV data from the REST endpoint"
+            />
+            <Button
+              ghost
+              label="Copy"
+              tempLabel="Copied"
+              disabled={!(this.props.data && this.props.data.length > 0)}
+              onClick={this.copyDataToClipboard}
+              title="Copy the CSV data to clipboard"
+            />
+            <Button
+              ghost
+              label="Download"
+              tempLabel="Downloaded"
+              disabled={!(this.props.data && this.props.data.length > 0)}
+              onClick={this.downloadData}
+              title="Download as a CSV file"
+            />
+            <IconButton
+              className={this.state.showParameterDocumentation ? "active" : ""}
+              icon={<InfoIcon/>}
+              onClick={() => {
+                this.setState((oldState) => {
+                  return {showParameterDocumentation: !oldState.showParameterDocumentation};
+                });
+              }}
+              title="Sort column"
+            />
+          </div>
+        </header>
+
+        {this.state.showParameterDocumentation &&
+          <ParameterDocumentation parameters={this.props.parametersInfo}/>
+        }
+        {this.props.data && this.props.data.length > 0 &&
+          <Grid
+            data={this.props.data}
+            headers={this.props.headers}
+          />
+        }
+      </main>
     );
   }
-}
+});

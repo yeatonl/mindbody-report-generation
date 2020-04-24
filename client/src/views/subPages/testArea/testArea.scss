@@ -9,6 +9,7 @@
 
   .row{
     display: flex;
+    align-items: flex-start;
     > *{
       margin: var(--spacing-3);
     }

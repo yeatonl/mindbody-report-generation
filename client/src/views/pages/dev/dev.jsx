@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink, Route } from "react-router-dom";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
 
@@ -6,8 +7,13 @@ import CsvViewer from "views/subPages/csvViewer/csvViewer.jsx";
 import TestArea from "views/subPages/testArea/testArea.jsx";
 
 import "./dev.scss";
+import * as Actions from "store/actions/index.js";
 
-export default class Reports extends React.Component {
+export default connect((state) => {
+  return {
+    interface: state.interface,
+  };
+}, null)(class Reports extends React.Component {
   constructor(props){
     super(props);
 
@@ -31,7 +37,15 @@ export default class Reports extends React.Component {
   render() {
     return (
       <div className="dev">
-        <SecondarySidebar entries={this.state.reports} header="Developer Tools" />
+        <SecondarySidebar
+          history={this.props.history}
+          selectedItem={this.props.interface.devSidebarSelectedItem}
+          onChange={(selectedItem) => {
+            Actions.setInterfaceEntry("devSidebarSelectedItem", selectedItem);
+          }}
+          entries={this.state.reports}
+          header="Developer Tools"
+        />
         {this.state.reports.map((report, reportIndex) => {
           return (
             <Route key={reportIndex} path={report.link} component={report.component} />
@@ -40,4 +54,4 @@ export default class Reports extends React.Component {
       </div>
     );
   }
-}
+});
