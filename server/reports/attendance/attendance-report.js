@@ -63,7 +63,7 @@ export function attendanceRequestHandler(request, response) {
             class: value.Classes[i].Id, // unique class ID
             capacity: value.Classes[i].MaxCapacity, // maximum number of students that can enroll for that class
             registered: value.Classes[i].TotalBooked, // number of students who registered for that class
-            attended: -9999, // TODO: can't find attendance # data. Will work on this later
+            attended: -9999, // TODO: Couldn't find the information at an endpoint. Maybe in ClientVisits? 
           };
           attendnaceReport.push(classData);
         }
