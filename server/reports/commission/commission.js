@@ -1,23 +1,15 @@
 import https from "https";
 import querystring from "querystring";
 import util from "util";
+import MindbodyAccess from "../../api-manager.js";
 /*
 const https = require("https");
 const querystring = require("querystring");
 const util = require("util");
 */
 //const key = "bfc05de4947f464f85ecd85deff6895e";
-const key = "7db287c206374b2f911ddc918879983d"; // Dan's API key
-
-var auth = "939094d5c42a409bbbfa7fe9f5bc065521ecfa58a75b47d2bdb4383fd53a00e7";
-//to authenticate with MB during debugging, you need to uncomment these next few lines.
-//submit a blank auth_key to MB and use printAuthorizationKey to request a new auth_key.
-//then, take the returned new auth_key and paste it into var auth = "..." above.
-//eventually, this kludge method will be replaced by MindbodyQueries which will do this
-//more cleanly.
-//var auth = "";
-//printAuthorizationKey("Siteowner", "apitest1234");
-
+const key = "7db287c206374b2f911ddc918879983d"; //dan's API key
+let auth;
 //to add client visits: sandbox -> classes -> sign in -> search for client -> add
 //to add sales: sandbox -> retail -> client search -> add item
 
@@ -27,7 +19,9 @@ function getRequest(path, payload, callback) {
   options.path += "?" + querystring.stringify(payload);
   console.log("GET " + options.host + options.path);
   const req = https.request(options, callback);
-  req.on("error", e => console.log(e));
+  req.on("error", (e) => {
+    return console.log(e);
+  });
   req.end();
 }
 
@@ -38,7 +32,9 @@ function postRequest(path, payload, callback) {
   options.headers["Content-Length"] = payload.length;
   console.log("POST " + options.host + options.path);
   const req = https.request(options, callback);
-  req.on("error", e => console.log(e));
+  req.on("error", (e) => {
+    return console.log(e);
+  });
   req.write(payload);
   req.end();
 }
@@ -46,7 +42,7 @@ function postRequest(path, payload, callback) {
 function getOptions(path) {
   return {
     host: "api.mindbodyonline.com",
-    path: "/public/v6/" + path ,
+    path: "/public/v6/" + path,
     headers: {
       "Api-Key": key,
       "SiteId": "-99",
@@ -61,8 +57,10 @@ export function printAuthorizationKey(username, password) {
     "Username": username,
     "Password": password
   };
-  postRequest("usertoken/issue", payload, res => {
-    res.on("data", d => console.log(JSON.parse(d)));
+  postRequest("usertoken/issue", payload, (res) => {
+    res.on("data", (d) => {
+      return console.log(JSON.parse(d));
+    });
   });
 }
 
@@ -76,6 +74,9 @@ export class CommissionReport {
     this.visits = {};
     this.products = {};
     this.services = {};
+    /**
+    * @type MindbodyAccess:MindbodyAccess
+    */
   }
 
   setStartDate(date) {
@@ -84,15 +85,18 @@ export class CommissionReport {
 
   //return a promise for the generated report
   generate() {
-    return this.requestSales()
-      .then(this.requestSaleItems.bind(this))
-      .then(this.requestVisits.bind(this))
-      .then(this.merge.bind(this));
+    return MindbodyAccess.getAuth().then(() => {
+      auth = MindbodyAccess.authToken;
+      return this.requestSales()
+        .then(this.requestSaleItems.bind(this))
+        .then(this.requestVisits.bind(this))
+        .then(this.merge.bind(this));
+    });
   }
 
   //return a promise for the revenue of each instructor.
   //format: {staff_name: {service_name/product_name: revenue}}
-  //         ^^^ staff_name of 0 is a special value, noPriorInstructorKey
+  //^^^ staff_name of 0 is a special value, noPriorInstructorKey
   merge() {
     var params = {showHidden: false, depth: null};
     //console.log("sales:", util.inspect(this.sales, params));
@@ -102,21 +106,23 @@ export class CommissionReport {
 
     return new Promise((resolve, reject) => {
       var staff = {};
-      for (const clientID in this.visits)
+      for (const clientID in this.visits) {
         this.incorporateSales(staff, clientID);
+      }
       resolve(staff);
     });
-  };
+  }
 
   static get noPriorInstructorKey() {
     return "0";
-  };
+  }
 
   //add sales to staff members
   incorporateSales(staff, clientID) {
     var sales = this.sales[clientID];
-    for (let i = 0; i < sales.length; i++)
+    for (let i = 0; i < sales.length; i++) {
       this.incorporatePurchases(staff, sales[i], clientID);
+    }
   }
 
   //add purchases within a sale to staff members
@@ -129,13 +135,15 @@ export class CommissionReport {
 
       for (let j = 0; j < staffIDs.length; j++) {
         var staffID = staffIDs[j];
-        if (staffID in staff == false)
+        if (staffID in staff == false) {
           staff[staffID] = {};
+        }
 
-        if (item.Id in staff[staffID] == false)
+        if (item.Id in staff[staffID] == false) {
           staff[staffID][item.name] = item.price / staffIDs.length;
-        else
+        } else {
           staff[staffID][item.name] += item.price / staffIDs.length;
+        }
       }
     }
   }
@@ -151,15 +159,17 @@ export class CommissionReport {
       if (purchase.BarcodeId in this.products) {
         item.name = this.products[purchase.BarcodeId].Name;
         item.price = this.products[purchase.BarcodeId].Price;
-      } else
+      } else {
         console.warn(`${purchase.BarcodeId} not in products`);
+      }
     } else {
       item.name = purchase.Id;
       if (purchase.Id in this.services) {
         item.name = this.services[purchase.Id].Name;
         item.price = this.services[purchase.Id].Price;
-      } else
+      } else {
         console.warn(`${purchase.Id} not in services`);
+      }
     }
     return item;
   }
@@ -171,12 +181,14 @@ export class CommissionReport {
     for (let i = 0; i < visits.length; i++) {
       var staffID = visits[i].StaffId;
       var classDate = Date.parse(visits[i].StartDateTime);
-      if (saleDate > classDate)
+      if (saleDate > classDate) {
         staffIDs.push(staffID);
+      }
     }
     //still mention purchases even if there was no previous instructor
-    if (staffIDs.length == 0)
+    if (staffIDs.length == 0) {
       staffIDs.push(CommissionReport.noPriorInstructorKey);
+    }
     return staffIDs;
   }
 
@@ -189,17 +201,15 @@ export class CommissionReport {
       for (let i = 0; i < sales.length; i++) {
         var items = sales[i].PurchasedItems;
         for (let j = 0; j < items.length; j++) {
-          if (items[j].BarcodeId)
+          if (items[j].BarcodeId) {
             productIDs.add(items[j].BarcodeId);
-          else
+          } else {
             serviceIDs.add(items[j].Id);
+          }
         }
       }
     }
-    return Promise.all([
-      this.requestProducts(Array.from(productIDs)),
-      this.requestServices(Array.from(serviceIDs))
-    ]);
+    return Promise.all([this.requestProducts(Array.from(productIDs)), this.requestServices(Array.from(serviceIDs))]);
   }
 
   //return sales for each client from a list of all sales.
@@ -211,8 +221,9 @@ export class CommissionReport {
     }
     for (let i = 0; i < sales.length; i++) {
       var clientID = sales[i].ClientId;
-      if (clientID in clients == false)
+      if (clientID in clients == false) {
         clients[clientID] = [];
+      }
       clients[clientID].push(sales[i]);
     }
     return clients;
@@ -224,11 +235,13 @@ export class CommissionReport {
     return new Promise((resolve, reject) => {
       var payload = {
         StartDateTime: this.startDate,
-        PaymentMethodId: 1 //REMOVE
+        PaymentMethodId: 1 //rEMOVE
       };
-      getRequest("sale/sales", payload, resp => {
+      getRequest("sale/sales", payload, (resp) => {
         var data = "";
-        resp.on("data", chunk => data += chunk);
+        resp.on("data", (chunk) => {
+          return data += chunk;
+        });
         resp.on("error", reject);
         resp.on("end", () => {
           self.sales = self.parseSales(JSON.parse(data).Sales);
@@ -241,8 +254,9 @@ export class CommissionReport {
   //return a promise for all visit information using client sales
   requestVisits() {
     var clientVisits = [];
-    for (const clientID in this.sales)
+    for (const clientID in this.sales) {
       clientVisits.push(this.requestClientVisits(clientID));
+    }
     return Promise.all(clientVisits);
   }
 
@@ -254,9 +268,11 @@ export class CommissionReport {
         ClientId: clientID,
         StartDateTime: this.visitStartDate
       };
-      getRequest("client/clientvisits", payload, resp => {
+      getRequest("client/clientvisits", payload, (resp) => {
         var data = "";
-        resp.on("data", chunk => data += chunk);
+        resp.on("data", (chunk) => {
+          return data += chunk;
+        });
         resp.on("error", reject);
         resp.on("end", () => {
           self.visits[clientID] = JSON.parse(data).Visits;
@@ -270,9 +286,11 @@ export class CommissionReport {
   requestServices(services) {
     var self = this;
     return new Promise((resolve, reject) => {
-      getRequest("sale/services", {ServiceIds: services}, resp => {
+      getRequest("sale/services", {ServiceIds: services}, (resp) => {
         var data = "";
-        resp.on("data", chunk => data += chunk);
+        resp.on("data", (chunk) => {
+          return data += chunk;
+        });
         resp.on("error", reject);
         resp.on("end", () => {
           self.services = self.productListToDict(JSON.parse(data).Services);
@@ -286,9 +304,11 @@ export class CommissionReport {
   requestProducts(products) {
     var self = this;
     return new Promise((resolve, reject) => {
-      getRequest("sale/products", {ProductIds: products}, resp => {
+      getRequest("sale/products", {ProductIds: products}, (resp) => {
         var data = "";
-        resp.on("data", chunk => data += chunk);
+        resp.on("data", (chunk) => {
+          return data += chunk;
+        });
         resp.on("error", reject);
         resp.on("end", () => {
           self.products = self.productListToDict(JSON.parse(data).Products);
@@ -304,67 +324,74 @@ export class CommissionReport {
     if (!products) {
       products = [];
     }
-    for (let i = 0; i < products.length; i++)
+    for (let i = 0; i < products.length; i++) {
       result[products[i].Id] = products[i];
+    }
     return result;
   }
 
-  //todo: Floris had this code below to populate the server with sales data for 
-  //testing. Daniel wants to leave it in for a few more commits until he's done 
+  //todo: Floris had this code below to populate the server with sales data for
+  //testing. Daniel wants to leave it in for a few more commits until he's done
   //testing the commission report output.
   addFakeSalesDataForTesting() {
     getRequest("sale/sales", {
-      Limit:200,
-      PaymentMethodId:1,
-      StartSaleDateTime:"2020-04-09T12:00:00Z",
-      EndSaleDateTime:"2020-04-09T23:59:00Z"
-    }, resp => {
+      Limit: 200,
+      PaymentMethodId: 1,
+      StartSaleDateTime: "2020-04-09T12:00:00Z",
+      EndSaleDateTime: "2020-04-09T23:59:00Z"
+    }, (resp) => {
       var data = "";
-      resp.on("data", chunk => data += chunk);
+      resp.on("data", (chunk) => {
+        return data += chunk;
+      });
       resp.on("end", () => {
         console.log(JSON.parse(data));
         var sales = JSON.parse(data).Sales;
         if (!sales) {
           sales = [];
         }
-        for (let i = 0; i < sales.length; i++)
+        for (let i = 0; i < sales.length; i++) {
           console.log(sales[i]);
+        }
       });
     });
-    
-    getRequest("sale/products", {}, resp => {
+
+    getRequest("sale/products", {}, (resp) => {
       var data = "";
-      resp.on("data", chunk => data += chunk);
+      resp.on("data", (chunk) => {
+        return data += chunk;
+      });
       resp.on("end", () => {
         var x = JSON.parse(data).Products;
         if (!x) {
           x = [];
         }
-        for (let i = 0; i < x.length; i++)
+        for (let i = 0; i < x.length; i++) {
           console.log(x[i]);
+        }
       });
     });
-    
-    getRequest("sale/services", {}, resp => {
+
+    getRequest("sale/services", {}, (resp) => {
       var data = "";
-      resp.on("data", chunk => data += chunk);
+      resp.on("data", (chunk) => {
+        return data += chunk;
+      });
       resp.on("end", () => {
         var x = JSON.parse(data).Services;
         if (!x) {
           x = [];
         }
-        for (let i = 0; i < x.length; i++)
+        for (let i = 0; i < x.length; i++) {
           console.log(x[i]);
+        }
       });
     });
-    
+
     var cart = {
       Test: false,
       ClientId: 100014871,
-      Items: [
-        {Item: {Type: "Product", Metadata: {Id: "0001"}}, Quantity: 22},
-        {Item: {Type: "Product", Metadata: {Id: "0002"}}, Quantity: 6}
-      ],
+      Items: [{Item: {Type: "Product", Metadata: {Id: "0001"}}, Quantity: 22}, {Item: {Type: "Product", Metadata: {Id: "0002"}}, Quantity: 6}],
       InStore: true,
       Payments: [
         {
@@ -376,20 +403,21 @@ export class CommissionReport {
         }
       ],
       LocationId: 1
-      };
-      
-      postRequest("sale/checkoutshoppingcart", cart, resp => {
+    };
+
+    postRequest("sale/checkoutshoppingcart", cart, (resp) => {
       var data = "";
-      resp.on("data", chunk => data += chunk);
+      resp.on("data", (chunk) => {
+        return data += chunk;
+      });
       resp.on("end", () => {
         console.log(JSON.parse(data));
       });
     });
   }
-
 }
 
-// var report = new CommissionReport();
-// report.setStartDate("2020-04-09T00:00:00");
-// report.generate().then(staff => console.log(staff));
+//var report = new CommissionReport();
+//report.setStartDate("2020-04-09T00:00:00");
+//report.generate().then(staff => console.log(staff));
 

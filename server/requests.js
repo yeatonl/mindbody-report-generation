@@ -20,13 +20,13 @@ export default class MindbodyRequest {
     };
   }
 
-  addAuth(auth){
+  addAuth(auth) {
     this.auth = auth;
   }
 
   makeRequest() {
     var headers = this.unauthedheaders();
-    if (this.auth !== null) {
+    if (this.auth != null) {
       headers.Authorization = this.auth;
     }
     var request = {
