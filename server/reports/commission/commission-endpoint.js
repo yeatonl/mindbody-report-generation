@@ -57,8 +57,10 @@ export function handleCommissionRptRequest(request, response) {
       //lookup staff names from the IDs returned by CommissionReport
       let staffIdToNameDict = {};
       staffIdToNameDict[CommissionReport.noPriorInstructorKey] = "- Sales with no prior instructor -";
-      for (let staffInfo in getStaffResponse.StaffMembers) {
-        staffIdToNameDict[staffInfo.Id] = staffInfo.FirstName + " " + staffInfo.LastName;
+      for (let staffIndex in getStaffResponse.StaffMembers) {
+        let staff = getStaffResponse.StaffMembers[staffIndex];
+        console.log("staffInfo: " + JSON.stringify(staff));
+        staffIdToNameDict[staff.Id] = staff.FirstName + " " + staff.LastName;
       }
 
       //generate output
