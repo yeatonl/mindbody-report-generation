@@ -34,11 +34,13 @@ export default class MindbodyRequest {
       "headers": headers,
     };
     if (this.body !== "") {
-      request.body = this.body;
+      //request.body = this.body; //OG code
+      request.body = JSON.stringify(this.body);
     }
     var responsePromise = fetch(this.url, request)
       .then((response) => {
-        response.json();
+        //response.json(); //OG code
+        return response.json();
       });
     return responsePromise;
   }

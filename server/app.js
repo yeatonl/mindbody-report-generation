@@ -45,11 +45,8 @@ app.get("/sample.csv", function(req, res) {
 //endpoint for attendance report 
 app.get("/reports/attendance", attendanceRequestHandler);
 
+//endpoint for commission report
 app.get("/reports/commission", handleCommissionRptRequest);
-
-
-app.get("/reports/commission", handleCommissionRptRequest);
-
 
 //start up the server, now that the endpoint handlers are installed.
 app.listen(portNumber, function() {
