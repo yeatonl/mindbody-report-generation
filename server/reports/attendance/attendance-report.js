@@ -54,7 +54,7 @@ export function attendanceRequestHandler(request, response) {
       let numberOfClasses = Object.keys(value.Classes).length;
       // fills classData object with necessary information then pushes it to attendanceReport list
       for (let i = 0; i < numberOfClasses; ++i) {
-        let classDate = value.Classes[i].StartDateTime;
+        let classDate = value.Classes[i].StartDateTime; // StartDateTime format is yyyy/mm/dd by default
         // changes classDate from yyyy/mm/dd to mm/dd/yyyy format
         let splitClassDate = classDate.split(/[-\/TU]/);
         let fixedClassDate = splitClassDate[1] + "/" + splitClassDate[2] + "/" + splitClassDate[0]; // date in mm/dd/yyyy format
