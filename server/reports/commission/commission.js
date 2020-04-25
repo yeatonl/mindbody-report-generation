@@ -1,68 +1,8 @@
-import https from "https";
-import querystring from "querystring";
-import util from "util";
+//import util from "util";
 import MindbodyAccess from "../../api-manager.js";
-/*
-const https = require("https");
-const querystring = require("querystring");
-const util = require("util");
-*/
-//const key = "bfc05de4947f464f85ecd85deff6895e";
-const key = "7db287c206374b2f911ddc918879983d"; //dan's API key
-let auth;
+
 //to add client visits: sandbox -> classes -> sign in -> search for client -> add
 //to add sales: sandbox -> retail -> client search -> add item
-
-function getRequest(path, payload, callback) {
-  var options = getOptions(path);
-  options.method = "GET";
-  options.path += "?" + querystring.stringify(payload);
-  console.log("GET " + options.host + options.path);
-  const req = https.request(options, callback);
-  req.on("error", (e) => {
-    return console.log(e);
-  });
-  req.end();
-}
-
-function postRequest(path, payload, callback) {
-  var options = getOptions(path);
-  options.method = "POST";
-  payload = JSON.stringify(payload);
-  options.headers["Content-Length"] = payload.length;
-  console.log("POST " + options.host + options.path);
-  const req = https.request(options, callback);
-  req.on("error", (e) => {
-    return console.log(e);
-  });
-  req.write(payload);
-  req.end();
-}
-
-function getOptions(path) {
-  return {
-    host: "api.mindbodyonline.com",
-    path: "/public/v6/" + path,
-    headers: {
-      "Api-Key": key,
-      "SiteId": "-99",
-      "Authorization": auth,
-      "Content-Type": "application/json"
-    }
-  };
-}
-
-export function printAuthorizationKey(username, password) {
-  var payload = {
-    "Username": username,
-    "Password": password
-  };
-  postRequest("usertoken/issue", payload, (res) => {
-    res.on("data", (d) => {
-      return console.log(JSON.parse(d));
-    });
-  });
-}
 
 export class CommissionReport {
   constructor() {
@@ -74,19 +14,36 @@ export class CommissionReport {
     this.visits = {};
     this.products = {};
     this.services = {};
-    /**
-    * @type MindbodyAccess:MindbodyAccess
-    */
+  }
+
+  static get noPriorInstructorKey() {
+    return "0";
   }
 
   setStartDate(date) {
-    this.startDate = date;
+    this.startDate = this.formatDate(date);
+  }
+
+  setEndDate(date) {
+    this.endDate = this.formatDate(date);
+  }
+
+  formatDate(date) {
+    if (typeof date === "string") {
+      return date;
+    }
+    var roundedDate = new Date(date.getTime());
+    const midnight = 0;
+    roundedDate.setHours(midnight);
+    roundedDate.setMinutes(midnight);
+    roundedDate.setSeconds(midnight);
+    roundedDate.setMilliseconds(midnight);
+    return roundedDate.toISOString();
   }
 
   //return a promise for the generated report
   generate() {
     return MindbodyAccess.getAuth().then(() => {
-      auth = MindbodyAccess.authToken;
       return this.requestSales()
         .then(this.requestSaleItems.bind(this))
         .then(this.requestVisits.bind(this))
@@ -94,27 +51,24 @@ export class CommissionReport {
     });
   }
 
-  //return a promise for the revenue of each instructor.
+  //return a promise for the revenue of each instructor
   //format: {staff_name: {service_name/product_name: revenue}}
   //^^^ staff_name of 0 is a special value, noPriorInstructorKey
   merge() {
-    var params = {showHidden: false, depth: null};
+    //var params = {showHidden: false, depth: null};
     //console.log("sales:", util.inspect(this.sales, params));
     //console.log("services:", util.inspect(this.services, params));
     //console.log("products:", util.inspect(this.products, params));
     //console.log("visits:", util.inspect(this.visits, params));
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       var staff = {};
-      for (const clientID in this.visits) {
-        this.incorporateSales(staff, clientID);
+      var clientIDs = Object.keys(this.visits);
+      for (let i = 0; i < clientIDs.length; i++) {
+        this.incorporateSales(staff, clientIDs[i]);
       }
       resolve(staff);
     });
-  }
-
-  static get noPriorInstructorKey() {
-    return "0";
   }
 
   //add sales to staff members
@@ -133,16 +87,15 @@ export class CommissionReport {
       var staffIDs = this.getPriorInstructors(date, clientID);
       var item = this.getItem(purchase);
 
-      for (let j = 0; j < staffIDs.length; j++) {
-        var staffID = staffIDs[j];
-        if (staffID in staff == false) {
+      for (let staffID of staffIDs) {
+        if (staffID in staff === false) {
           staff[staffID] = {};
         }
 
-        if (item.Id in staff[staffID] == false) {
-          staff[staffID][item.name] = item.price / staffIDs.length;
+        if (item.Id in staff[staffID] === false) {
+          staff[staffID][item.name] = item.price / staffIDs.size;
         } else {
-          staff[staffID][item.name] += item.price / staffIDs.length;
+          staff[staffID][item.name] += item.price / staffIDs.size;
         }
       }
     }
@@ -174,20 +127,22 @@ export class CommissionReport {
     return item;
   }
 
-  //return a list of staff IDs that the client visited before a date
+  //return a set of staff IDs that the client visited before a date
   getPriorInstructors(saleDate, clientID) {
-    var staffIDs = [];
+    var staffIDs = new Set();
     var visits = this.visits[clientID];
-    for (let i = 0; i < visits.length; i++) {
-      var staffID = visits[i].StaffId;
-      var classDate = Date.parse(visits[i].StartDateTime);
-      if (saleDate > classDate) {
-        staffIDs.push(staffID);
+    if (visits) {
+      for (let i = 0; i < visits.length; i++) {
+        var staffID = visits[i].StaffId;
+        var classDate = Date.parse(visits[i].StartDateTime);
+        if (saleDate > classDate) {
+          staffIDs.add(staffID);
+        }
       }
     }
     //still mention purchases even if there was no previous instructor
-    if (staffIDs.length == 0) {
-      staffIDs.push(CommissionReport.noPriorInstructorKey);
+    if (!staffIDs.size) {
+      staffIDs.add(CommissionReport.noPriorInstructorKey);
     }
     return staffIDs;
   }
@@ -196,35 +151,38 @@ export class CommissionReport {
   requestSaleItems() {
     var serviceIDs = new Set();
     var productIDs = new Set();
-    for (const clientID in this.sales) {
+    var clientIDs = Object.keys(this.sales);
+    for (let i = 0; i < clientIDs.length; i++) {
+      var clientID = clientIDs[i];
       var sales = this.sales[clientID];
-      for (let i = 0; i < sales.length; i++) {
-        var items = sales[i].PurchasedItems;
-        for (let j = 0; j < items.length; j++) {
-          if (items[j].BarcodeId) {
-            productIDs.add(items[j].BarcodeId);
+      for (let j = 0; j < sales.length; j++) {
+        var items = sales[j].PurchasedItems;
+        for (let k = 0; k < items.length; k++) {
+          if (items[k].BarcodeId) {
+            productIDs.add(items[k].BarcodeId);
           } else {
-            serviceIDs.add(items[j].Id);
+            serviceIDs.add(items[k].Id);
           }
         }
       }
     }
-    return Promise.all([this.requestProducts(Array.from(productIDs)), this.requestServices(Array.from(serviceIDs))]);
+    var products = this.requestProducts(Array.from(productIDs));
+    var services = this.requestServices(Array.from(serviceIDs));
+    return Promise.all([products, services]);
   }
 
-  //return sales for each client from a list of all sales.
+  //return sales for each client from a list of all sales
   //format: {client: sales}
   parseSales(sales) {
     var clients = {};
-    if (!sales) {
-      sales = [];
-    }
-    for (let i = 0; i < sales.length; i++) {
-      var clientID = sales[i].ClientId;
-      if (clientID in clients == false) {
-        clients[clientID] = [];
+    if (sales) {
+      for (let i = 0; i < sales.length; i++) {
+        var clientID = sales[i].ClientId;
+        if (clientID in clients === false) {
+          clients[clientID] = [];
+        }
+        clients[clientID].push(sales[i]);
       }
-      clients[clientID].push(sales[i]);
     }
     return clients;
   }
@@ -232,30 +190,22 @@ export class CommissionReport {
   //return a promise for all product and service sales
   requestSales() {
     var self = this;
-    return new Promise((resolve, reject) => {
-      var payload = {
-        StartDateTime: this.startDate,
-        PaymentMethodId: 1 //rEMOVE
-      };
-      getRequest("sale/sales", payload, (resp) => {
-        var data = "";
-        resp.on("data", (chunk) => {
-          return data += chunk;
-        });
-        resp.on("error", reject);
-        resp.on("end", () => {
-          self.sales = self.parseSales(JSON.parse(data).Sales);
-          resolve();
-        });
-      });
+    var payload = {
+      StartDateTime: this.startDate,
+      EndDateTime: this.endDate,
+      //for cash payments only: PaymentMethodId: 1
+    };
+    return MindbodyAccess.getSales(payload).then((data) => {
+      self.sales = self.parseSales(data.Sales);
     });
   }
 
   //return a promise for all visit information using client sales
   requestVisits() {
     var clientVisits = [];
-    for (const clientID in this.sales) {
-      clientVisits.push(this.requestClientVisits(clientID));
+    var clientIDs = Object.keys(this.sales);
+    for (let i = 0; i < clientIDs.length; i++) {
+      clientVisits.push(this.requestClientVisits(clientIDs[i]));
     }
     return Promise.all(clientVisits);
   }
@@ -263,161 +213,54 @@ export class CommissionReport {
   //return a promise for visit information of a single client
   requestClientVisits(clientID) {
     var self = this;
-    return new Promise((resolve, reject) => {
-      var payload = {
-        ClientId: clientID,
-        StartDateTime: this.visitStartDate
-      };
-      getRequest("client/clientvisits", payload, (resp) => {
-        var data = "";
-        resp.on("data", (chunk) => {
-          return data += chunk;
-        });
-        resp.on("error", reject);
-        resp.on("end", () => {
-          self.visits[clientID] = JSON.parse(data).Visits;
-          resolve();
-        });
-      });
+    var payload = {
+      ClientId: clientID,
+      StartDateTime: this.visitStartDate,
+      EndDateTime: this.endDate
+    };
+    return MindbodyAccess.getClientVisits(payload).then((data) => {
+      self.visits[clientID] = data.Visits;
     });
   }
 
   //return a promise for service pricing info
   requestServices(services) {
     var self = this;
-    return new Promise((resolve, reject) => {
-      getRequest("sale/services", {ServiceIds: services}, (resp) => {
-        var data = "";
-        resp.on("data", (chunk) => {
-          return data += chunk;
-        });
-        resp.on("error", reject);
-        resp.on("end", () => {
-          self.services = self.productListToDict(JSON.parse(data).Services);
-          resolve();
-        });
-      });
+    var payload = {ServiceIds: services};
+    return MindbodyAccess.getServices(payload).then((data) => {
+      self.services = self.productListToDict(data.Services);
     });
   }
 
   //return a promise for product pricing info
   requestProducts(products) {
     var self = this;
-    return new Promise((resolve, reject) => {
-      getRequest("sale/products", {ProductIds: products}, (resp) => {
-        var data = "";
-        resp.on("data", (chunk) => {
-          return data += chunk;
-        });
-        resp.on("error", reject);
-        resp.on("end", () => {
-          self.products = self.productListToDict(JSON.parse(data).Products);
-          resolve();
-        });
-      });
+    var payload = {ProductIds: products};
+    return MindbodyAccess.getProducts(payload).then((data) => {
+      self.products = self.productListToDict(data.Products);
     });
   }
 
   //return a dictionary for easier product lookups
   productListToDict(products) {
     var result = {};
-    if (!products) {
-      products = [];
-    }
-    for (let i = 0; i < products.length; i++) {
-      result[products[i].Id] = products[i];
+    if (products) {
+      for (let i = 0; i < products.length; i++) {
+        result[products[i].Id] = products[i];
+      }
     }
     return result;
   }
-
-  //todo: Floris had this code below to populate the server with sales data for
-  //testing. Daniel wants to leave it in for a few more commits until he's done
-  //testing the commission report output.
-  addFakeSalesDataForTesting() {
-    getRequest("sale/sales", {
-      Limit: 200,
-      PaymentMethodId: 1,
-      StartSaleDateTime: "2020-04-09T12:00:00Z",
-      EndSaleDateTime: "2020-04-09T23:59:00Z"
-    }, (resp) => {
-      var data = "";
-      resp.on("data", (chunk) => {
-        return data += chunk;
-      });
-      resp.on("end", () => {
-        console.log(JSON.parse(data));
-        var sales = JSON.parse(data).Sales;
-        if (!sales) {
-          sales = [];
-        }
-        for (let i = 0; i < sales.length; i++) {
-          console.log(sales[i]);
-        }
-      });
-    });
-
-    getRequest("sale/products", {}, (resp) => {
-      var data = "";
-      resp.on("data", (chunk) => {
-        return data += chunk;
-      });
-      resp.on("end", () => {
-        var x = JSON.parse(data).Products;
-        if (!x) {
-          x = [];
-        }
-        for (let i = 0; i < x.length; i++) {
-          console.log(x[i]);
-        }
-      });
-    });
-
-    getRequest("sale/services", {}, (resp) => {
-      var data = "";
-      resp.on("data", (chunk) => {
-        return data += chunk;
-      });
-      resp.on("end", () => {
-        var x = JSON.parse(data).Services;
-        if (!x) {
-          x = [];
-        }
-        for (let i = 0; i < x.length; i++) {
-          console.log(x[i]);
-        }
-      });
-    });
-
-    var cart = {
-      Test: false,
-      ClientId: 100014871,
-      Items: [{Item: {Type: "Product", Metadata: {Id: "0001"}}, Quantity: 22}, {Item: {Type: "Product", Metadata: {Id: "0002"}}, Quantity: 6}],
-      InStore: true,
-      Payments: [
-        {
-          Type: "Cash",
-          Metadata: {
-            Amount: 53.52,
-            Notes: "Tip"
-          }
-        }
-      ],
-      LocationId: 1
-    };
-
-    postRequest("sale/checkoutshoppingcart", cart, (resp) => {
-      var data = "";
-      resp.on("data", (chunk) => {
-        return data += chunk;
-      });
-      resp.on("end", () => {
-        console.log(JSON.parse(data));
-      });
-    });
-  }
 }
 
+//(function () {
+//var startDate = new Date();
+//startDate.setDate(startDate.getDate() - 1);
+//var endDate = new Date();
+//endDate.setDate(endDate.getDate() + 1);
+//
 //var report = new CommissionReport();
-//report.setStartDate("2020-04-09T00:00:00");
+//report.setStartDate(startDate);
+//report.setEndDate(endDate);
 //report.generate().then(staff => console.log(staff));
-
+//})();
