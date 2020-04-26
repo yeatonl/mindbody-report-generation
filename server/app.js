@@ -3,7 +3,6 @@ import json2csvExports from "json2csv";
 import {handleCommissionRptRequest} from "./reports/commission/commission-report.js";
 import {attendanceRequestHandler} from "./reports/attendance/attendance-report.js";
 
-
 var app = express();
 const portNumber = 8080;
 

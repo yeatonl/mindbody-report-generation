@@ -260,7 +260,7 @@ export class MindbodyQueries {
   getClassVisits(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLASS + "/classvisits" + query,
+      URL_CLASS + "/classvisits?" + query,
       APIKEY,
       SITEID,
       "GET",
@@ -524,7 +524,7 @@ export class MindbodyQueries {
   getClientVisits(parameters) {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
-      URL_CLIENTS + "/clientvisits" + query,
+      URL_CLIENTS + "/clientvisits?" + query,
       APIKEY,
       SITEID,
       "GET",
