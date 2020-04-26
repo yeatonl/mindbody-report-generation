@@ -20,13 +20,13 @@ export default class MindbodyRequest {
     };
   }
 
-  addAuth(auth){
+  addAuth(auth) {
     this.auth = auth;
   }
 
   makeRequest() {
     var headers = this.unauthedheaders();
-    if (this.auth !== null) {
+    if (this.auth != null) {
       headers.Authorization = this.auth;
     }
     var request = {
@@ -34,12 +34,10 @@ export default class MindbodyRequest {
       "headers": headers,
     };
     if (this.body !== "") {
-      //request.body = this.body; //OG code
       request.body = JSON.stringify(this.body);
     }
     var responsePromise = fetch(this.url, request)
       .then((response) => {
-        //response.json(); //OG code
         return response.json();
       });
     return responsePromise;

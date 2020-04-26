@@ -1,7 +1,7 @@
 import express from "express";
 import json2csvExports from "json2csv";
-import {handleCommissionRptRequest} from "./reports/commission/commission-report.js";
-import {attendanceRequestHandler} from "./reports/attendance/attendance-report.js";
+import {handleCommissionRptRequest} from "./reports/commission/commission-endpoint.js";
+import {attendanceRequestHandler} from "./reports/attendance/attendance-endpoint.js";
 
 var app = express();
 const portNumber = 8080;

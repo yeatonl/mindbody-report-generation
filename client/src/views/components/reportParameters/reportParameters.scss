@@ -1,0 +1,6 @@
+.report-parameters{
+  display: grid;
+  flex-grow: 1;
+  grid-gap: var(--spacing-2);
+  grid-template-columns: repeat(auto-fill, 4rem);
+}

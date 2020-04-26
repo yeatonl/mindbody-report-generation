@@ -13,10 +13,12 @@ export default class IconButton extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
-    /**must be an SVG ReactComponent. ```import {ReactComponent as YOUR-NAME-HERE} from "SVG/FILEPATH.svg"```*/
-    icon: PropTypes.instanceOf(Element).isRequired,
+    /**must be an SVG ReactComponent. ```import {ReactComponent as YOUR-NAME-HERE} from "PATH/TO/ICON.svg"```*/
+    icon: PropTypes.instanceOf(Object).isRequired,
     onClick: PropTypes.func,
     title: PropTypes.string,
+    /**if true, will be small and have padding */
+    inline: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -24,10 +26,14 @@ export default class IconButton extends React.Component {
     icon: null,
     onClick: () => {},
     title: "",
+    inline: false,
   }
 
   render = () => {
     let className = "icon-button " + this.props.className;
+    if (this.props.inline){
+      className += " inline";
+    }
 
     return (
       <button
