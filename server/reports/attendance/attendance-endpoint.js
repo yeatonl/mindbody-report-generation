@@ -1,4 +1,4 @@
-import MindbodyAccess from "../../api-manager";
+import MindbodyAccess from "../../api-manager.js";
 import J2C from "json2csv";
 
 //returns the current date 
