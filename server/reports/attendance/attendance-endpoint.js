@@ -109,6 +109,10 @@ export function attendanceRequestHandler(request, response) {
             let fields = ["class", "capacity", "registered", "attended"];
             let parser = new J2C.Parser({ fields });
             let csv = parser.parse(attendanceReport);
+            let fileName = "AttendanceReport.csv";
+            //todo: we should choose a filename that includes helpful info like the date range
+            response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
+            response.contentType("text/csv");
             response.send(csv);
           } else {
             response.json(attendanceReport);
