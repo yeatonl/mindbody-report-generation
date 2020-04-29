@@ -77,6 +77,7 @@ export function attendanceRequestHandler(request, response) {
 
       // iterates through every class in classes
       for (let i = 0; i < numberOfClasses; ++i) {
+        let classTitle = classes.Classes[i].ClassDescription.Name;
         let classID = classes.Classes[i].Id;
         let maxCapacity = classes.Classes[i].MaxCapacity;
         let numberRegistered = classes.Classes[i].TotalBooked;
@@ -85,7 +86,8 @@ export function attendanceRequestHandler(request, response) {
         // adds class data to attendance report if startdate <= classdate <= enddate
         if (isValidDate(startdate, classDate, enddate)) {
           let classData = {
-            class: classID,
+            class_title: classTitle,
+            class_ID: classID,
             capacity: maxCapacity,
             registered: numberRegistered,
           };
@@ -101,12 +103,11 @@ export function attendanceRequestHandler(request, response) {
           attendanceReport.push(classData); // pushes current class's data to attendanceReport
         }
       }
-
       // resolves all, allNumberAttendedPromises then outputs attendance report to endpoint as CSV or JSON
       Promise.all(allNumberAttendedPromises)
         .then(() => {
           if (format === "csv") {
-            let fields = ["class", "capacity", "registered", "attended"];
+            let fields = ["class_title", "class_ID", "capacity", "registered", "attended"];
             let parser = new J2C.Parser({ fields });
             let csv = parser.parse(attendanceReport);
             let fileName = "AttendanceReport.csv";
