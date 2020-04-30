@@ -942,19 +942,21 @@ class MindbodyQueries {
     this.requestNum++;
     if (!this.atLimit()) {
       let reqPromise = request.makeRequest();
-      reqPromise.then((result) => {
+      if (request.verb === "GET") {
         //store results in the cache before the caller gets access to them.
-        let hashCode = this.getStringHash(request.siteId.toString + request.url);
-        let cacheTuple = {
-          siteId: request.siteId,
-          url: request.url,
-          creationTime: Date.now(),
-          result: result,
-        };
-        this.cachedResults[hashCode] = cacheTuple;
-        //console.log("MindbodyAccess stored this cacheTuple " +
-        //,  JSON.stringify(cacheTuple) + " at hash value: " + hashCode);
-      });
+        reqPromise.then((result) => {
+          let hashCode = this.getStringHash(request.siteId.toString + request.url);
+          let cacheTuple = {
+            siteId: request.siteId,
+            url: request.url,
+            creationTime: Date.now(),
+            result: result,
+          };
+          this.cachedResults[hashCode] = cacheTuple;
+          //console.log("MindbodyAccess stored this cacheTuple " +
+          //,  JSON.stringify(cacheTuple) + " at hash value: " + hashCode);
+        });
+      }
       return reqPromise;
     }
     return Promise.reject(Error("Request limit reached"));
