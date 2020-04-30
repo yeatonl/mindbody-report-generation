@@ -25,6 +25,11 @@ class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
+    //cachedResults stores results that we've received from prior server requests
+    //it's a hash map, an array where the indexes are found by the calling the function
+    //mindbodyQueries.getHashCode(siteId + url). The value of each entry is a tuple of:
+    //{siteId: number, url: string, creationTime: timeInMs, result: Object}
+    this.cachedResults = [];
   }
 
   //gets authentication
@@ -38,6 +43,7 @@ class MindbodyQueries {
       { "Username": USERNAME,
         "Password": PASSWORD }
     );
+    //note that getAuth intentionally bypasses the caching mechanism.
     this.requestNum++;
     if (!this.atLimit()) {
       let requestPromise = request.makeRequest();
@@ -917,13 +923,39 @@ class MindbodyQueries {
   }
 
 
-
-  //@TODO implement caching based on hashes of url's here
   decorateAndMake(request) {
+    //instead of making a new GET request, used cached results when possible
+    if (request.verb === "GET") {
+      let hashCode = this.getStringHash(request.siteId.toString + request.url);
+      let cacheTuple = this.cachedResults[hashCode];
+      //console.log("MindbodyAccess cache for " + request.url + " (" + hashCode + ") held value: " + JSON.stringify(cacheTuple));
+      if (cacheTuple && cacheTuple.siteId === request.siteId && cacheTuple.url === request.url) {
+        const cacheDuration = 300000; //5 minutes, expressed in milliseconds
+        if (Date.now() - cacheTuple.creationTime < cacheDuration) {
+          //console.log("MindbodyAccess cache hit for " + request.url);
+          return Promise.resolve(cacheTuple.result);
+        }
+      }
+    }
+
     request.addAuth(this.authToken);
     this.requestNum++;
     if (!this.atLimit()) {
-      return request.makeRequest();
+      let reqPromise = request.makeRequest();
+      reqPromise.then((result) => {
+        //store results in the cache before the caller gets access to them.
+        let hashCode = this.getStringHash(request.siteId.toString + request.url);
+        let cacheTuple = {
+          siteId: request.siteId,
+          url: request.url,
+          creationTime: Date.now(),
+          result: result,
+        };
+        this.cachedResults[hashCode] = cacheTuple;
+        //console.log("MindbodyAccess stored this cacheTuple " +
+        //,  JSON.stringify(cacheTuple) + " at hash value: " + hashCode);
+      });
+      return reqPromise;
     }
     return Promise.reject(Error("Request limit reached"));
   }
@@ -937,6 +969,24 @@ class MindbodyQueries {
     }
     return false;
   }
+
+
+  //returns a 32-bit hashCode for string. This is based on Java's hashCode
+  /*eslint-disable */  // eslint complaints so much about this low-level code :(
+  getStringHash(string) {
+    var hash = 0, i, chr;
+    if (string.length === 0) {
+      return hash;
+    }
+    for (i = 0; i < string.length; i++) {
+      chr = string.charCodeAt(i);
+      //multiply the hash-so-far by prime 31 (i.e. 32 - 1 i.e. 2**5 - 1) + add this char
+      hash = ((hash << 5) - hash) + chr;
+      hash |= 0; //convert to 32bit integer
+    }
+    return hash;
+  };
+  /*eslint-enable */
 }
 
 const MindbodyAccess = new MindbodyQueries();
