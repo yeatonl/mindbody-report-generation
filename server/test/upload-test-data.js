@@ -66,12 +66,12 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
         let lclient = clients.Clients.length;
         promises = new Array();
         for (let i = 0; i < lclass && i < lclient; i++) {
-          let classSignup = {
-            "ClientId": clients.Clients[i].Id,
-            "ClassId": classes.Classes[i].Id,
-            "LateCancel": true,
-          };
           if (i % 2 == 0) {
+            let classSignup = {
+              "ClientId": clients.Clients[i].Id,
+              "ClassId": classes.Classes[i].Id,
+              "LateCancel": true,
+            };
             promises[(lclient < lclass ? lclient - 1 : lclass - 1) + i / 2] = MindbodyAccess.postRemoveClientFromClass(classSignup);
             console.log("Late cancelled " + clients.Clients[i].FirstName + " " + clients.Clients[i].LastName + " from " + classes.Classes[i].ClassDescription.Name);
           }
