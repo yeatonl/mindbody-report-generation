@@ -35,7 +35,11 @@ function getNumberAttended(classID) {
     MindbodyAccess.getClassVisits({ClassID: classID})
       .then((classVisits) => {
         let numberAttended = Object.keys(classVisits.Class.Visits).length;
-        resolve(numberAttended);
+        //resolve(numberAttended);
+        if(numberAttended)
+          resolve(numberAttended);
+        else
+          reject("getNumberAttended Rejected. numberAttended var is empty");
       })
     })
 }
@@ -67,10 +71,15 @@ export function attendanceRequestHandler(request, response) {
   MindbodyAccess.getAuth()
     .then((value) => {
       MindbodyAccess.authToken = value.AccessToken;
-      return MindbodyAccess.getClasses();
+      // gets all classes between StartDateTime - EndDateTime
+      return MindbodyAccess.getClasses({
+        StartDateTime: startdate,
+        EndDateTime: enddate,
+      });
     })
     // gets all classes from "Classes" endpoint
     .then((classes) => {
+      console.log("Classes Pagination Data: ", classes.PaginationResponse); // shows pagination data in console
       let attendanceReport = [];
       let allNumberAttendedPromises = [];
       let numberOfClasses = Object.keys(classes.Classes).length;
@@ -81,28 +90,27 @@ export function attendanceRequestHandler(request, response) {
         let classID = classes.Classes[i].Id;
         let maxCapacity = classes.Classes[i].MaxCapacity;
         let numberRegistered = classes.Classes[i].TotalBooked;
-        let classDate = fixDateFormat(classes.Classes[i].StartDateTime); // Mindbody StartDateTime format is yyyy/mm/dd by default
+        //let classDate = fixDateFormat(classes.Classes[i].StartDateTime); // Mindbody StartDateTime format is yyyy/mm/dd by default
 
-        // adds class data to attendance report if startdate <= classdate <= enddate
-        if (isValidDate(startdate, classDate, enddate)) {
-          let classData = {
-            class_title: classTitle,
-            class_ID: classID,
-            capacity: maxCapacity,
-            registered: numberRegistered,
-          };
-          // adds attendance parameter to classData
-          let numberAttendedPromise = getNumberAttended(classID)
-            .then((numberAttended) => {
-              classData["attended"] = numberAttended;
-            })
-            .catch((err) => {
-              console.log("ERROR! ", err);
-            });
-          allNumberAttendedPromises.push(numberAttendedPromise);
-          attendanceReport.push(classData); // pushes current class's data to attendanceReport
-        }
-      }
+        let classData = {
+          class_title: classTitle,
+          class_ID: classID,
+          capacity: maxCapacity,
+          registered: numberRegistered,
+        };
+        // adds attendance parameter to classData
+        let numberAttendedPromise = getNumberAttended(classID)
+          .then((numberAttended) => {
+            classData["attended"] = numberAttended;
+          })
+          .catch((err) => {
+            // temporarily commented out since this always executes, and for every iteraetion of the loop
+            // figure out how to avoid this since the promise does resolve later and the data is caught and output
+            //console.log("ERROR! ", err);
+          });
+        allNumberAttendedPromises.push(numberAttendedPromise);
+        attendanceReport.push(classData); // pushes current class's data to attendanceReport
+      } 
       // resolves all, allNumberAttendedPromises then outputs attendance report to endpoint as CSV or JSON
       Promise.all(allNumberAttendedPromises)
         .then(() => {
@@ -118,7 +126,10 @@ export function attendanceRequestHandler(request, response) {
           } else {
             response.json(attendanceReport);
           }
-        });
+        })
+        .catch((error) => {
+          console.log("Promise All Error: ", error);
+        })
     })
     .catch((m) => {
       //TODO: make an error message consistent with commission report
