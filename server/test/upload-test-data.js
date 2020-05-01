@@ -58,7 +58,7 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
           };
           console.log("Added " + clients.Clients[i].FirstName + " " + clients.Clients[i].LastName + " to " + classes.Classes[i].ClassDescription.Name);
           promises[i] = MindbodyAccess.postAddClientToClass(classSignup);
-          //attendance report should see these as dropped late
+          //drop late from some classes
           if (i % 2 == 0) {
             classSignup.LateCancel = true;
             promises[(lclient < lclass ? lclient - 1 : lclass - 1) + i / 2] = MindbodyAccess.postRemoveClientFromClass(classSignup);
@@ -72,7 +72,9 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
       })
       .then((productResponse) => {
         products = productResponse;
-        for (let i = 0; i < products.Products.length && i < clients.Clients.length; i++) {
+        let lp = products.Products.length;
+        let lc = clients.Clients.length;
+        for (let i = 0; i < lp && i < lc; i++) {
           let checkout = {
             "ClientId": clients.Clients[i].Id,
             "Test": false,
@@ -110,7 +112,7 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
       .then((checkouts) => {
         let lp = products.Products.length;
         let lc = clients.Clients.length;
-        for (let i = 0; i < products.Products.length && i < clients.Clients.length; i++) {
+        for (let i = 0; i < lp && i < lc; i++) {
           let checkout = {
             "ClientId": clients.Clients[i].Id,
             "Test": false,
