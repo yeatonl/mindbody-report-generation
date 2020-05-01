@@ -48,14 +48,22 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
       })
       .then((classResponse) => {
         classes = classResponse;
+        let lclass = classes.Classes.length;
+        let lclient = clients.Clients.length;
         promises = new Array();
-        for (let i = 0; i < classes.Classes.length && i < clients.Clients.length; i++) {
+        for (let i = 0; i < lclass && i < lclient; i++) {
           let classSignup = {
             "ClientId": clients.Clients[i].Id,
             "ClassId": classes.Classes[i].Id,
           };
           console.log("Added " + clients.Clients[i].FirstName + " " + clients.Clients[i].LastName + " to " + classes.Classes[i].ClassDescription.Name);
           promises[i] = MindbodyAccess.postAddClientToClass(classSignup);
+          //attendance report should see these as dropped late
+          if (i % 2 == 0) {
+            classSignup.LateCancel = true;
+            promises[(lclient < lclass ? lclient - 1 : lclass - 1) + i / 2] = MindbodyAccess.postRemoveClientFromClass(classSignup);
+            console.log("Late cancelled " + clients.Clients[i].FirstName + " " + clients.Clients[i].LastName + " from " + classes.Classes[i].ClassDescription.Name);
+          }
         }
         return Promise.all(promises);
       })
@@ -136,12 +144,6 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
           promises[i] = MindbodyAccess.postCheckoutShoppingCart(checkout);
         }
         return Promise.all(promises);
-      })
-      .then((checkouts) => {
-        let lc = classes.Classes.length;
-        for (let i = 0; i < lc; i++) {
-
-        }
       })
       .catch((err) => {
         console.log("Error parsing JSON string:", err);
