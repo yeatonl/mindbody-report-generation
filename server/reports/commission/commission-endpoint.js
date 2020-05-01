@@ -38,7 +38,7 @@ export function handleCommissionRptRequest(request, response) {
   //pass validated input params to report generator
   let rptGenerator = new CommissionReport();
   rptGenerator.setStartDate(startDate);
-  //rptGenerator.setEndDate(endDate);
+  rptGenerator.setEndDate(endDate);
   //rptGenerator.addFakeSalesDataForTesting();
 
   var rawReportData;

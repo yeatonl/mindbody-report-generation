@@ -2,8 +2,11 @@ import fs from "fs";
 
 import MindbodyRequest from "../requests.js";
 import MindbodyAccess from "../api-manager.js";
+import { lookup } from "dns";
 
 const fileName = process.argv.slice(2)[0];
+const NUMWEEKS = 3;
+const WEEK = 7;
 
 fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
   if (err) {
@@ -26,15 +29,21 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
         return Promise.all(promises);
       })
       .then((value) => {
-        console.log(value);
+        return MindbodyAccess.post;
+      })
+      .then((value) => {
         return MindbodyAccess.getClients(
           { "SearchText": "Test"});
       })
       .then((clientResponse) => {
         clients = clientResponse;
+        let day = new Date();
+        let now = day.toISOString();
+        let backtrack = WEEK * NUMWEEKS;
+        day.setDate(day.getDate() - backtrack);
         return MindbodyAccess.getClasses(
-          {"StartDateTime": "2020-04-01T00:00:00",
-            "EndDateTime": "2020-04-08T00:00:00", }
+          {"StartDateTime": day.toISOString(),
+            "EndDateTime": now, }
         );
       })
       .then((classResponse) => {
@@ -53,7 +62,8 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
       .then((value) => {
         return MindbodyAccess.getProducts();
       })
-      .then((products) => {
+      .then((productResponse) => {
+        products = productResponse;
         for (let i = 0; i < products.Products.length && i < clients.Clients.length; i++) {
           let checkout = {
             "ClientId": clients.Clients[i].Id,
@@ -66,24 +76,14 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
                     "Id": products.Products[i].Id
                   },
                 },
-                "Quantity": i + 1,
+                "Quantity": 1,
               },
-              {
-                "Item": {
-                  "Type": "Service",
-                  "Metadata": {
-                    "Id": 1421,
-                  }
-                },
-                "DiscountAmount" : 0,
-                "Quantity" : 1
-              }
             ],
             "Payments": [
               {
                 "Type": "Cash",
                 "Metadata": {
-                  "Amount": 20 * i + 1,
+                  "Amount": products.Products[i].Price,
                   "Notes": "Payment"
                 }
               }
@@ -92,11 +92,56 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
             "InStore": true,
             "LocationId": 1,
           };
+          console.log(clients.Clients[i].FirstName + " " + clients.Clients[i].LastName + " bought " + products.Products[i].Name);
           //console.log(checkout);
           //console.log(checkout.Items[0].Item);
           promises[i] = MindbodyAccess.postCheckoutShoppingCart(checkout);
         }
         return Promise.all(promises);
+      })
+      .then((checkouts) => {
+        let lp = products.Products.length;
+        let lc = clients.Clients.length;
+        for (let i = 0; i < products.Products.length && i < clients.Clients.length; i++) {
+          let checkout = {
+            "ClientId": clients.Clients[i].Id,
+            "Test": false,
+            "Items": [
+              {
+                "Item": {
+                  "Type": "Product",
+                  "Metadata": {
+                    "Id": products.Products[lp - 1 - i].Id
+                  },
+                },
+                "Quantity": 1,
+              },
+            ],
+            "Payments": [
+              {
+                "Type": "Cash",
+                "Metadata": {
+                  "Amount": products.Products[lp - 1 - i].Price,
+                  "Notes": "Payment"
+                }
+              }
+            ],
+            "SendEmail": false,
+            "InStore": true,
+            "LocationId": 1,
+          };
+          console.log(clients.Clients[i].FirstName + " " + clients.Clients[i].LastName + " bought " + products.Products[lp - 1 - i].Name);
+          //console.log(checkout);
+          //console.log(checkout.Items[0].Item);
+          promises[i] = MindbodyAccess.postCheckoutShoppingCart(checkout);
+        }
+        return Promise.all(promises);
+      })
+      .then((checkouts) => {
+        let lc = classes.Classes.length;
+        for (let i = 0; i < lc; i++) {
+
+        }
       })
       .catch((err) => {
         console.log("Error parsing JSON string:", err);
