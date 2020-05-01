@@ -900,10 +900,40 @@ class MindbodyQueries {
     return this.decorateAndMake(request);
   }
 
+
+
+  /* eslint-disable *//**
+  * Required:
+  *  @param StaffId 
+  *//*eslint-enable */
+  getStaffPermissions(parameters) {
+    var query = QueryString.stringify(parameters);
+    var request = new MindbodyRequest(
+      URL_STAFF + "/staffpermissions?" + query,
+      APIKEY,
+      SITEID,
+      "GET",
+      ""
+    );
+    return this.decorateAndMake(request);
+  }
+
   //pOST request to add a client via the Mindbody API
   postClient(parameters) {
     var request = new MindbodyRequest(
       URL_CLIENTS + "/addclient",
+      APIKEY,
+      SITEID,
+      "POST",
+      parameters,
+    );
+    return this.decorateAndMake(request);
+  }
+
+  //post request to remove a client from a class
+  postRemoveClientFromClass(parameters) {
+    var request = new MindbodyRequest(
+      URL_CLASS + "/removeclientfromclass",
       APIKEY,
       SITEID,
       "POST",
@@ -935,24 +965,6 @@ class MindbodyQueries {
     );
     return this.decorateAndMake(request);
   }
-
-  /* eslint-disable *//**
-  * Required:
-  *  @param StaffId 
-  *//*eslint-enable */
-  getStaffPermissions(parameters) {
-    var query = QueryString.stringify(parameters);
-    var request = new MindbodyRequest(
-      URL_STAFF + "/staffpermissions?" + query,
-      APIKEY,
-      SITEID,
-      "GET",
-      ""
-    );
-    return this.decorateAndMake(request);
-  }
-
-
 
   //@TODO implement caching based on hashes of url's here
   decorateAndMake(request) {
