@@ -35,11 +35,13 @@ function getNumberAttended(classID) {
     MindbodyAccess.getClassVisits({ClassID: classID})
       .then((classVisits) => {
         let numberAttended = Object.keys(classVisits.Class.Visits).length;
-        //resolve(numberAttended);
-        if(numberAttended)
+        if(numberAttended >= 0)
           resolve(numberAttended);
         else
           reject("getNumberAttended Rejected. numberAttended var is empty");
+      })
+      .catch((error) => {
+        console.log("In getNumberAttended Catch block. classID DNE!\n", error);
       })
     })
 }
