@@ -193,7 +193,7 @@ export class CommissionReport {
     var payload = {
       StartDateTime: this.startDate,
       EndDateTime: this.endDate,
-      PaymentMethodId: 1
+      //for cash payments only: PaymentMethodId: 1
     };
     return MindbodyAccess.getSales(payload).then((data) => {
       self.sales = self.parseSales(data.Sales);
