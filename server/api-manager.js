@@ -922,12 +922,46 @@ class MindbodyQueries {
   decorateAndMake(request) {
     request.addAuth(this.authToken);
     this.requestNum++;
+    let allPagePromises = [];
     if (!this.atLimit()) {
-      return request.makeRequest();
+      //return request.makeRequest();
+      return request.makeRequest()
+        .then((value) => {
+          //console.log(Object.keys(value));
+          if(!value.PaginationResponse)
+            return Promise.resolve(value);
+
+          let totalResults = value.PaginationResponse.TotalResults;
+          let requestedLimit = value.PaginationResponse.RequestedLimit;
+          let numberOfCalls = totalResults/requestedLimit;
+          let url = request.url;
+          for(let i = 1; i < numberOfCalls; ++i) {
+            request.url = url + 'limit=200&offset=' + i*200;
+            allPagePromises.push(request.makeRequest());
+          }
+          return Promise.all(allPagePromises)
+            .then((responses) => {
+              responses.unshift(value);
+              let data = {};
+              for(let i = 0; i < responses.length; ++i) {
+                for (const [key, value2] of Object.entries(responses[i])){
+                  if(key !== "PaginationResponse") {
+                    if(data[key]){
+                      data[key] = [...data[key], ...value2]
+                    }
+                    else {
+                      data[key] = value2;
+                    }
+                  }
+                }
+              }
+              //console.log(data.key);
+              return Promise.resolve(data);
+            })
+        })
     }
     return Promise.reject(Error("Request limit reached"));
   }
-
 
   //may be changed later
   atLimit() {
