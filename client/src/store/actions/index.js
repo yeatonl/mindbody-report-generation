@@ -21,6 +21,25 @@ export const setInterfaceEntry = (key, value) => {
 };
 
 
+export const fetchReports = (report) => {
+  let fullUrl = Urls.API_BASE + Urls.REPORTS;
+  fetch(fullUrl)
+    .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      store.dispatch({
+        type: actionTypes.SET_REPORTS,
+        error: null,
+        meta: null,
+        payload: data,
+      });
+      console.log("REPORTS", data)
+    })
+    .catch((error) => {
+      throw "Unknown error occurred in fetchReports" + error;
+    });
+};
 
 export const fetchReportData = (endpoint, report) => {
   let fullUrl = Urls.BASE_URL + endpoint;

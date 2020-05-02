@@ -8,5 +8,8 @@ import "styles/variables.scss";
 import "styles/header.scss";
 import "styles/scrollbar.scss";
 import "styles/fonts.scss";
+import * as Actions from "store/actions/index.js";
+
+Actions.fetchReports();
 
 ReactDOM.render(<Provider store={store}><App/></Provider>, document.querySelector("#root"));
