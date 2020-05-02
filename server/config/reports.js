@@ -2,9 +2,8 @@ const reports = {
   "ATTENDANCE": {
     "label": "Attendance",
     "key": "ATTENDANCE",
-    "jsonEndpoint": "/reportsAttendanceJson",
-    "csvEndpoint": "/reportsAttendanceCsv",
-    "parametersEndpoint": "/reportsAttendanceParameters",
+    "jsonEndpoint": "/reports/attendance/json",
+    "csvEndpoint": "/reports/attendance/csv",
     "localLink": "/reports/attendance",
     "headers": [],
     "data": [],
@@ -56,9 +55,8 @@ const reports = {
   "COMMISSION": {
     "label": "Commission",
     "key": "COMMISSION",
-    "jsonEndpoint": "/reportsCommissionJson",
-    "csvEndpoint": "/reportsCommissionCsv",
-    "parametersEndpoint": "/reportsCommissionParameters",
+    "jsonEndpoint": "/reports/commission/json",
+    "csvEndpoint": "/reports/commission/csv",
     "localLink": "/reports/commission",
     "headers": [],
     "data": [],
