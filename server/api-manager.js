@@ -928,39 +928,43 @@ class MindbodyQueries {
       return request.makeRequest()
         .then((value) => {
           //console.log(Object.keys(value));
-          if(!value.PaginationResponse)
+          if (!value.PaginationResponse) {
             return Promise.resolve(value);
-
+          }
           let totalResults = value.PaginationResponse.TotalResults;
           let requestedLimit = value.PaginationResponse.RequestedLimit;
-          let numberOfCalls = totalResults/requestedLimit;
+          let resultsSeenSoFar = requestedLimit;
           let url = request.url;
-          for(let i = 1; i < numberOfCalls; ++i) {
-            request.url = url + 'limit=200&offset=' + i*200;
+          while (resultsSeenSoFar < totalResults) {
+            this.requestNum++;
+            if (this.atLimit()) {
+              return Promise.reject(Error("Mindbody request limit reached"));
+            }
+            const resultsPerPage = 200;
+            request.url = url + "limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
+            resultsSeenSoFar += resultsPerPage;
             allPagePromises.push(request.makeRequest());
           }
           return Promise.all(allPagePromises)
             .then((responses) => {
               responses.unshift(value);
               let data = {};
-              for(let i = 0; i < responses.length; ++i) {
+              for (let i = 0; i < responses.length; ++i) {
                 for (const [key, value2] of Object.entries(responses[i])){
-                  if(key !== "PaginationResponse") {
-                    if(data[key]){
-                      data[key] = [...data[key], ...value2]
-                    }
-                    else {
+                  if (key !== "PaginationResponse") {
+                    if (data[key]) {
+                      data[key] = [...data[key], ...value2];
+                    } else {
                       data[key] = value2;
                     }
                   }
                 }
               }
-              //console.log(data.key);
               return Promise.resolve(data);
-            })
-        })
+            });
+        });
     }
-    return Promise.reject(Error("Request limit reached"));
+    return Promise.reject(Error("Mindbody request limit reached"));
   }
 
   //may be changed later
