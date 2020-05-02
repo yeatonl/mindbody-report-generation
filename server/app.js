@@ -1,5 +1,5 @@
 import express from "express";
-//import json2csvExports from "json2csv";
+import * as ReportsConfig from "./config/reports.js";
 import {handleCommissionRptRequest} from "./reports/commission/commission-endpoint.js";
 import {attendanceRequestHandler} from "./reports/attendance/attendance-endpoint.js";
 
@@ -11,6 +11,11 @@ app.get("/reports/attendance", attendanceRequestHandler);
 
 //endpoint for commission report
 app.get("/reports/commission", handleCommissionRptRequest);
+
+//endpoint for report metadata
+app.get("/reports", (req, res) => {
+  res.send(ReportsConfig);
+});
 
 //start up the server, now that the endpoint handlers are installed.
 app.listen(PORT, function() {
