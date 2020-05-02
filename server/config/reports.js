@@ -1,4 +1,4 @@
-{
+export const REPORTS = {
   "ATTENDANCE": {
     "label": "Attendance",
     "key": "ATTENDANCE",
@@ -109,4 +109,4 @@
       }
     ]
   }
-}
+};
