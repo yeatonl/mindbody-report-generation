@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import "./attendance.scss";
+import "./report.scss";
 import Grid from "views/components/grid/grid.jsx";
 import PropTypes from "prop-types";
 import TextInput from "views/components/textInput/textInput.jsx";
@@ -19,23 +19,8 @@ import {ReactComponent as InfoIcon} from "svg/icons/info.svg";
 
 export default connect((state) => {
   return {
-    data: state.reports[Reports.ATTENDANCE]?.data,
-    headers: state.reports[Reports.ATTENDANCE]?.headers,
-    parametersInfo: state.reports[Reports.ATTENDANCE]?.parameters,
   };
-}, null)(class AttendanceReport extends React.Component {
-  static propTypes = {
-    data: PropTypes.array,
-    headers: PropTypes.array,
-    parametersInfo: PropTypes.array,
-  }
-
-  static defaultProps = {
-    data: [],
-    headers: [],
-    parametersInfo: [],
-  }
-
+}, null)(class Report extends React.Component {
   constructor(props){
     super(props);
 
@@ -45,12 +30,21 @@ export default connect((state) => {
     };
   }
 
-  componentDidMount = () => {
-    Actions.fetchReportParameters(Urls.ATTENDANCE_REPORT_URL_PARAMETERS, Reports.ATTENDANCE);
+  static propTypes = {
+    report: PropTypes.shape({
+      data: PropTypes.array.isRequired,
+      headers: PropTypes.array.isRequired,
+      parameters: PropTypes.array.isRequired,
+      jsonEndpoint: PropTypes.string.isRequired,
+      csvEndpoint: PropTypes.string.isRequired,
+      key: PropTypes.string.isRequired,
+    }),
   }
 
+
+
   copyDataToClipboard = () => {
-    Promise.all(this.props.data.map(async(row) => {
+    Promise.all(this.props.report.data.map(async(row) => {
       return row.join("\t");
     }))
       .then((values) => {
@@ -63,15 +57,19 @@ export default connect((state) => {
   }
 
   loadDataFromEndpoint = () => {
-    let url = encodeQueryParameters(Urls.ATTENDANCE_REPORT_URL_JSON, this.state.parametersData);
-    Actions.fetchReportData(url, Reports.ATTENDANCE);
+    let url = encodeQueryParameters(this.props.report.jsonEndpoint, this.state.parametersData);
+    Actions.fetchReportData(url, this.props.report.key);
   }
 
   render = () => {
+    let data = this.props.report.data;
+    let headers = this.props.report.headers;
+    let parameters = this.props.report.parameters;
+
     return (
-      <main className="attendance-report">
+      <main className="report">
         <header>
-          <ReportParameters parameters={this.props.parametersInfo} onChange={(key, value) => {
+          <ReportParameters parameters={parameters} onChange={(key, value) => {
             this.setState((oldState) => {
               return {
                 parametersData: {...oldState.parametersData, [key]: value},
@@ -88,7 +86,7 @@ export default connect((state) => {
               ghost
               label="Copy"
               tempLabel="Copied"
-              disabled={!(this.props.data && this.props.data.length > 0)}
+              disabled={!(data && data.length > 0)}
               onClick={this.copyDataToClipboard}
               title="Copy the CSV data to clipboard"
             />
@@ -96,7 +94,7 @@ export default connect((state) => {
               ghost
               label="Download"
               tempLabel="Downloaded"
-              disabled={!(this.props.data && this.props.data.length > 0)}
+              disabled={!(data && length > 0)}
               onClick={this.downloadData}
               title="Download as a CSV file"
             />
@@ -114,12 +112,12 @@ export default connect((state) => {
         </header>
 
         {this.state.showParameterDocumentation &&
-          <ParameterDocumentation parameters={this.props.parametersInfo}/>
+          <ParameterDocumentation parameters={this.props.report.parameters}/>
         }
-        {this.props.data && this.props.data.length > 0 &&
+        {data && data.length > 0 &&
           <Grid
-            data={this.props.data}
-            headers={this.props.headers}
+            data={data}
+            headers={headers}
           />
         }
       </main>

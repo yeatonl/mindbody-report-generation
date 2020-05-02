@@ -1,5 +1,6 @@
 import store from "store/store.js";
 import * as actionTypes from "store/types.js";
+import * as Urls from "constants/urls.js";
 
 export const setTheme = (theme) => {
   store.dispatch({
@@ -21,8 +22,9 @@ export const setInterfaceEntry = (key, value) => {
 
 
 
-export const fetchReportData = (url, report) => {
-  fetch(url)
+export const fetchReportData = (endpoint, report) => {
+  let fullUrl = Urls.BASE_URL + endpoint;
+  fetch(fullUrl)
     .then((res) => {
       return res.json();
     })
@@ -35,7 +37,7 @@ export const fetchReportData = (url, report) => {
       });
     })
     .catch((error) => {
-      throw "Unknown error occurred in fetchReportData";
+      throw "Unknown error occurred in fetchReportData" + error;
     });
 };
 

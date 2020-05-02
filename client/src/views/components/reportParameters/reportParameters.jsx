@@ -37,6 +37,7 @@ export default class ReportParameters extends React.Component {
       onDelayedChange={(value) => {
         this.props.onChange(param.key, value);
       }}
+      validation={param.validation}
       onEnter={() => {}}
     />;
   }

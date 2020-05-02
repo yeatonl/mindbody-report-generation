@@ -34,11 +34,16 @@ export default class ParametersDocumentation extends React.Component {
               <div className="type">{param.type}</div>
             </div>
             <div className="description">{param.description}</div>
-            <div className="validation">
-              <div className="section-header">Validation</div>
-              <div>Regex: /{param.validation}/</div>
-              <div>If the regex matches, the input will be considered {param.validationResult.toLowerCase()}.</div>
-            </div>
+            {param.validation.map((rule, index) => {
+              return <div key={index} className="validation-rule">
+                <div className="header">Validation rule {index}</div>
+                <div>Regex: /{rule.regex}/</div>
+                <div>If it matches, treat the input as {rule.result ? "valid" : "invalid"}. </div>
+                {rule.message &&
+                    <div>And display this message: "{rule.message}" </div>
+                }
+              </div>;
+            })}
           </div>;
         })}
 
