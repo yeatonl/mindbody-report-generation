@@ -91,8 +91,6 @@ export function handleCommissionRptRequest(request, response) {
         let fields = ["Instructor", "Commission"];
         let parser = new json2csvExports.Parser({fields});
         let csv = parser.parse(csvRows);
-        console.log(startDate);
-        console.log(endDate);
         let fileName = "Commission " + startDate + "-" + endDate + ".csv";
         response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
         response.contentType("text/csv");
