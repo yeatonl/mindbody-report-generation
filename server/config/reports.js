@@ -1,4 +1,4 @@
-export const REPORTS = {
+const reports = {
   "ATTENDANCE": {
     "label": "Attendance",
     "key": "ATTENDANCE",
@@ -110,3 +110,5 @@ export const REPORTS = {
     ]
   }
 };
+
+export default reports;
