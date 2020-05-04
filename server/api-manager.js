@@ -997,6 +997,10 @@ class MindbodyQueries {
               for (let i = 0; i < responses.length; ++i) {
                 for (const [key, value2] of Object.entries(responses[i])){
                   if (key !== "PaginationResponse") {
+                    if (responses.length > 1) {
+                      console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
+                      console.log(JSON.stringify(value2));
+                    }
                     if (data[key]) {
                       data[key] = [...data[key], ...value2];
                     } else {
