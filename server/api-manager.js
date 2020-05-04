@@ -945,7 +945,7 @@ class MindbodyQueries {
               return Promise.reject(Error("Mindbody request limit reached"));
             }
             const resultsPerPage = 200;
-            request.url = url + "limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
+            request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
             console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
             let maxRetries = 5;
