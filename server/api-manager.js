@@ -942,7 +942,6 @@ class MindbodyQueries {
             }
             const resultsPerPage = 200;
             request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
-            console.log("request url "+ request.url);
             resultsSeenSoFar += resultsPerPage;
             allPagePromises.push(request.makeRequest());
           }
