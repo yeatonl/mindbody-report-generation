@@ -4,7 +4,7 @@ import {CommissionReport} from "./commission.js";
 import MindbodyAccess from "../../api-manager.js";
 
 /*a handy request URLS for testing:
-http://localhost:8080/reports/commission?format=csv&startdate=2020-03-01T00:00:00&enddate=2020-03-031T00:00:00
+http://localhost:8080/reports/commission?format=csv&startdate=04/29/2020&enddate=04/30/2020
 */
 export function handleCommissionRptRequest(request, response) {
   //console.log("handleCommissionRptRequest:");
@@ -38,7 +38,7 @@ export function handleCommissionRptRequest(request, response) {
   //pass validated input params to report generator
   let rptGenerator = new CommissionReport();
   rptGenerator.setStartDate(startDate);
-  //rptGenerator.setEndDate(endDate);
+  rptGenerator.setEndDate(endDate);
   //rptGenerator.addFakeSalesDataForTesting();
 
   var rawReportData;
@@ -91,8 +91,7 @@ export function handleCommissionRptRequest(request, response) {
         let fields = ["Instructor", "Commission"];
         let parser = new json2csvExports.Parser({fields});
         let csv = parser.parse(csvRows);
-        let fileName = "CommissionReport.csv";
-        //todo: As a user, I'd appreciate a more unique filename with the date range embedded
+        let fileName = "Commission " + startDate + "-" + endDate + ".csv";
         response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
         response.contentType("text/csv");
         response.send(csv);
