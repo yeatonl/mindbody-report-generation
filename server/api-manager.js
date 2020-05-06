@@ -64,11 +64,11 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ClientIds
-  *  @param SearchText
-  *  @param UniqueIds
-  *  @param IsProspect
-  *  @param LastModifiedDate
+  *  @param {string[]} ClientIds Filters results to clients with these IDs.
+  *  @param {string} SearchText Text to use in the search. Can include FirstName, LastName, and Email. Note that user credentials must be provided.
+  *  @param {number[]} UniqueIds Filters results to clients with these UniqueIDs. This parameter can not be used with ClientIDs or SearchText.
+  *  @param {boolean} IsProspect When true, filters the results to include only those clients marked as prospects for the business. When false, indicates indicates that only those clients who are not marked prospects should be returned.
+  *  @param {string} LastModifiedDate Filters the results to include only the clients that have been modified on or after this date.
   *//*eslint-enable */
   getClients(parameters) {
     var query = QueryString.stringify(parameters);
@@ -84,14 +84,11 @@ class MindbodyQueries {
 
   //takes parameters as ?<>=<>&<>=<> etc. Either SessionTypeIds or ScheduleType must be provided.
   /* eslint-disable *//**
-  * Required:
-  * @param SessionTypeIds
-  * @param ScheduleType .
-  *
   * Optional:
-  * @param Arrival
-  * @param StartTime
-  * @param EndTime
+  * @param {string} SessionTypeIds Filters on the provided session type IDs. Either SessionTypeIds or ScheduleType must be provided.
+  * @param {numbers[]} ScheduleType Filters on the provided the schedule type. Either SessionTypeIds or ScheduleType must be provided.
+  * @param {string} StartTime Filters results to times that start on or after this time on the current date. Any date provided is ignored.
+  * @param {string} EndTime Filters results to times that end on or before this time on the current date. Any date provided is ignored.
   *//*eslint-enable */
   getActiveSessionTimes(parameters) {
     var query = QueryString.stringify(parameters);
@@ -119,15 +116,15 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   *  Required:
-  *  @param SessionTypeIds .
+  *  @param {numbers[]} SessionTypeIds A list of the requested session type IDs.
   *
   *  Optional:
-  *  @param LocationIds
-  *  @param StaffIds
-  *  @param StartDate
-  *  @param EndDate
-  *  @param AppointmentId
-  *  @param IgnoreDefaultSessionLength
+  *  @param {numbers[]} LocationIds A list of the requested location IDs.
+  *  @param {numbers[]} StaffIds A list of the requested staff IDs.
+  *  @param {string} StartDate The start date of the requested date range.
+  *  @param {string} EndDate The end date of the requested date range.
+  *  @param {number} AppointmentId If provided, filters out the appointment with this ID.
+  *  @param {boolean} IgnoreDefaultSessionLength When true, availabilities that are nondefault return, for example, a 30-minute availability with a 60-minute default session length. When false, only availabilities that have the default session length return.
   *//*eslint-enable */
   getBookableItems(parameters) {
     var query = QueryString.stringify(parameters);
@@ -143,11 +140,11 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param   LocationIds
-  *  @param   StaffIds
-  *  @param   StartDate
-  *  @param   EndDate
-  *  @param   IgnorePrepFinishTimes
+  *  @param {numbers[]} LocationIds A list of the requested location IDs.
+  *  @param {numbers[]} StaffIds A list of the requested staff IDs.
+  *  @param {string} StartDate The start date of the requested date range.
+  *  @param {string} EndDate The end date of the requested date range.
+  *  @param {boolean} IgnorePrepFinishTimes When true, appointment preparation and finish unavailabilities are not returned.
   *//*eslint-enable */
   getScheduleItems(parameters) {
     var query = QueryString.stringify(parameters);
@@ -163,12 +160,12 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param AppointmentIds
-  *  @param LocationIds
-  *  @param StaffIds
-  *  @param StartDate
-  *  @param EndDate
-  *  @param ClientId
+  *  @param {numbers[]} AppointmentIds A list of the requested appointment IDs.
+  *  @param {numbers[]} LocationIds A list of the requested location IDs.
+  *  @param {numbers[]} StaffIds A list of the requested staff IDs.
+  *  @param {string} StartDate The start date of the requested date range.
+  *  @param {string} EndDate The end date of the requested date range.
+  *  @param {string} ClientId The client ID to be returned.
   *//*eslint-enable */
   getStaffAppointments(parameters) {
     var query = QueryString.stringify(parameters);
@@ -184,19 +181,19 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ClassDescriptionIds
-  *  @param ClassIds
-  *  @param StaffIds
-  *  @param StartDateTime
-  *  @param EndDateTime
-  *  @param ClientId
-  *  @param ProgramIds
-  *  @param SessionTypeIds
-  *  @param LocationIds
-  *  @param SemesterIds
-  *  @param HideCanceledClasses
-  *  @param SchedulingWindow
-  *  @param LastModifiedDate
+  *  @param {numbers[]} ClassDescriptionIds The requested class description IDs.
+  *  @param {numbers[]} ClassIds The requested class IDs.
+  *  @param {numbers[]} StaffIds The requested IDs of the teaching staff members.
+  *  @param {string} StartDateTime The requested start date for filtering.
+  *  @param {string} EndDateTime The requested end date for filtering.
+  *  @param {string} ClientId The client ID of the client who is viewing this class list. Based on identity, the client may be able to see additional information, such as membership specials.
+  *  @param {numbers[]} ProgramIds A list of program IDs on which to base the search.
+  *  @param {numbers[]} SessionTypeIds A list of session type IDs on which to base the search.
+  *  @param {numbers[]} LocationIds A list of location IDs on which to base the search.
+  *  @param {numbers[]} SemesterIds A list of semester IDs on which to base the search.
+  *  @param {boolean} HideCanceledClasses When true, canceled classes are removed from the response. When false, canceled classes are included in the response.
+  *  @param {boolean} SchedulingWindow When true, classes outside scheduling window are removed from the response. When false, classes are included in the response, regardless of the scheduling window.
+  *  @param {string} LastModifiedDate When included in the request, only records modified on or after the LastModifiedDate specified are included in the response.
   *//*eslint-enable */
   getClasses(parameters) {
     var query = QueryString.stringify(parameters);
@@ -214,12 +211,12 @@ class MindbodyQueries {
   * No differentiation is made in mindbody between required and optional for this endpoint.
   *
   * Required:
-  *  @param ClassDescriptionIds
-  *  @param ProgramIds
-  *  @param StartClassDateTime
-  *  @param EndClassDateTime
-  *  @param StaffId
-  *  @param LocationId
+  *  @param {number} ClassDescriptionIds The ID of the requested client.
+  *  @param {number[]} ProgramIds A list of requested program IDs.
+  *  @param {string} StartClassDateTime The date and time that the class starts.
+  *  @param {string} EndClassDateTime The date and time that the class ends.
+  *  @param {number} StaffId The ID of the requested staff member.
+  *  @param {number} LocationId The ID of the requested location.
   *//*eslint-enable */
   getClassDescriptions(parameters) {
     var query = QueryString.stringify(parameters);
@@ -235,13 +232,13 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ClassScheduleIds
-  *  @param EndDate
-  *  @param StartDate
-  *  @param LocationIds
-  *  @param ProgramIds
-  *  @param SessionTypeIds
-  *  @param StaffIds
+  *  @param {number[]} ClassScheduleIds The class schedule IDs.
+  *  @param {string} EndDate The end date of the range. Return any active enrollments that occur on or before this day.
+  *  @param {string} StartDate The start date of the range. Return any active enrollments that occur on or after this day.
+  *  @param {number[]} LocationIds The location IDs.
+  *  @param {number[]} ProgramIds The program IDs.
+  *  @param {number[]} SessionTypeIds The session type IDs.
+  *  @param {number[]} StaffIds The staff IDs.
   *//*eslint-enable */
   getClassSchedules(parameters) {
     var query = QueryString.stringify(parameters);
@@ -257,8 +254,8 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClassID
-  *  @param LastModifiedDate
+  *  @param {number} ClassID The class ID.
+  *  @param {string} LastModifiedDate When included in the request, only records modified on or after the LastModifiedDate specified are included in the response.
   *//*eslint-enable */
   getClassVisits(parameters) {
     var query = QueryString.stringify(parameters);
@@ -273,12 +270,14 @@ class MindbodyQueries {
   }
 
   /* eslint-disable *//**
+  * Either ClassScheduleIds, ClientIds, WaitlistEntryIds, or ClassIds is required; the others become optional.
+  *
   * Optional:
-  *  @param ClassIds
-  *  @param ClassScheduleIds
-  *  @param ClientIds
-  *  @param HidePastEntries
-  *  @param WaitlistEntryIds
+  *  @param {number[]} ClassIds The requested class IDs. If a class ID is present, the request automatically disregards any class schedule IDs in the request.
+  *  @param {number[]} ClassScheduleIds The requested class schedule IDs. If a class ID is present, the request automatically disregards any class schedule IDs in the request.
+  *  @param {string[]} ClientIds The requested client IDs.
+  *  @param {boolean} HidePastEntries When true, indicates that past waiting list entries are hidden from clients. When false, indicates that past entries are not hidden from clients.
+  *  @param {number[]} WaitlistEntryIds The requested waiting list entry IDs. Either ClassScheduleIds, ClientIds, WaitlistEntryIds, or ClassIds is required; the others become optional.
   *//*eslint-enable */
   getWaitlistEntries(parameters) {
     var query = QueryString.stringify(parameters);
@@ -294,12 +293,12 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientId .
+  *  @param {string} ClientId The ID of the client for whom memberships are returned.
   *
   * Optional:
-  *  @param LocationId
-  *  @param CrossRegionalLookup
-  *  @param ClientAssociatedSitesOffset
+  *  @param {number} LocationId Filters results to memberships that can be used to pay for scheduled services at that location. This parameter can not be passed when CrossRegionalLookup is true.
+  *  @param {boolean} CrossRegionalLookup Used to retrieve a client’s memberships from multiple sites within an organization. When included and set to true, it searches a maximum of ten sites with which this client is associated. When a client is associated with more than ten sites, use ClientAssociatedSitesOffset as many times as needed to search the additional sites with which the client is associated. You can use the CrossRegionalClientAssociations value from GET CrossRegionalClientAssociations to determine how many sites the client is associated with.
+  *  @param {number} ClientAssociatedSitesOffset Used to retrieve a client’s memberships from multiple sites within an organization when the client is associated with more than ten sites. To change which ten sites are searched, change this offset value. A value of 0 means that no sites are skipped and the first ten sites are returned. You can use the CrossRegionalClientAssociations value from GET CrossRegionalClientAssociations to determine how many sites the client is associated with. Note that you must always have CrossRegionalLookup set to true to use this parameter.
   *//*eslint-enable */
   getActiveClientMemberships(parameters) {
     var query = QueryString.stringify(parameters);
@@ -315,11 +314,11 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientIds .
+  *  @param {string[]} ClientIds The list of clients IDs for which you want account balances.
   *
   * Optional:
-  *  @param BalanceDate
-  *  @param ClassId
+  *  @param {string} BalanceDate The date you want a balance relative to.
+  *  @param {number} ClassId The class ID of the event for which you want a balance.
   *//*eslint-enable */
   getClientAccountBalances(parameters) {
     var query = QueryString.stringify(parameters);
@@ -335,15 +334,15 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientId .
+  *  @param {string} ClientId The ID of the client whose contact logs are being requested.
   *
   * Optional:
-  *  @param StartDate
-  *  @param EndDate
-  *  @param StaffIds
-  *  @param ShowSystemGenerated
-  *  @param TypeIds
-  *  @param SubtypeIds
+  *  @param {string} StartDate Filters the results to contact logs created on or after this date.
+  *  @param {string} EndDate Filters the results to contact logs created before this date.
+  *  @param {number[]} StaffIds Filters the results to return contact logs assigned to one or more staff IDs.
+  *  @param {boolean} ShowSystemGenerated When true, system-generated contact logs are returned in the results.
+  *  @param {number[]} TypeIds Filters the results to contact logs assigned one or more of these type IDs.
+  *  @param {number[]} SubtypeIds Filters the results to contact logs assigned one or more of these subtype IDs.
   *//*eslint-enable */
   getContactLogs(parameters) {
     var query = QueryString.stringify(parameters);
@@ -359,11 +358,11 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientId .
+  *  @param {string} ClientId The ID of the client.
   *
   * Optional:
-  *  @param CrossRegionalLookup
-  *  @param ClientAssociatedSitesOffset
+  *  @param {boolean} CrossRegionalLookup When true, indicates that the requesting client’s cross regional contracts are returned, if any. When false, indicates that cross regional contracts are not returned.
+  *  @param {number} ClientAssociatedSitesOffset 	Determines how many sites are skipped over when retrieving a client’s cross regional contracts. Used when a client ID is linked to more than ten sites in an organization. Only a maximum of ten site databases are queried when this call is made and CrossRegionalLookup is set to true. To change which sites are queried, change this offset value.
   *//*eslint-enable */
   getClientContracts(parameters) {
     var query = QueryString.stringify(parameters);
@@ -379,7 +378,7 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientId
+  *  @param {string} ClientId The ID of the client.
   *//*eslint-enable */
   getClientDirectDebitInfo(parameters) {
     var query = QueryString.stringify(parameters);
@@ -397,9 +396,9 @@ class MindbodyQueries {
   * This endpoint is case sensitive
   *
   * Required:
-  *  @param FirstName
-  *  @param LastName
-  *  @param Email
+  *  @param {string} FirstName The client’s first name.
+  *  @param {string} LastName The client’s last name.
+  *  @param {string} Email The client’s email address.
   *//*eslint-enable */
   getClientDuplicates(parameters) {
     var query = QueryString.stringify(parameters);
@@ -415,8 +414,8 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientId
-  *  @param AppointmentId
+  *  @param {string} ClientId The client ID of the client whose formula notes are being requested.
+  *  @param {number} AppointmentId The appointment ID of the appointment that the formula notes are related to.
   *//*eslint-enable */
   getClientFormulaNotes(parameters) {
     var query = QueryString.stringify(parameters);
@@ -432,7 +431,7 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param RequiredOnly
+  *  @param {boolean} RequiredOnly When true, filters the results to only indexes that are required on creation. When false or omitted, returns all of the client indexes.
   *//*eslint-enable */
   getClientIndexes(parameters) {
     var query = QueryString.stringify(parameters);
@@ -448,12 +447,12 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientId .
+  *  @param {string} ClientId The ID of the client you are querying for purchases.
   *
   * Optional:
-  *  @param StartDate
-  *  @param EndDate
-  *  @param SaleId
+  *  @param {string} StartDate Filters results to purchases made on or after this timestamp.
+  *  @param {string} EndDate Filters results to purchases made before this timestamp.
+  *  @param {number} SaleId Filters results to the single record associated with this ID.
   *//*eslint-enable */
   getClientPurchases(parameters) {
     var query = QueryString.stringify(parameters);
@@ -469,7 +468,7 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param IncludeInactive
+  *  @param {boolean} IncludeInactive When true, filters the results to include subtypes and inactive referral types. When false, includes no subtypes and only active types.
   *//*eslint-enable */
   getClientReferralTypes(parameters) {
     var query = QueryString.stringify(parameters);
@@ -485,19 +484,19 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param ClientId .
+  *  @param {string} ClientId The ID of the client to query. The results are a list of pricing options that the client has purchased. Note that “service” and “pricing option” are synonymous in this section of the documentation.
   *
   * Optional:
-  *  @param ClassId
-  *  @param ProgramIds
-  *  @param LocationIds
-  *  @param VisitCount
-  *  @param StartDate
-  *  @param EndDate
-  *  @param ShowActiveOnly
-  *  @param CrossRegionalLookup
-  *  @param ClientAssociatedSitesOffset
-  *  @param SessionTypeId
+  *  @param {number} ClassId Filters results to only those pricing options that can be used to pay for this class.
+  *  @param {number[]} ProgramIds Filters results to pricing options that belong to one of the given program IDs.
+  *  @param {number[]} LocationIds Filters results to pricing options that can be used at the listed location IDs.
+  *  @param {number} VisitCount A filter on the minimum number of visits a service can pay for.
+  *  @param {string} StartDate Filters results to pricing options that were purchased on or after this date.
+  *  @param {string} EndDate Filters results to pricing options that were purchased on or before this date.
+  *  @param {boolean} ShowActiveOnly When true, includes active services only.
+  *  @param {boolean} CrossRegionalLookup Used to retrieve a client’s pricing options from multiple sites within an organization. When included and set to true, it searches a maximum of ten sites with which this client is associated. When a client is associated with more than ten sites, use ClientAssociatedSitesOffset as many times as needed to search the additional sites with which the client is associated. You can use the CrossRegionalClientAssociations value from GET CrossRegionalClientAssociations to determine how many sites the client is associated with. Note that a SiteID is returned and populated in the ClientServices response when CrossRegionalLookup is set to true.
+  *  @param {boolean} ClientAssociatedSitesOffset Used to retrieve a client’s pricing options from multiple sites within an organization when the client is associated with more than ten sites. To change which ten sites are searched, change this offset value. A value of 0 means that no sites are skipped and the first ten sites are returned. You can use the CrossRegionalClientAssociations value from GET CrossRegionalClientAssociations to determine how many sites the client is associated with. Note that you must always have CrossRegionalLookup set to true to use this parameter.
+  *  @param {number} SessionTypeId Filters results to pricing options that will pay for the given session type ID. Use this to find pricing options that will pay for a specific appointment type.
   *//*eslint-enable */
   getClientServices(parameters) {
     var query = QueryString.stringify(parameters);
