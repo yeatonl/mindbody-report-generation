@@ -41,7 +41,9 @@ function getNumberAttended(classID) {
           reject("getNumberAttended Rejected. numberAttended var is empty");
       })
       .catch((error) => {
-        console.log("In getNumberAttended Catch block. classID DNE!\n", error);
+        //console.log("In getNumberAttended Catch block. classID DNE!\n", error);
+        console.log("In getNumberAttended.\n\ngetClassVisits FAILED!\n\nResolving Promise with junk value of -9999. (attendance in output will = -9999 for this class)");
+        resolve(-9999);
       })
     })
 }
