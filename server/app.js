@@ -1,19 +1,21 @@
 import express from "express";
+import cors from "cors";
 import Reports from "./config/reports.js";
 import {handleCommissionRptRequest} from "./reports/commission/commission-endpoint.js";
 import {attendanceRequestHandler} from "./reports/attendance/attendance-endpoint.js";
+
 
 var app = express();
 const PORT = 8080;
 
 //endpoint for attendance report
-app.get("/reports/attendance", attendanceRequestHandler);
+app.get("/reports/attendance", cors(), attendanceRequestHandler);
 
 //endpoint for commission report
-app.get("/reports/commission", handleCommissionRptRequest);
+app.get("/reports/commission", cors(), handleCommissionRptRequest);
 
 //endpoint for report metadata
-app.get("/reports", (req, res) => {
+app.get("/reports", cors(), (req, res) => {
   res.send(JSON.stringify(Reports));
 });
 
