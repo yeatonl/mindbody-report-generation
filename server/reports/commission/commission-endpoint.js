@@ -99,13 +99,22 @@ export function handleCommissionRptRequest(request, response) {
         response.contentType("text/csv");
         response.send(csv);
       } else if (format === "json") {
-        console.log(rawReportData)
-        let cleanedJson = {headers: ["Item", "Price"], data: []};
-        for(const[key, value] of Object.entries(rawReportData[0])){
-          cleanedJson.data.push([key, value]);
+        let headers = ["Instructor", "Commission"];
+        let data = [];
+  
+        let totalCommission = 0;
+        for (const [staffId, staff] of Object.entries(rawReportData)) {
+          let commission = 0;
+          for (const [key, value] of Object.entries(staff)) {
+            commission += value;
+            totalCommission += value;
+          }
+          data.push([staffIdToNameDict[staffId], commission])
         }
 
-        response.json(cleanedJson);
+        data.push(["Total", totalCommission]);
+
+        response.json({headers, data});
       }
     })
     .catch((error) => {
