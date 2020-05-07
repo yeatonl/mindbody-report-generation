@@ -71,7 +71,10 @@ export function attendanceRequestHandler(request, response) {
     })
     // gets all classes from "Classes" endpoint
     .then((classes) => {
-      let attendanceReport = [];
+      let attendanceReport = {
+        data: [],
+        headers: ["class", "capacity", "registered", "attended"],
+      };
       let allNumberAttendedPromises = [];
       let numberOfClasses = Object.keys(classes.Classes).length;
 
@@ -88,7 +91,9 @@ export function attendanceRequestHandler(request, response) {
             class: classID,
             capacity: maxCapacity,
             registered: numberRegistered,
+            attended: 0
           };
+
           // adds attendance parameter to classData
           let numberAttendedPromise = getNumberAttended(classID)
             .then((numberAttended) => {
@@ -98,7 +103,7 @@ export function attendanceRequestHandler(request, response) {
               console.log("ERROR! ", err);
             });
           allNumberAttendedPromises.push(numberAttendedPromise);
-          attendanceReport.push(classData); // pushes current class's data to attendanceReport
+          attendanceReport.data.push([classData.class, classData.capacity, classData.registered, classData.attended]); // pushes current class's data to attendanceReport
         }
       }
 

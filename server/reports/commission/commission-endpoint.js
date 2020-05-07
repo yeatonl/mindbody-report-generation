@@ -24,14 +24,16 @@ export function handleCommissionRptRequest(request, response) {
 
   let startDate = request.query.startdate;
   if (!startDate) {
-    response.send("Missing \"startdate\" parameter.");
-    return;
+    startDate = "1/1/1";
+    //response.send("Missing \"startdate\" parameter.");
+    //return;
   }
 
   let endDate = request.query.enddate;
   if (!endDate) {
-    response.send("Missing \"enddate\" parameter.");
-    return;
+    endDate = "1/1/3000";
+    //response.send("Missing \"enddate\" parameter.");
+    //return;
   }
 
 
@@ -97,7 +99,13 @@ export function handleCommissionRptRequest(request, response) {
         response.contentType("text/csv");
         response.send(csv);
       } else if (format === "json") {
-        response.json(rawReportData);
+        console.log(rawReportData)
+        let cleanedJson = {headers: ["Item", "Price"], data: []};
+        for(const[key, value] of Object.entries(rawReportData[0])){
+          cleanedJson.data.push([key, value]);
+        }
+
+        response.json(cleanedJson);
       }
     })
     .catch((error) => {
