@@ -29,9 +29,6 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
         return Promise.all(promises);
       })
       .then((value) => {
-        return MindbodyAccess.post;
-      })
-      .then((value) => {
         return MindbodyAccess.getClients(
           { "SearchText": "Test"});
       })
