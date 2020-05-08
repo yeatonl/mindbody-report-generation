@@ -924,8 +924,7 @@ class MindbodyQueries {
     this.requestNum++;
     let allPagePromises = [];
 
-    const backoff = (retries, fn, delay = 500) =>
-      fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
+    const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
 
     if (!this.atLimit()) {
       //return request.makeRequest();
