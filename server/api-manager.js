@@ -923,7 +923,9 @@ class MindbodyQueries {
     request.addAuth(this.authToken);
     this.requestNum++;
     let allPagePromises = [];
-
+    let funcc = () => {
+      return request.makeRequest();
+    };
     const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
 
     if (!this.atLimit()) {
@@ -948,7 +950,7 @@ class MindbodyQueries {
             console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
             let maxRetries = 5;
-            allPagePromises.push(backoff(maxRetries, request.makeRequest()));
+            allPagePromises.push(backoff(maxRetries, funcc));
           }
           return Promise.all(allPagePromises)
             .then((responses) => {
