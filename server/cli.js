@@ -1,4 +1,5 @@
 import {getCommissionReport} from "./reports/commission/commission-endpoint.js";
+import {getAttendanceReport} from "./reports/attendance/attendance-endpoint.js";
 import yargs from "yargs";
 import fs from "fs";
 
@@ -90,11 +91,14 @@ function getOptions() {
 
 var options = getOptions();
 if (options) {
+  console.log(options);
   if (argv.report === "commission") {
     getCommissionReport(options).then((report) => {
       writeToFile(report, options);
     });
   } else if (argv.report === "attendance") {
-    //needs to be implemented
+    getAttendanceReport(options.format, options.startDate, options.endDate).then((report) => {
+      writeToFile(report, options);
+    });
   }
 }

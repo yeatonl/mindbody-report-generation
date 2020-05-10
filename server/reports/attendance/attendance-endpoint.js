@@ -46,31 +46,9 @@ function getNumberAttended(classID) {
     })
 }
 
-// gets attendance data from mindbody endpoints and outputs it as .csv or JSON to our endpoint
-// endpoint URL example
-// http://localhost:8080/reports/attendance?format=csv&startdate=01/01/2020&enddate=12/31/2020
-export function attendanceRequestHandler(request, response) {
-  let format = request.query.format; //gets format value in URL query
-  let startdate = request.query.startdate; //gets startdate value in URL query
-  let enddate = request.query.enddate; //gets enddate value in URL query
-
-  // error handling
-  // "throws error" if format isn't JSON or CSV
-  if (!(format === "json" || format === "csv")) {
-    response.send('Bad format parameter. Must be "json" or "csv"');
-    return;
-  }
-  // sets startdate to current day if field is NULL
-  if (!startdate) {
-    startdate = getDate();
-  }
-  // sets enddate to current day if field is NULL
-  if (!enddate) {
-    enddate = getDate();
-  }
-
+export function getAttendanceReport(format, startdate, enddate) {
   // access Mindbody Endpoints
-  MindbodyAccess.getAuth()
+  return MindbodyAccess.getAuth()
     .then((value) => {
       MindbodyAccess.authToken = value.AccessToken;
       // gets all classes between StartDateTime - EndDateTime
@@ -114,23 +92,52 @@ export function attendanceRequestHandler(request, response) {
         attendanceReport.push(classData); // pushes current class's data to attendanceReport
       } 
       // resolves all, allNumberAttendedPromises then outputs attendance report to endpoint as CSV or JSON
-      Promise.all(allNumberAttendedPromises)
+      return Promise.all(allNumberAttendedPromises)
         .then(() => {
           if (format === "csv") {
             let fields = ["class_title", "class_ID", "capacity", "registered", "attended"];
             let parser = new J2C.Parser({ fields });
-            let csv = parser.parse(attendanceReport);
-            let fileName = "Attendance " + startdate + "-" + enddate + ".csv";
-            response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
-            response.contentType("text/csv");
-            response.send(csv);
+            return parser.parse(attendanceReport);
           } else {
-            response.json(attendanceReport);
+            return attendanceReport;
           }
         })
-        .catch((error) => {
-          console.log("Promise All Error: ", error);
-        })
+    });
+}
+
+// gets attendance data from mindbody endpoints and outputs it as .csv or JSON to our endpoint
+// endpoint URL example
+// http://localhost:8080/reports/attendance?format=csv&startdate=01/01/2020&enddate=12/31/2020
+export function attendanceRequestHandler(request, response) {
+  let format = request.query.format; //gets format value in URL query
+  let startdate = request.query.startdate; //gets startdate value in URL query
+  let enddate = request.query.enddate; //gets enddate value in URL query
+
+  // error handling
+  // "throws error" if format isn't JSON or CSV
+  if (!(format === "json" || format === "csv")) {
+    response.send('Bad format parameter. Must be "json" or "csv"');
+    return;
+  }
+  // sets startdate to current day if field is NULL
+  if (!startdate) {
+    startdate = getDate();
+  }
+  // sets enddate to current day if field is NULL
+  if (!enddate) {
+    enddate = getDate();
+  }
+
+  getAttendanceReport(format, startdate, enddate)
+    .then((report) => {
+      if (format == "csv") {
+        let fileName = "Attendance " + startdate + "-" + enddate + ".csv";
+        response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
+        response.contentType("text/csv");
+        response.send(report);
+      } else {
+        response.json(report);
+      }
     })
     .catch((m) => {
       //TODO: make an error message consistent with commission report
