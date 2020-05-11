@@ -514,14 +514,14 @@ class MindbodyQueries {
   * The endpoint for this is not actually listed in mindbody
   *
   * Required:
-  *  @param ClientId
-  *  @param ClientAssociatedSitesOffset
-  *  @param StartDate
-  *  @param EndDate
-  *  @param UnpaidsOnly .
+  *  @param {string} ClientId The ID of the requested client.
+  *  @param {number} ClientAssociatedSitesOffset The number of sites to skip when returning the site associated with a client.
+  *  @param {string} StartDate The date before which class visits are not returned.
+  *  @param {string} EndDate The date past which class visits are not returned.
+  *  @param {boolean} UnpaidsOnly When true, indicates that only visits that have not been paid for are returned. When false, indicates that all visits are returned, regardless of whether they have been paid for.
   *
   * Optional:
-  *  @param CrossRegionalLookup
+  *  @param {boolean} CrossRegionalLookup When true, indicates that past and scheduled client visits across all sites in the region are returned. When false, indicates that only visits at the current site are returned.
   *//*eslint-enable */
   getClientVisits(parameters) {
     var query = QueryString.stringify(parameters);
@@ -537,8 +537,8 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ClientId
-  *  @param Email
+  *  @param {string} ClientId Looks up the cross regional associations by the client’s ID. Either ClientId or Email must be provided. If both are provided, the ClientId is used by default.
+  *  @param {string} Email Looks up the cross regional associations by the client’s email address. Either ClientId or Email must be provided. If both are provided, the ClientId is used by default.
   *//*eslint-enable */
   getCrossRegionalClientAssociations(parameters) {
     var query = QueryString.stringify(parameters);
@@ -584,13 +584,13 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ClassScheduleIds
-  *  @param StartDate
-  *  @param EndDate
-  *  @param LocationIds
-  *  @param ProgramIds
-  *  @param SessionTypeIds
-  *  @param StaffIds
+  *  @param {number[]} ClassScheduleIds A list of the requested class schedule IDs. If omitted, all class schedule IDs return.
+  *  @param {string} StartDate The start of the date range. The response returns any active enrollments that occur on or after this day.
+  *  @param {string} EndDate The end of the date range. The response returns any active enrollments that occur on or before this day.
+  *  @param {number[]} LocationIds List of the IDs for the requested locations. If omitted, all location IDs return.
+  *  @param {number[]} ProgramIds List of the IDs for the requested programs. If omitted, all program IDs return.
+  *  @param {number[]} SessionTypeIds List of the IDs for the requested session types. If omitted, all session types IDs return.
+  *  @param {number[]} StaffIds List of the IDs for the requested staff IDs. If omitted, all staff IDs return.
   *//*eslint-enable */
   getEnrollments(parameters) {
     var query = QueryString.stringify(parameters);
@@ -624,11 +624,11 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param LocationId  
+  *  @param {number} LocationId The ID of the location that has the requested contracts and AutoPay options.
   * Optional:
-  *  @param ContractIds 
-  *  @param SoldOnline 
-  *  @param ConsumerId 
+  *  @param {number[]} ContractIds When included, the response only contains details about the specified contract IDs.
+  *  @param {boolean} SoldOnline When true, the response only contains details about contracts and AutoPay options that can be sold online. When false, only contracts that are not intended to be sold online are returned.
+  *  @param {number} ConsumerId The ID of the client.
   *//*eslint-enable */
   getContracts(parameters) {
     var query = QueryString.stringify(parameters);
@@ -656,7 +656,7 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param barcodeId  
+  *  @param {string} barcodeId The barcode ID of the gift card for which you want to retrieve the balance.
   *//*eslint-enable */
   getGiftCardBalance(parameters) {
     var query = QueryString.stringify(parameters);
@@ -672,9 +672,9 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param Ids  
-  *  @param LocationId  
-  *  @param SoldOnline  
+  *  @param {number[]} Ids Filters the results to the requested gift card IDs.
+  *  @param {number} LocationId When included, returns gift cards that are sold at the provided location ID.
+  *  @param {boolean} SoldOnline When true, only returns gift cards that are sold online.
   *//*eslint-enable */
   getGiftCards(parameters) {
     var query = QueryString.stringify(parameters);
@@ -690,8 +690,8 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param SellOnline  
-  *  @param PackageIds  
+  *  @param {boolean} SellOnline When true, only return products that are sellable online. When false, all products are returned.
+  *  @param {number[]} PackageIds A list of the packages IDs to filter by.
   *//*eslint-enable */
   getPackages(parameters) {
     var query = QueryString.stringify(parameters);
@@ -707,12 +707,12 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ProductIds   
-  *  @param SearchText     
-  *  @param CategoryIds      
-  *  @param SubCategoryIds      
-  *  @param SellOnline 
-  *  @param LocationId    
+  *  @param {string[]} ProductIds The barcode IDs to filter by.
+  *  @param {string} SearchText A search filter, used for searching by term.
+  *  @param {number[]} CategoryIds A list of category IDs to filter by.
+  *  @param {number[]} SubCategoryIds A list of subcategory IDs to filter by.
+  *  @param {boolean} SellOnline When true, only products that are sellable online are returned. When false, all products are returned.
+  *  @param {number} LocationId The location ID to use to determine the tax for the products that this request returns.
   *//*eslint-enable */
   getProducts(parameters) {
     var query = QueryString.stringify(parameters);
@@ -728,10 +728,10 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param SaleId    
-  *  @param StartSaleDateTime      
-  *  @param EndSaleDateTime       
-  *  @param PaymentMethodId        
+  *  @param {number} SaleId Filters results to the requested sale ID.
+  *  @param {string} StartSaleDateTime Filters results to sales that happened after this date and time.
+  *  @param {string} EndSaleDateTime Filters results to sales that happened before this date and time.
+  *  @param {number} PaymentMethodId Filters results to sales paid for by the given payment method ID.
   *//*eslint-enable */
   getSales(parameters) {
     var query = QueryString.stringify(parameters);
@@ -747,15 +747,15 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ProgramIds    
-  *  @param SessionTypeIds      
-  *  @param ServiceIds       
-  *  @param ClassId        
-  *  @param ClassScheduleId        
-  *  @param SellOnline        
-  *  @param LocationId        
-  *  @param HideRelatedPrograms        
-  *  @param StaffId        
+  *  @param {number[]} ProgramIds Filters to pricing options with the specified program IDs.
+  *  @param {number[]} SessionTypeIds Filters to the pricing options with the specified session types IDs.
+  *  @param {string[]} ServiceIds Filters to the pricing options with the specified IDs. In this context, service and pricing option are used interchangeably. These are the PurchasedItems[].Id returned from GET Sales.
+  *  @param {number} ClassId Filters to the pricing options for the specified class ID.
+  *  @param {number} ClassScheduleId Filters to the pricing options for the specified class schedule ID.
+  *  @param {boolean} SellOnline When true, filters to the pricing options that are sellable online.
+  *  @param {number} LocationId When specified, for each returned pricing option, TaxRate and TaxIncluded are calculated according to the specified location. Note that this does not filter results to only services provided at the given location, and for locations where Value-Added Tax (VAT) rules apply, the TaxRate is set to zero.
+  *  @param {boolean} HideRelatedPrograms When true, indicates that pricing options of related programs are omitted from the response.
+  *  @param {number} StaffId Sets Price and OnlinePrice to the particular pricing of a specific staff member, if allowed by the business.
   *//*eslint-enable */
   getServices(parameters) {
     var query = QueryString.stringify(parameters);
@@ -795,7 +795,7 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param MembershipIds     
+  *  @param {number[]} MembershipIds The requested membership IDs.
   *//*eslint-enable */
   getMemberships(parameters) {
     var query = QueryString.stringify(parameters);
@@ -811,8 +811,8 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ScheduleType
-  *  @param OnlineOnly
+  *  @param {string} ScheduleType A schedule type used to filter the returned results.
+  *  @param {boolean} OnlineOnly If true, filters results to show only those programs that are shown online. If false, all programs are returned.
   *//*eslint-enable */
   getPrograms(parameters) {
     var query = QueryString.stringify(parameters);
@@ -828,10 +828,10 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param SessionTypeIds
-  *  @param LocationId
-  *  @param StartDateTime 
-  *  @param EndDateTime 
+  *  @param {number[]} SessionTypeIds List of session type IDs.
+  *  @param {number} LocationId The location of the resource. This parameter is ignored if EndDateTime or LocationID is not set.
+  *  @param {string} StartDateTime The time the resource starts. This parameter is ignored if EndDateTime or LocationID is not set.
+  *  @param {string} EndDateTime The time the resource ends. This parameter is ignored if EndDateTime or LocationID is not set.
   *//*eslint-enable */
   getResources(parameters) {
     var query = QueryString.stringify(parameters);
@@ -847,8 +847,8 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param ProgramIds
-  *  @param OnlineOnly
+  *  @param {number[]} ProgramIds Filters results to session types that belong to one of the given program IDs. If omitted, all program IDs return.
+  *  @param {boolean} OnlineOnly When true, indicates that only the session types that can be booked online should be returned.
   *//*eslint-enable */
   getSessionTypes(parameters) {
     var query = QueryString.stringify(parameters);
@@ -864,7 +864,7 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Optional:
-  *  @param SiteIds 
+  *  @param {number[]} SiteIds List of the requested site IDs. When omitted, returns all sites that the source has access to.
   *//*eslint-enable */
   getSites(parameters) {
     var query = QueryString.stringify(parameters);
@@ -880,12 +880,12 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param SessionTypeId 
+  *  @param {number} SessionTypeId Return only staff members that are available for the specified session type. You must supply a valid StartDateTime and LocationID to use this parameter.
   * Optional:
-  *  @param Filters  
-  *  @param StaffIds  
-  *  @param StartDateTime   
-  *  @param LocationId  
+  *  @param {string[]} Filters Filters to apply to the search.
+  *  @param {number[]} StaffIds A list of the requested staff IDs.
+  *  @param {string} StartDateTime Return only staff members that are available at the specified date and time. You must supply a valid SessionTypeID and LocationID to use this parameter.
+  *  @param {number} LocationId Return only staff members that are available at the specified location. You must supply a valid SessionTypeID and StartDateTime to use this parameter.
   *//*eslint-enable */
   getStaff(parameters) {
     var query = QueryString.stringify(parameters);
@@ -901,7 +901,7 @@ class MindbodyQueries {
 
   /* eslint-disable *//**
   * Required:
-  *  @param StaffId 
+  *  @param {number} StaffId The ID of the staff member whose permissions you want to return.
   *//*eslint-enable */
   getStaffPermissions(parameters) {
     var query = QueryString.stringify(parameters);
@@ -915,8 +915,6 @@ class MindbodyQueries {
     return this.decorateAndMake(request);
   }
 
-
-
   //@TODO implement caching based on hashes of url's here
   decorateAndMake(request) {
     request.addAuth(this.authToken);
@@ -926,7 +924,6 @@ class MindbodyQueries {
     }
     return Promise.reject(Error("Request limit reached"));
   }
-
 
   //may be changed later
   atLimit() {
@@ -942,14 +939,17 @@ const MindbodyAccess = new MindbodyQueries();
 export default MindbodyAccess;
 
 /*example code
-var client = new mindbodyQueries();
-client.getAuth()
-  .getClients()
-  .then((value) => {
-    console.log(value);
+import MindbodyAccess from "../../api-manager.js";
+//...
+MindbodyAccess.getAuth()
+  .then(() => {
+    return MindbodyAccess.getClients();
   })
-  .catch((m) => {
-    console.log(m);
+  .then((clientsList)) {
+    console.log(clientsList);
+  }
+  .catch((error) => {
+    console.log("Error occurred in [name the context]: " + error.toString());
   });
   */
 
