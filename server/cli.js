@@ -3,6 +3,13 @@ import {getAttendanceReport} from "./reports/attendance/attendance-endpoint.js";
 import yargs from "yargs";
 import fs from "fs";
 
+//some sample commands for testing:
+//node cli -r commission 
+//node cli -r attendance --days-back 30
+//node cli -r commission --start-date 2020-02-01
+//node cli -r commission -s 2020-02-01 --end-date 2020-04-30T21:58:52.206Z
+
+
 const argv = yargs
   .option("start-date", {
     alias: "s",
