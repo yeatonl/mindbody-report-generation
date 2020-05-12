@@ -24,14 +24,16 @@ export function handleCommissionRptRequest(request, response) {
 
   let startDate = request.query.startdate;
   if (!startDate) {
-    response.send("Missing \"startdate\" parameter.");
-    return;
+    startDate = "1/1/1";
+    //response.send("Missing \"startdate\" parameter.");
+    //return;
   }
 
   let endDate = request.query.enddate;
   if (!endDate) {
-    response.send("Missing \"enddate\" parameter.");
-    return;
+    endDate = "1/1/3000";
+    //response.send("Missing \"enddate\" parameter.");
+    //return;
   }
 
 
@@ -96,7 +98,22 @@ export function handleCommissionRptRequest(request, response) {
         response.contentType("text/csv");
         response.send(csv);
       } else if (format === "json") {
-        response.json(rawReportData);
+        let headers = ["Instructor", "Commission"];
+        let data = [];
+  
+        let totalCommission = 0;
+        for (const [staffId, staff] of Object.entries(rawReportData)) {
+          let commission = 0;
+          for (const [key, value] of Object.entries(staff)) {
+            commission += value;
+            totalCommission += value;
+          }
+          data.push([staffIdToNameDict[staffId], commission])
+        }
+
+        data.push(["Total", totalCommission]);
+
+        response.json({headers, data});
       }
     })
     .catch((error) => {

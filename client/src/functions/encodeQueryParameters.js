@@ -6,7 +6,9 @@ export default function encodeQueryData(url, parameters) {
         ret.push(encodeURIComponent(key) + "=" + encodeURIComponent(value));
       }
     }
-
+    if (url.indexOf("?") !== -1){
+      return url + "&" + ret.join("&");
+    }
     return url + "?" + ret.join("&");
   }
   return url;
