@@ -29,6 +29,7 @@ export default class ReportsReducer extends BaseReducer {
       },
     };
   }
+
   [actionTypes.SET_REPORTS](state, action) {
     return action.payload;
   }
