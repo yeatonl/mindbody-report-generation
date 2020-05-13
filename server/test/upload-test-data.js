@@ -29,6 +29,12 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
         return Promise.all(promises);
       })
       .then((value) => {
+<<<<<<< HEAD
+=======
+        return MindbodyAccess.post;
+      })
+      .then((value) => {
+>>>>>>> 2443f7e305d8bef253548bdf148b2cb71c269c8f
         return MindbodyAccess.getClients(
           { "SearchText": "Test"});
       })
