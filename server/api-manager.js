@@ -15,8 +15,8 @@ const URL_SALE = BASE + "sale";
 const URL_STAFF = BASE + "staff";
 const URL_ENROLLMENT = BASE + "enrollment";
 const URL_APPOINTMENT = BASE + "appointment";
-//const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
-const APIKEY = "7db287c206374b2f911ddc918879983d"; //dan's API key. Use it if you really need it
+const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
+//const APIKEY = "7db287c206374b2f911ddc918879983d"; //dan's API key. Use it if you really need it
 const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
@@ -926,11 +926,35 @@ class MindbodyQueries {
     let funcc = () => {
       return request.makeRequest();
     };
-    const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
+    function pause(milliseconds) {
+      return new Promise(resolve => {setTimeout(resolve, milliseconds)});
+    };
+    const maxRetries = 5;
+    // Madison's original definition of backoff:
+    //const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
+    const backoff = (retries, fn, delay = 500) => {
+      return fn().catch((err) => {
+        if (retries == maxRetries) {
+          console.log("");
+          console.log(" --- Initial failure of request: " + request.url);
+        }
+        console.log("Error message was: " + err);
+        if (retries > 1 && !this.atLimit()) {
+          console.log("Counting down #" + retries + " retries...");
+          return pause(delay).then(() => {
+            return backoff(retries - 1, fn, delay * 2);
+          });
+        } else {
+          console.log("Request " + request.url + " was finally rejected.");
+          console.log("");
+          return Promise.reject(err);
+        }
+      });
+    }
 
     if (!this.atLimit()) {
       //return request.makeRequest();
-      return request.makeRequest()
+      return backoff(maxRetries, funcc)
         .then((value) => {
           //console.log(Object.keys(value));
           if (!value.PaginationResponse) {
@@ -947,9 +971,8 @@ class MindbodyQueries {
             }
             const resultsPerPage = 200;
             request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
-            console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
+            //console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
-            let maxRetries = 5;
             allPagePromises.push(backoff(maxRetries, funcc));
           }
           return Promise.all(allPagePromises)
@@ -960,8 +983,8 @@ class MindbodyQueries {
                 for (const [key, value2] of Object.entries(responses[i])){
                   if (key !== "PaginationResponse") {
                     if (responses.length > 1) {
-                      console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
-                      console.log(JSON.stringify(value2));
+                      //console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
+                      //console.log(JSON.stringify(value2));
                     }
                     if (data[key]) {
                       data[key] = [...data[key], ...value2];
@@ -980,7 +1003,7 @@ class MindbodyQueries {
 
   //may be changed later
   atLimit() {
-    const MAX_QUERIES = 800;
+    const MAX_QUERIES = 80000;
     if (this.requestNum >= MAX_QUERIES) {
       return true;
     }
