@@ -916,7 +916,53 @@ class MindbodyQueries {
     return this.decorateAndMake(request);
   }
 
+  //pOST request to add a client via the Mindbody API
+  postClient(parameters) {
+    var request = new MindbodyRequest(
+      URL_CLIENTS + "/addclient",
+      APIKEY,
+      SITEID,
+      "POST",
+      parameters,
+    );
+    return this.decorateAndMake(request);
+  }
 
+  //post request to remove a client from a class
+  postRemoveClientFromClass(parameters) {
+    var request = new MindbodyRequest(
+      URL_CLASS + "/removeclientfromclass",
+      APIKEY,
+      SITEID,
+      "POST",
+      parameters,
+    );
+    return this.decorateAndMake(request);
+  }
+
+  //pOST request to add a client via the Mindbody API
+  postAddClientToClass(parameters) {
+    var request = new MindbodyRequest(
+      URL_CLASS + "/addclienttoclass",
+      APIKEY,
+      SITEID,
+      "POST",
+      parameters,
+    );
+    return this.decorateAndMake(request);
+  }
+
+  //pOST purchase
+  postCheckoutShoppingCart(parameters) {
+    var request = new MindbodyRequest(
+      URL_SALE + "/checkoutshoppingcart",
+      APIKEY,
+      SITEID,
+      "POST",
+      parameters,
+    );
+    return this.decorateAndMake(request);
+  }
 
   //@TODO implement caching based on hashes of url's here
   decorateAndMake(request) {
