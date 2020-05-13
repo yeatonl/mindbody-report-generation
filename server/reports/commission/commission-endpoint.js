@@ -84,9 +84,6 @@ export function handleCommissionRptRequest(request, response) {
     .then((reportTemp) => {
       rawReportData = reportTemp;
       console.log("CommissionReport.generate() returned this data: " + JSON.stringify(rawReportData));
-      return MindbodyAccess.getAuth();
-    }).then(() => {
-      console.log(MindbodyAccess.auth);
       return MindbodyAccess.getStaff({StaffIds: Object.keys(rawReportData)});
     })
     .then((staffResponse) => {
