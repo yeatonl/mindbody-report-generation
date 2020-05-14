@@ -70,7 +70,7 @@ export function attendanceRequestHandler(request, response) {
     .then((classes) => {
       let attendanceReport = {
         data: [],
-        headers: ["classId", "class", "classStartTime", "capacity", "registered", "attended"],
+        headers: ["classId", "classTitle", "classStartTime", "capacity", "registered", "attended"],
       };
       let allNumberAttendedPromises = [];
       let numberOfClasses = Object.keys(classes.Classes).length;
@@ -101,7 +101,7 @@ export function attendanceRequestHandler(request, response) {
       Promise.all(allNumberAttendedPromises)
         .then(() => {
           if (format === "csv") {
-            let fields = ["classId", "class", "classStartTime", "capacity", "registered", "attended"];
+            let fields = ["classId", "classTitle", "classStartTime", "capacity", "registered", "attended"];
             let parser = new J2C.Parser({ fields });
             let csv = parser.parse(attendanceReport);
             let fileName = "AttendanceReport.csv";
