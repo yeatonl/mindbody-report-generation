@@ -33,13 +33,7 @@ export class CommissionReport {
     if (typeof date === "string") {
       return date;
     }
-    var roundedDate = new Date(date.getTime());
-    const midnight = 0;
-    roundedDate.setHours(midnight);
-    roundedDate.setMinutes(midnight);
-    roundedDate.setSeconds(midnight);
-    roundedDate.setMilliseconds(midnight);
-    return roundedDate.toISOString();
+    return date.toISOString();
   }
 
   //return a promise for the generated report
@@ -197,6 +191,7 @@ export class CommissionReport {
       Limit: 200,
       //for cash payments only: PaymentMethodId: 1
     };
+    console.log("Requesting sales...");
     return MindbodyAccess.getSales(payload).then((data) => {
       self.sales = self.parseSales(data.Sales);
     });
@@ -209,6 +204,7 @@ export class CommissionReport {
     for (let i = 0; i < clientIDs.length; i++) {
       clientVisits.push(this.requestClientVisits(clientIDs[i]));
     }
+    console.log("Requesting client visits...");
     return Promise.all(clientVisits);
   }
 
@@ -229,6 +225,7 @@ export class CommissionReport {
   requestServices(services) {
     var self = this;
     var payload = {ServiceIds: services};
+    console.log("Requesting services...");
     return MindbodyAccess.getServices(payload).then((data) => {
       self.services = self.productListToDict(data.Services);
     });
@@ -238,6 +235,7 @@ export class CommissionReport {
   requestProducts(products) {
     var self = this;
     var payload = {ProductIds: products};
+    console.log("Requesting products...");
     return MindbodyAccess.getProducts(payload).then((data) => {
       self.products = self.productListToDict(data.Products);
     });
@@ -254,15 +252,3 @@ export class CommissionReport {
     return result;
   }
 }
-
-//(function () {
-//var startDate = new Date();
-//startDate.setDate(startDate.getDate() - 1);
-//var endDate = new Date();
-//endDate.setDate(endDate.getDate() + 1);
-//
-//var report = new CommissionReport();
-//report.setStartDate(startDate);
-//report.setEndDate(endDate);
-//report.generate().then(staff => console.log(staff));
-//})();
