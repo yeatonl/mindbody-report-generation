@@ -50,12 +50,12 @@ export default class TextInput extends React.Component {
   }
 
   render = () => {
-    let inputClassName = "text-input " + this.props.className;
+    let inputClassName = "text-input ";
     if (this.props.minimal){
       inputClassName += " minimal";
     }
 
-    let wrapperClassName = "text-input-wrapper";
+    let wrapperClassName = "text-input-wrapper " + this.props.className;
     if (this.state.valid === true){
       wrapperClassName += " valid";
     } else if (this.state.valid === false){
@@ -63,8 +63,8 @@ export default class TextInput extends React.Component {
     }
 
     return (
-      <div className={wrapperClassName}>
-        <label className={inputClassName} title={this.props.title} style={this.props.style}>
+      <div className={wrapperClassName} style={this.props.style}>
+        <label className={inputClassName} title={this.props.title}>
           <input
             placeholder=" "
             onChange={(e) => {
