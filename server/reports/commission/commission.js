@@ -7,6 +7,7 @@ import MindbodyAccess from "../../api-manager.js";
 export class CommissionReport {
   constructor() {
     this.startDate = "";
+    this.endDate = "";
     //a different start date is used to determine all the previous
     //instructors for a client
     this.visitStartDate = "2000-01-01T00:00:00";
@@ -191,8 +192,9 @@ export class CommissionReport {
   requestSales() {
     var self = this;
     var payload = {
-      StartDateTime: this.startDate,
-      EndDateTime: this.endDate,
+      StartSaleDateTime: this.startDate,
+      EndSaleDateTime: this.endDate,
+      Limit: 200,
       //for cash payments only: PaymentMethodId: 1
     };
     return MindbodyAccess.getSales(payload).then((data) => {
@@ -215,8 +217,8 @@ export class CommissionReport {
     var self = this;
     var payload = {
       ClientId: clientID,
-      StartDateTime: this.visitStartDate,
-      EndDateTime: this.endDate
+      StartDate: this.visitStartDate,
+      EndDate: this.endDate
     };
     return MindbodyAccess.getClientVisits(payload).then((data) => {
       self.visits[clientID] = data.Visits;

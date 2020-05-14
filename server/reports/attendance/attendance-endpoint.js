@@ -71,34 +71,35 @@ export function attendanceRequestHandler(request, response) {
     })
     // gets all classes from "Classes" endpoint
     .then((classes) => {
-      let attendanceReport = [];
+      let attendanceReport = {
+        data: [],
+        headers: ["classId", "class", "capacity", "registered", "attended"],
+      };
       let allNumberAttendedPromises = [];
       let numberOfClasses = Object.keys(classes.Classes).length;
 
       // iterates through every class in classes
       for (let i = 0; i < numberOfClasses; ++i) {
-        let classID = classes.Classes[i].Id;
-        let maxCapacity = classes.Classes[i].MaxCapacity;
-        let numberRegistered = classes.Classes[i].TotalBooked;
+        let classId = classes.Classes[i].Id;
         let classDate = fixDateFormat(classes.Classes[i].StartDateTime); // Mindbody StartDateTime format is yyyy/mm/dd by default
 
         // adds class data to attendance report if startdate <= classdate <= enddate
         if (isValidDate(startdate, classDate, enddate)) {
-          let classData = {
-            class: classID,
-            capacity: maxCapacity,
-            registered: numberRegistered,
-          };
           // adds attendance parameter to classData
-          let numberAttendedPromise = getNumberAttended(classID)
+          let numberAttendedPromise = getNumberAttended(classId)
             .then((numberAttended) => {
-              classData["attended"] = numberAttended;
+              attendanceReport.data.push([
+                classId,
+                classes.Classes[i].ClassDescription.Name,
+                classes.Classes[i].MaxCapacity, 
+                classes.Classes[i].TotalBooked, 
+                numberAttended
+              ]); // pushes current class's data to attendanceReport
             })
             .catch((err) => {
               console.log("ERROR! ", err);
             });
           allNumberAttendedPromises.push(numberAttendedPromise);
-          attendanceReport.push(classData); // pushes current class's data to attendanceReport
         }
       }
 

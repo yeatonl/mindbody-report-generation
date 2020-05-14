@@ -1,39 +1,41 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { NavLink, Route } from "react-router-dom";
 import "./reports.scss";
 import * as Actions from "store/actions/index.js";
 
-import AttendanceReport from "views/subPages/reports/attendance/attendance.jsx";
-import SalesReport from "views/subPages/reports/sales/sales.jsx";
+import Report from "views/subPages/report/report.jsx";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
 
 export default connect((state) => {
   return {
     interface: state.interface,
+    reports: state.reports,
   };
 }, null)(class Reports extends React.Component {
   constructor(props){
     super(props);
+  }
 
-    this.state = {
-      reports: [
-        {
-          link: "/reports/attendance",
-          label: "Attendance",
-          component: AttendanceReport,
-        },
-        {
-          link: "/reports/sales",
-          label: "Sales",
-          component: SalesReport,
-        },
-      ],
-
-    };
+  static propTypes = {
+    interface: PropTypes.shape({
+      reportsSidebarSelectedItem: PropTypes.number.isRequired,
+    }),
+    reports: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   render() {
+    let sidebarEntries = [];
+
+    for (const [key, value] of Object.entries(this.props.reports)){
+      sidebarEntries.push({
+        label: value.label,
+        link: value.localLink,
+      });
+    }
+
     return (
       <div className="reports">
         <SecondarySidebar
@@ -42,14 +44,15 @@ export default connect((state) => {
             Actions.setInterfaceEntry("reportsSidebarSelectedItem", selectedItem);
           }}
           history={this.props.history}
-          entries={this.state.reports}
+          entries={sidebarEntries}
           header="Available Reports"
         />
-        {this.state.reports.map((report, reportIndex) => {
+        {Object.values(this.props.reports).map((report, reportIndex) => {
           return (
-            <Route key={reportIndex} path={report.link} component={report.component} />
+            <Route key={reportIndex} path={report.localLink}><Report report={report}/></Route>
           );
         })}
+
       </div>
     );
   }

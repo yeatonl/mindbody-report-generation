@@ -21,9 +21,8 @@ export default class SecondarySidebar extends React.Component {
   }
 
   componentDidMount(){
-    this.props.history.push(this.props.entries[this.props.selectedItem].link);
+    this.props.history.push(this.props.entries[this.props.selectedItem]?.localLink);
   }
-
 
   render = () => {
     return (

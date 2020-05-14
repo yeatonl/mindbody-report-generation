@@ -5,6 +5,7 @@
   "main": "app.js",
   "type": "module",
   "dependencies": {
+    "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
     "express": "^4.17.1",
     "json2csv": "^4.5.4",
@@ -20,7 +21,8 @@
     "eslint-plugin-standard": "^4.0.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",

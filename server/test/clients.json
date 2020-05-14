@@ -1,114 +1,112 @@
 {
-    "clients": [
-        {
-            "FirstName": "James",
-            "LastName": "Butt",
-            "AddressLine1": "6649 N Blue Gum St",
-            "State": "LA",
-            "City": "New Orleans",
-            "PostalCode": "70116",
-            "Email": "jbutt@gmail.com",
-            "ReferredBy": "John",
-            "BirthDate": "3/12/1998",
-            "MobilePhone": "504-621-8927"
-          },
-          {
-            "FirstName": "Josephine",
-            "LastName": "Darakjy",
-            "AddressLine1": "4 B Blue Ridge Blvd",
-            "State": "MI",
-            "City": "Brighton",
-            "PostalCode": "48116",
-            "Email": "josephine_darakjy@darakjy.org",
-            "ReferredBy": "Larry",
-            "BirthDate": "8/21/1987",
-            "MobilePhone": "810-292-9388"
-          },
-          {
-            "FirstName": "Art",
-            "LastName": "Venere",
-            "AddressLine1": "8 W Cerritos Ave #54",
-            "State": "NJ",
-            "City": "Bridgeport",
-            "PostalCode": "8014",
-            "Email": "art@venere.org",
-            "ReferredBy": "Julie",
-            "BirthDate": "5/14/1999",
-            "MobilePhone": "856-636-8749"
-          },
-          {
-            "FirstName": "Lenna",
-            "LastName": "Paprocki",
-            "AddressLine1": "639 Main St",
-            "State": "AK",
-            "City": "Anchorage",
-            "PostalCode": "99501",
-            "Email": "lpaprocki@hotmail.com",
-            "ReferredBy": "Monica",
-            "BirthDate": "12/1/1980",
-            "MobilePhone": "907-385-4412"
-          },
-          {
-            "FirstName": "Donette",
-            "LastName": "Foller",
-            "AddressLine1": "34 Center St",
-            "State": "OH",
-            "City": "Hamilton",
-            "PostalCode": "45011",
-            "Email": "donette.foller@cox.net",
-            "ReferredBy": "James",
-            "BirthDate": "3/31/1967",
-            "MobilePhone": "513-570-1893"
-          },
-          {
-            "FirstName": "Simona",
-            "LastName": "Morasca",
-            "AddressLine1": "3 Mcauley Dr",
-            "State": "OH",
-            "City": "Ashland",
-            "PostalCode": "44805",
-            "Email": "simona@morasca.com",
-            "ReferredBy": "Natalie",
-            "BirthDate": "2/21/1997",
-            "MobilePhone": "419-503-2484"
-          },
-          {
-            "FirstName": "Mitsue",
-            "LastName": "Tollner",
-            "AddressLine1": "7 Eads St",
-            "State": "IL",
-            "City": "Chicago",
-            "PostalCode": "60632",
-            "Email": "mitsue_tollner@yahoo.com",
-            "ReferredBy": "Sarah",
-            "BirthDate": "4/7/2000",
-            "MobilePhone": "773-573-6914"
-          },
-          {
-            "FirstName": "Leota",
-            "LastName": "Dilliard",
-            "AddressLine1": "7 W Jackson Blvd",
-            "State": "CA",
-            "City": "San Jose",
-            "PostalCode": "95111",
-            "Email": "leota@hotmail.com",
-            "ReferredBy": "Josh",
-            "BirthDate": "10/10/2001",
-            "MobilePhone": "408-752-3500"
-          },
-          {
-            "FirstName": "Sage",
-            "LastName": "Wieser",
-            "AddressLine1": "5 Boston Ave #88",
-            "State": "SD",
-            "City": "Sioux Falls",
-            "PostalCode": "57105",
-            "Email": "sage_wieser@cox.net",
-            "ReferredBy": "Chris",
-            "BirthDate": "11/20/1995",
-            "MobilePhone": "605-414-2147"
-          }
-    ]
+  "clients": [
+    {
+      "FirstName": "TestJames",
+      "LastName": "Butt",
+      "AddressLine1": "6649 N Blue Gum St",
+      "State": "LA",
+      "City": "New Orleans",
+      "PostalCode": "70116",
+      "Email": "test+jbutt@gmail.com",
+      "ReferredBy": "John",
+      "BirthDate": "3/12/1998",
+      "MobilePhone": "504-621-8927"
+    },
+    {
+      "FirstName": "TestJosephine",
+      "LastName": "Darakjy",
+      "AddressLine1": "4 B Blue Ridge Blvd",
+      "State": "MI",
+      "City": "Brighton",
+      "PostalCode": "48116",
+      "Email": "test+josephine_darakjy@darakjy.org",
+      "ReferredBy": "Larry",
+      "BirthDate": "8/21/1987",
+      "MobilePhone": "810-292-9388"
+    },
+    {
+      "FirstName": "TestArt",
+      "LastName": "Venere",
+      "AddressLine1": "8 W Cerritos Ave #54",
+      "State": "NJ",
+      "City": "Bridgeport",
+      "PostalCode": "8014",
+      "Email": "test+art@venere.org",
+      "ReferredBy": "Julie",
+      "BirthDate": "5/14/1999",
+      "MobilePhone": "856-636-8749"
+    },
+    {
+      "FirstName": "TestLenna",
+      "LastName": "Paprocki",
+      "AddressLine1": "639 Main St",
+      "State": "AK",
+      "City": "Anchorage",
+      "PostalCode": "99501",
+      "Email": "test+lpaprocki@hotmail.com",
+      "ReferredBy": "Monica",
+      "BirthDate": "12/1/1980",
+      "MobilePhone": "907-385-4412"
+    },
+    {
+      "FirstName": "TestDonette",
+      "LastName": "Foller",
+      "AddressLine1": "34 Center St",
+      "State": "OH",
+      "City": "Hamilton",
+      "PostalCode": "45011",
+      "Email": "test+donette.foller@cox.net",
+      "ReferredBy": "James",
+      "BirthDate": "3/31/1967",
+      "MobilePhone": "513-570-1893"
+    },
+    {
+      "FirstName": "TestSimona",
+      "LastName": "Morasca",
+      "AddressLine1": "3 Mcauley Dr",
+      "State": "OH",
+      "City": "Ashland",
+      "PostalCode": "44805",
+      "Email": "test+simona@morasca.com",
+      "ReferredBy": "Natalie",
+      "BirthDate": "2/21/1997",
+      "MobilePhone": "419-503-2484"
+    },
+    {
+      "FirstName": "TestMitsue",
+      "LastName": "Tollner",
+      "AddressLine1": "7 Eads St",
+      "State": "IL",
+      "City": "Chicago",
+      "PostalCode": "60632",
+      "Email": "test+mitsue_tollner@yahoo.com",
+      "ReferredBy": "Sarah",
+      "BirthDate": "4/7/2000",
+      "MobilePhone": "773-573-6914"
+    },
+    {
+      "FirstName": "TestLeota",
+      "LastName": "Dilliard",
+      "AddressLine1": "7 W Jackson Blvd",
+      "State": "CA",
+      "City": "San Jose",
+      "PostalCode": "95111",
+      "Email": "test+leota@hotmail.com",
+      "ReferredBy": "Josh",
+      "BirthDate": "10/10/2001",
+      "MobilePhone": "408-752-3500"
+    },
+    {
+      "FirstName": "TestSage",
+      "LastName": "Wieser",
+      "AddressLine1": "5 Boston Ave #88",
+      "State": "SD",
+      "City": "Sioux Falls",
+      "PostalCode": "57105",
+      "Email": "test+age_wieser@cox.net",
+      "ReferredBy": "Chris",
+      "BirthDate": "11/20/1995",
+      "MobilePhone": "605-414-2147"
+    }
+  ]
 }
-
-

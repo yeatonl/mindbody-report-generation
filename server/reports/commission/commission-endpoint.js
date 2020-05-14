@@ -4,7 +4,7 @@ import {CommissionReport} from "./commission.js";
 import MindbodyAccess from "../../api-manager.js";
 
 /*a handy request URLS for testing:
-http://localhost:8080/reports/commission?format=csv&startdate=2020-03-01T00:00:00&enddate=2020-03-031T00:00:00
+http://localhost:8080/reports/commission?format=csv&startdate=04/29/2020&enddate=04/30/2020
 */
 export function handleCommissionRptRequest(request, response) {
   //console.log("handleCommissionRptRequest:");
@@ -24,21 +24,23 @@ export function handleCommissionRptRequest(request, response) {
 
   let startDate = request.query.startdate;
   if (!startDate) {
-    response.send("Missing \"startdate\" parameter.");
-    return;
+    startDate = "1/1/1";
+    //response.send("Missing \"startdate\" parameter.");
+    //return;
   }
 
   let endDate = request.query.enddate;
   if (!endDate) {
-    response.send("Missing \"enddate\" parameter.");
-    return;
+    endDate = "1/1/3000";
+    //response.send("Missing \"enddate\" parameter.");
+    //return;
   }
 
 
   //pass validated input params to report generator
   let rptGenerator = new CommissionReport();
   rptGenerator.setStartDate(startDate);
-  //rptGenerator.setEndDate(endDate);
+  rptGenerator.setEndDate(endDate);
   //rptGenerator.addFakeSalesDataForTesting();
 
   var rawReportData;
@@ -91,13 +93,27 @@ export function handleCommissionRptRequest(request, response) {
         let fields = ["Instructor", "Commission"];
         let parser = new json2csvExports.Parser({fields});
         let csv = parser.parse(csvRows);
-        let fileName = "CommissionReport.csv";
-        //todo: As a user, I'd appreciate a more unique filename with the date range embedded
+        let fileName = "Commission " + startDate + "-" + endDate + ".csv";
         response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
         response.contentType("text/csv");
         response.send(csv);
       } else if (format === "json") {
-        response.json(rawReportData);
+        let headers = ["Instructor", "Commission"];
+        let data = [];
+  
+        let totalCommission = 0;
+        for (const [staffId, staff] of Object.entries(rawReportData)) {
+          let commission = 0;
+          for (const [key, value] of Object.entries(staff)) {
+            commission += value;
+            totalCommission += value;
+          }
+          data.push([staffIdToNameDict[staffId], commission])
+        }
+
+        data.push(["Total", totalCommission]);
+
+        response.json({headers, data});
       }
     })
     .catch((error) => {
