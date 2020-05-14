@@ -101,9 +101,15 @@ export function attendanceRequestHandler(request, response) {
       Promise.all(allNumberAttendedPromises)
         .then(() => {
           if (format === "csv") {
-            let fields = ["classId", "classTitle", "classStartTime", "capacity", "registered", "attended"];
-            let parser = new J2C.Parser({ fields });
-            let csv = parser.parse(attendanceReport);
+            let parser = new J2C.Parser(attendanceReport.headers);
+            let dataForParser = attendanceReport.data.map((row) => {
+              let rowForParser = {};
+              for (let i = 0; i < attendanceReport.headers.length; i ++) {
+                rowForParser[attendanceReport.headers[i]] = row[i];
+              }
+              return rowForParser;
+            });
+            let csv = parser.parse(dataForParser);
             let fileName = "AttendanceReport.csv";
             //todo: we should choose a filename that includes helpful info like the date range
             response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
