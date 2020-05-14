@@ -930,23 +930,26 @@ class MindbodyQueries {
       return new Promise(resolve => {setTimeout(resolve, milliseconds)});
     };
     const maxRetries = 5;
-    // Madison's original definition of backoff:
+    //madison's original 1-line definition of backoff:
     //const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
+    //expanded version with tiny changes (near this.atLimit) and logging for debugging
     const backoff = (retries, fn, delay = 500) => {
       return fn().catch((err) => {
-        if (retries == maxRetries) {
-          console.log("");
-          console.log(" --- Initial failure of request: " + request.url);
+        //if (retries == maxRetries) {
+        //  console.log(" --- Initial failure of request: " + request.url);
+        //}
+        //console.log("Error message was: " + err);
+        if (this.atLimit()) {
+          return Promise.reject(Error("Mindbody request limit reached"));
         }
-        console.log("Error message was: " + err);
-        if (retries > 1 && !this.atLimit()) {
-          console.log("Counting down #" + retries + " retries...");
+        if (retries > 1) {
+          //console.log("Counting down #" + retries + " retries...");
           return pause(delay).then(() => {
             return backoff(retries - 1, fn, delay * 2);
           });
         } else {
-          console.log("Request " + request.url + " was finally rejected.");
-          console.log("");
+          console.log("Request " + request.url + " was rejected after " + maxRetries + " retries with error message: " + err);
+          //console.log("");
           return Promise.reject(err);
         }
       });
@@ -1003,7 +1006,7 @@ class MindbodyQueries {
 
   //may be changed later
   atLimit() {
-    const MAX_QUERIES = 80000;
+    const MAX_QUERIES = 800;
     if (this.requestNum >= MAX_QUERIES) {
       return true;
     }
