@@ -90,7 +90,11 @@ function getOptions() {
   }
 
   if (!argv.filename) {
-    options.filename = argv.report + "-report." + options.format;
+    //this default filename looks like:  attendance 2020-04-22 - 2020-05-12.csv
+    let startDateString = (typeof options.startDate === "string") ? options.startDate : options.startDate.toISOString().substring(0, 10);
+    let endDateString = (typeof options.endDate === "string") ? options.endDate : options.endDate.toISOString().substring(0, 10);
+    //console.log("Trying filename: " + argv.report + " " + startDateString + " - " + endDateString + "." + options.format);
+    options.filename = argv.report + " " + startDateString + " - " + endDateString + "." + options.format;
   }
 
   return options;
