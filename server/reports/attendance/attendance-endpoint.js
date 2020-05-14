@@ -11,23 +11,6 @@ function getDate() {
   return today;
 }
 
-// takes a date as a string in the form yyyy/mm/dd (Mindbodys default date format) and
-// returns a date as a string in the form mm/dd/yyyy
-function fixDateFormat(date) {
-  let dateSplit = date.split(/[-.\/TU]/);
-  let fixedDate = dateSplit[1] + "/" + dateSplit[2] + "/" + dateSplit[0]; 
-  return fixedDate;
-}
-
-// returns true if start <= toCheck <= end
-// all parameters are dates as strings in the form mm/dd/yyyy 
-function isValidDate(start, toCheck, end) {
-  let startDate = Date.parse(start); 
-  let endDate = Date.parse(end);
-  let checkDate = Date.parse(toCheck);
-  return (checkDate >= startDate && checkDate <= endDate) ? true : false;
-}
-
 // takes a classID as a parameter and 
 // returns the number of students that attended that class
 function getNumberAttended(classID) {
@@ -35,7 +18,18 @@ function getNumberAttended(classID) {
     MindbodyAccess.getClassVisits({ClassID: classID})
       .then((classVisits) => {
         let numberAttended = Object.keys(classVisits.Class.Visits).length;
-        resolve(numberAttended);
+        if(numberAttended >= 0)
+          resolve(numberAttended);
+        else
+          reject("getNumberAttended Rejected. numberAttended var is empty");
+      })
+      .catch((error) => {
+        console.log("In getNumberAttended Catch block. Could not find class!\n", error);
+        console.log("Filling attendance with dummy value of -9999\n");
+
+        // resolving in the catch block because of ENOTFOUND error
+        // this makes it so the report doesn't crash when this error appears.
+        resolve(-9999);
       })
     })
 }
@@ -67,13 +61,16 @@ export function attendanceRequestHandler(request, response) {
   MindbodyAccess.getAuth()
     .then((value) => {
       MindbodyAccess.authToken = value.AccessToken;
-      return MindbodyAccess.getClasses();
+      return MindbodyAccess.getClasses({
+        StartDateTime: startdate,
+        EndDateTime: enddate,
+      });
     })
     // gets all classes from "Classes" endpoint
     .then((classes) => {
       let attendanceReport = {
         data: [],
-        headers: ["classId", "class", "capacity", "registered", "attended"],
+        headers: ["classId", "class", "classStartTime", "capacity", "registered", "attended"],
       };
       let allNumberAttendedPromises = [];
       let numberOfClasses = Object.keys(classes.Classes).length;
@@ -81,33 +78,30 @@ export function attendanceRequestHandler(request, response) {
       // iterates through every class in classes
       for (let i = 0; i < numberOfClasses; ++i) {
         let classId = classes.Classes[i].Id;
-        let classDate = fixDateFormat(classes.Classes[i].StartDateTime); // Mindbody StartDateTime format is yyyy/mm/dd by default
 
-        // adds class data to attendance report if startdate <= classdate <= enddate
-        if (isValidDate(startdate, classDate, enddate)) {
-          // adds attendance parameter to classData
-          let numberAttendedPromise = getNumberAttended(classId)
-            .then((numberAttended) => {
-              attendanceReport.data.push([
-                classId,
-                classes.Classes[i].ClassDescription.Name,
-                classes.Classes[i].MaxCapacity, 
-                classes.Classes[i].TotalBooked, 
-                numberAttended
-              ]); // pushes current class's data to attendanceReport
-            })
-            .catch((err) => {
-              console.log("ERROR! ", err);
-            });
-          allNumberAttendedPromises.push(numberAttendedPromise);
-        }
+        // adds attendance parameter to classData
+        let numberAttendedPromise = getNumberAttended(classId)
+          .then((numberAttended) => {
+            attendanceReport.data.push([
+              classId,
+              classes.Classes[i].ClassDescription.Name,
+              classes.Classes[i].StartDateTime,
+              classes.Classes[i].MaxCapacity, 
+              classes.Classes[i].TotalBooked, 
+              numberAttended
+            ]); // pushes current class's data to attendanceReport
+          })
+          .catch((err) => {
+            console.log("ERROR! ", err);
+          });
+        allNumberAttendedPromises.push(numberAttendedPromise);
       }
 
       // resolves all, allNumberAttendedPromises then outputs attendance report to endpoint as CSV or JSON
       Promise.all(allNumberAttendedPromises)
         .then(() => {
           if (format === "csv") {
-            let fields = ["class", "capacity", "registered", "attended"];
+            let fields = ["classId", "class", "classStartTime", "capacity", "registered", "attended"];
             let parser = new J2C.Parser({ fields });
             let csv = parser.parse(attendanceReport);
             let fileName = "AttendanceReport.csv";
