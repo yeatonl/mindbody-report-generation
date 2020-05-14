@@ -926,11 +926,38 @@ class MindbodyQueries {
     let funcc = () => {
       return request.makeRequest();
     };
-    const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
+    function pause(milliseconds) {
+      return new Promise(resolve => {setTimeout(resolve, milliseconds)});
+    };
+    const maxRetries = 5;
+    //madison's original 1-line definition of backoff:
+    //const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
+    //expanded version with tiny changes (near this.atLimit) and logging for debugging
+    const backoff = (retries, fn, delay = 500) => {
+      return fn().catch((err) => {
+        //if (retries == maxRetries) {
+        //  console.log(" --- Initial failure of request: " + request.url);
+        //}
+        //console.log("Error message was: " + err);
+        if (this.atLimit()) {
+          return Promise.reject(Error("Mindbody request limit reached"));
+        }
+        if (retries > 1) {
+          //console.log("Counting down #" + retries + " retries...");
+          return pause(delay).then(() => {
+            return backoff(retries - 1, fn, delay * 2);
+          });
+        } else {
+          console.log("Request " + request.url + " was rejected after " + maxRetries + " retries with error message: " + err);
+          //console.log("");
+          return Promise.reject(err);
+        }
+      });
+    }
 
     if (!this.atLimit()) {
       //return request.makeRequest();
-      return request.makeRequest()
+      return backoff(maxRetries, funcc)
         .then((value) => {
           //console.log(Object.keys(value));
           if (!value.PaginationResponse) {
@@ -947,9 +974,8 @@ class MindbodyQueries {
             }
             const resultsPerPage = 200;
             request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
-            console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
+            //console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
-            let maxRetries = 5;
             allPagePromises.push(backoff(maxRetries, funcc));
           }
           return Promise.all(allPagePromises)
@@ -960,8 +986,8 @@ class MindbodyQueries {
                 for (const [key, value2] of Object.entries(responses[i])){
                   if (key !== "PaginationResponse") {
                     if (responses.length > 1) {
-                      console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
-                      console.log(JSON.stringify(value2));
+                      //console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
+                      //console.log(JSON.stringify(value2));
                     }
                     if (data[key]) {
                       data[key] = [...data[key], ...value2];
