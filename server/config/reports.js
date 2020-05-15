@@ -13,7 +13,7 @@ const reports = {
         "type": "DATE",
         "label": "Start date",
         "description": "Controls the date at which the report data begins. Only data after this date will be returned. Must be in the format MM/DD/YYYY",
-        "tooltip": "Data before this date will be excluded",
+        "tooltip": "Data before this date will be excluded. If left blank, defaults to two weeks ago.",
         "validation": [
           {
             "regex": "^((0[0-9])|(1[0-2]))/(([0-2][0-9])|(3[0-1]))/([0-9]{4})$",
@@ -33,7 +33,7 @@ const reports = {
         "key": "enddate",
         "type": "DATE",
         "label": "End date",
-        "description": "Controls the date at which the report data ends. Only data before this date will be returned. Must be in the format MM/DD/YYYY",
+        "description": "Controls the date at which the report data ends. Only data before this date will be returned. Must be in the format MM/DD/YYYY.  If left blank, defaults to today.",
         "tooltip": "Data after this date will be excluded",
         "span": "2",
         "validation": [
@@ -65,7 +65,7 @@ const reports = {
         "key": "startdate",
         "type": "DATE",
         "label": "Start date",
-        "description": "Controls the date at which the report data begins. Only data after this date will be returned. Must be in the format MM/DD/YYYY",
+        "description": "Controls the date at which the report data begins. Only data after this date will be returned. Must be in the format MM/DD/YYYY.  If left blank, defaults to two weeks ago.",
         "tooltip": "Data before this date will be excluded",
         "validation": [
           {
@@ -87,7 +87,7 @@ const reports = {
         "key": "enddate",
         "type": "DATE",
         "label": "End date",
-        "description": "Controls the date at which the report data ends. Only data before this date will be returned. Must be in the format MM/DD/YYYY",
+        "description": "Controls the date at which the report data ends. Only data before this date will be returned. Must be in the format MM/DD/YYYY.  If left blank, defaults to today.",
         "tooltip": "Data after this date will be excluded",
         "span": "2",
         "validation": [
