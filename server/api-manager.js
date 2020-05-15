@@ -1,6 +1,8 @@
 /*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
 
+import fs from "fs";
+
 const USERNAME = "Siteowner";
 const PASSWORD = "apitest1234";
 
@@ -19,12 +21,15 @@ const URL_APPOINTMENT = BASE + "appointment";
 const APIKEY = "7db287c206374b2f911ddc918879983d"; //dan's API key. Use it if you really need it
 const SITEID = "-99";
 
+
+
 import MindbodyRequest from "./requests.js";
 import QueryString from "query-string";
 class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
+    this.loadConfig();
   }
 
   //gets authentication
@@ -968,25 +973,26 @@ class MindbodyQueries {
     request.addAuth(this.authToken);
     this.requestNum++;
     let allPagePromises = [];
-<<<<<<< HEAD
 
-    const backoff = (retries, fn, delay = 500) => {
-      return fn().catch((err) => {
-        return retries > 1 && !this.atLimit() ? pause(delay).then(() => {
-          return backoff(retries - 1, fn, delay * 2);
-        }) : Promise.reject(err);
-      });
-    };
-=======
-    let funcc = () => {
+    let makeRequest = () => {
       return request.makeRequest();
     };
-    const backoff = (retries, fn, delay = 500) => fn().catch(err => (retries > 1 && !this.atLimit()) ? pause(delay).then(() => backoff(retries - 1, fn, delay * 2)) : Promise.reject(err));
->>>>>>> Wrap function in function
+    //backoff function, backs off a preset amount
+    const backoff = (retries, fn, delay = this.initialDelay) => {
+      return fn().catch((err) => {
+        if (retries > 1 && !this.atLimit()) {
+          pause(delay).then(() => {
+            return backoff(retries - 1, fn, delay * this.backoffMultiplier);
+          });
+        } else {
+          Promise.reject(err);
+        }
+      });
+    };
 
     if (!this.atLimit()) {
       //return request.makeRequest();
-      return request.makeRequest()
+      return backoff(this.maxRetries, makeRequest)
         .then((value) => {
           //console.log(Object.keys(value));
           if (!value.PaginationResponse) {
@@ -1005,8 +1011,7 @@ class MindbodyQueries {
             request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
             console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
-            let maxRetries = 5;
-            allPagePromises.push(backoff(maxRetries, funcc));
+            allPagePromises.push(backoff(this.maxRetries, makeRequest));
           }
           return Promise.all(allPagePromises)
             .then((responses) => {
@@ -1029,6 +1034,11 @@ class MindbodyQueries {
               }
               return Promise.resolve(data);
             });
+        })
+        .catch((err) => {
+          if (err.message.includes("ENOTFOUND")) {
+            return Promise.reject(Error("Mindbody failed too many times: " + err.message));
+          }
         });
     }
     return Promise.reject(Error("Mindbody request limit reached"));
@@ -1041,6 +1051,23 @@ class MindbodyQueries {
       return true;
     }
     return false;
+  }
+
+  loadConfig() {
+    fs.readFile("./server/config/reports.json", "utf8", (err, jsonString) => {
+      if (err) {
+        console.log("File read failed:", err);
+        return;
+      }
+      try {
+        const data = JSON.parse(jsonString);
+        this.backoffMultiplier = data.backoffMultiplier;
+        this.maxRetries = data.maxRetries;
+        this.initialDelay = data.initialDelay;
+      } catch (err) {
+        console.log("Error parsing JSON string:", err);
+      }
+    });
   }
 }
 
