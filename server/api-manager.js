@@ -967,10 +967,49 @@ class MindbodyQueries {
   decorateAndMake(request) {
     request.addAuth(this.authToken);
     this.requestNum++;
+    let allPagePromises = [];
     if (!this.atLimit()) {
-      return request.makeRequest();
+      //return request.makeRequest();
+      return request.makeRequest()
+        .then((value) => {
+          //console.log(Object.keys(value));
+          if (!value.PaginationResponse) {
+            return Promise.resolve(value);
+          }
+          let totalResults = value.PaginationResponse.TotalResults;
+          let requestedLimit = value.PaginationResponse.RequestedLimit;
+          let resultsSeenSoFar = requestedLimit;
+          let url = request.url;
+          while (resultsSeenSoFar < totalResults) {
+            this.requestNum++;
+            if (this.atLimit()) {
+              return Promise.reject(Error("Mindbody request limit reached"));
+            }
+            const resultsPerPage = 200;
+            request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
+            resultsSeenSoFar += resultsPerPage;
+            allPagePromises.push(request.makeRequest());
+          }
+          return Promise.all(allPagePromises)
+            .then((responses) => {
+              responses.unshift(value);
+              let data = {};
+              for (let i = 0; i < responses.length; ++i) {
+                for (const [key, value2] of Object.entries(responses[i])){
+                  if (key !== "PaginationResponse") {
+                    if (data[key]) {
+                      data[key] = [...data[key], ...value2];
+                    } else {
+                      data[key] = value2;
+                    }
+                  }
+                }
+              }
+              return Promise.resolve(data);
+            });
+        });
     }
-    return Promise.reject(Error("Request limit reached"));
+    return Promise.reject(Error("Mindbody request limit reached"));
   }
 
   //may be changed later
