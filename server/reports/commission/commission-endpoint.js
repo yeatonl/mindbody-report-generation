@@ -64,14 +64,14 @@ export function handleCommissionRptRequest(request, response) {
 
   let startDate = request.query.startdate;
   if (!startDate) {
-    startDate = "1/1/1";
+    startDate = "05/14/2020";
     //response.send("Missing \"startdate\" parameter.");
     //return;
   }
 
   let endDate = request.query.enddate;
   if (!endDate) {
-    endDate = "1/1/3000";
+    endDate = "05/14/2020";
     //response.send("Missing \"enddate\" parameter.");
     //return;
   }

@@ -16,7 +16,7 @@ const URL_STAFF = BASE + "staff";
 const URL_ENROLLMENT = BASE + "enrollment";
 const URL_APPOINTMENT = BASE + "appointment";
 //const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
-const APIKEY = "7db287c206374b2f911ddc918879983d"; //dan's API key. Use it if you really need it
+const APIKEY = "76af57a017f64fcd9fc16cc5032404a0"; //dan's API key. Use it if you really need it
 const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
