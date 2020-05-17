@@ -3,9 +3,6 @@
 
 import fs from "fs";
 
-const USERNAME = "Siteowner";
-const PASSWORD = "apitest1234";
-
 //see commit 52f3c1d0c984db4582830a4ce08b31491cbf4f8e for old code
 
 const BASE = "https://api.mindbodyonline.com/public/v6/";
@@ -37,8 +34,8 @@ class MindbodyQueries {
       this.apikey,
       SITEID,
       "POST",
-      { "Username": USERNAME,
-        "Password": PASSWORD }
+      { "Username": this.username,
+        "Password": this.password }
     );
     this.requestNum++;
     if (!this.atLimit()) {
@@ -1033,6 +1030,8 @@ class MindbodyQueries {
         const data = JSON.parse(jsonString);
         if (filename === "./server/config/secrets.json")
         {
+          this.username = data.username;
+          this.password = data.password;
           this.apikey = data.apikey;
         }
         else if (filename === "./server/config/config.json")
