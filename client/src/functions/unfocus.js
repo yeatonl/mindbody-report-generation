@@ -1,3 +1,5 @@
-export default function unfocus(){
-  document.activeElement.blur();
+export default function unfocus(event){
+  if (document.activeElement === event.target){
+    document.activeElement.blur();
+  }
 }
