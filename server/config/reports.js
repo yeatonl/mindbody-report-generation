@@ -1,3 +1,11 @@
+
+
+let date = new Date();
+let currentDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+
+date.setTime(date.getTime()-14*24*60*60*1000); //two weeks ago
+let twoWeeksAgoDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
+
 const reports = {
   "ATTENDANCE": {
     "label": "Attendance",
@@ -27,7 +35,8 @@ const reports = {
           }
         ],
         "span": "2",
-        "data": {}
+        "data": {},
+        "initial": twoWeeksAgoDate
       },
       {
         "key": "enddate",
@@ -48,7 +57,8 @@ const reports = {
             "message": "Format: mm/dd/yyyy"
           }
         ],
-        "data": {}
+        "data": {},
+        "initial": currentDate
       }
     ]
   },
@@ -81,7 +91,8 @@ const reports = {
         ],
         "span": "2",
         "invalidMessage": "Must be of the form MM/DD/YYYY",
-        "data": {}
+        "data": {},
+        "initial": twoWeeksAgoDate
       },
       {
         "key": "enddate",
@@ -103,7 +114,8 @@ const reports = {
           }
         ],
         "invalidMessage": "Must be of the form MM/DD/YYYY",
-        "data": {}
+        "data": {},
+        "initial": currentDate
       }
     ]
   }
