@@ -39,6 +39,7 @@ export default class ReportParameters extends React.Component {
       }}
       validation={param.validation}
       onEnter={() => {}}
+      initial={param.initial}
     />;
   }
 
