@@ -1,14 +1,15 @@
 import MindbodyAccess from "../../api-manager.js";
 import J2C from "json2csv";
 
-//returns the current date
-function getDate() {
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0");
-  let yyyy = today.getFullYear();
-  today = mm + "/" + dd + "/" + yyyy;
-  return today;
+const MINSTUDENTS = 4;
+
+// reformats date to mm/dd/yyyy format and returns it as a string
+function reformatDate(date) {
+  let dd = String(date.getDate()).padStart(2, "0");
+  let mm = String(date.getMonth() + 1).padStart(2, "0");
+  let yyyy = date.getFullYear();
+  let reformattedDate = mm + "/" + dd + "/" + yyyy;
+  return reformattedDate;
 }
 
 // takes a classID as a parameter and 
@@ -48,7 +49,7 @@ function formatJSON(data, headers) {
   return results;
 }
 
-export function getAttendanceReport(format, startdate, enddate) {
+export function getAttendanceReport(format, startdate, enddate, minStudents) {
   //access Mindbody Endpoints
   var attendanceReport = {
     data: [],
@@ -78,14 +79,16 @@ export function getAttendanceReport(format, startdate, enddate) {
         // adds attendance parameter to classData
         let numberAttendedPromise = getNumberAttended(classId)
           .then((numberAttended) => {
-            attendanceReport.data.push([
-              classId,
-              classes.Classes[i].ClassDescription.Name,
-              classes.Classes[i].StartDateTime,
-              classes.Classes[i].MaxCapacity, 
-              classes.Classes[i].TotalBooked, 
-              numberAttended
-            ]); // pushes current class's data to attendanceReport
+            if (numberAttended >= minStudents) {
+              attendanceReport.data.push([
+                classId,
+                classes.Classes[i].ClassDescription.Name,
+                classes.Classes[i].StartDateTime,
+                classes.Classes[i].MaxCapacity, 
+                classes.Classes[i].TotalBooked, 
+                numberAttended
+              ]); // pushes current class's data to attendanceReport
+            }
           })
           .catch((err) => {
             console.log("ERROR! ", err);
@@ -114,11 +117,12 @@ export function getAttendanceReport(format, startdate, enddate) {
 
 //gets attendance data from mindbody endpoints and outputs it as .csv or JSON to our endpoint
 //endpoint URL example
-//http://localhost:8080/reports/attendance?format=csv&startdate=01/01/2020&enddate=12/31/2020
+//http://localhost:8080/reports/attendance?format=csv&startdate=01/01/2020&enddate=12/31/2020&minStudents=4
 export function attendanceRequestHandler(request, response) {
   let format = request.query.format; //gets format value in URL query
   let startdate = request.query.startdate; //gets startdate value in URL query
   let enddate = request.query.enddate; //gets enddate value in URL query
+  let minStudents = Number(request.query.minStudents); 
 
   //error handling
   //"throws error" if format isn't JSON or CSV
@@ -126,16 +130,24 @@ export function attendanceRequestHandler(request, response) {
     response.send("Bad format parameter. Must be \"json\" or \"csv\"");
     return;
   }
-  //sets startdate to current day if field is NULL
+  //sets startdate to 2 weeks prior to current day if field is NULL
   if (!startdate) {
-    startdate = getDate();
+    let today = new Date();
+    today.setDate(today.getDate()-14);
+    let twoWeeksPrior = reformatDate(today);
+    startdate = twoWeeksPrior;
   }
   //sets enddate to current day if field is NULL
   if (!enddate) {
-    enddate = getDate();
+    let today = new Date();
+    enddate = reformatDate(today);
+  }
+  //sets minStudents to MINSTUDENTS if field is NaN
+  if (Number.isNaN(minStudents)) {
+    minStudents = MINSTUDENTS;
   }
 
-  getAttendanceReport(format, startdate, enddate)
+  getAttendanceReport(format, startdate, enddate, minStudents)
     .then((report) => {
       if (format == "csv") {
         let fileName = "AttendanceReport.csv";
