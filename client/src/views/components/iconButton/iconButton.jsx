@@ -38,8 +38,8 @@ export default class IconButton extends React.Component {
     return (
       <button
         className={className}
-        onClick={() => {
-          unfocus();
+        onClick={(e) => {
+          unfocus(e);
           this.props.onClick();
         }}
         title={this.props.title}
