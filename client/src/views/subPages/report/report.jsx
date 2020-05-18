@@ -60,7 +60,7 @@ export default connect((state) => {
 
   loadDataFromEndpoint = () => {
     let url = encodeQueryParameters(this.props.report.jsonEndpoint, this.state.parametersData);
-    actions.fetchReportData(url, this.props.report.key);
+    Actions.fetchReportData(url, this.props.report.key);
   }
 
   render = () => {
