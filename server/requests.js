@@ -36,10 +36,10 @@ export default class MindbodyRequest {
     if (this.body !== "") {
       request.body = JSON.stringify(this.body);
     }
-    var responsePromise = fetch(this.url, request)
+    return fetch(this.url, request)
       .then((response) => {
+        console.log("AA")
         return response.json();
       });
-    return responsePromise;
   }
 }
