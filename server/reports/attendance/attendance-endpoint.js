@@ -26,7 +26,7 @@ function getNumberAttended(classID) {
       })
       .catch((error) => {
         console.log("In getNumberAttended Catch block. Could not find class!\n", error);
-        console.log("Filling attendance with dummy value of -9999\n");
+        console.log("Filling attendance with dummy value of 9999\n");
 
         // resolving in the catch block because of ENOTFOUND error
         // this makes it so the report doesn't crash when this error appears.
