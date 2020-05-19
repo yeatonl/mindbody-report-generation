@@ -42,6 +42,11 @@ const argv = yargs
     description: "Set file name of the report",
     type: "string",
   })
+  .option("minStudent", {
+    description: "Min students in a class (for attendance report)",
+    type: "string",
+    default: "4",
+  })
   .conflicts("start-date", "days-back")
   .demandOption(["report"], "No report selected")
   .help()
@@ -108,7 +113,7 @@ if (options) {
       writeToFile(report, options);
     });
   } else if (argv.report === "attendance") {
-    getAttendanceReport(options.format, options.startDate, options.endDate).then((report) => {
+    getAttendanceReport(options.format, options.startDate, options.endDate, argv.minStudents).then((report) => {
       writeToFile(report, options);
     });
   }
