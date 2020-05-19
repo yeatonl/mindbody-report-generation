@@ -1,6 +1,3 @@
-export const appSettings = {
-  cacheMaxAgeInSeconds: 28800, //8 hours = 8 * 60 * 60 = 28800 seconds
-};
 const reports = {
   "ATTENDANCE": {
     "label": "Attendance",
