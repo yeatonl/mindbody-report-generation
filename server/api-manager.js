@@ -22,8 +22,8 @@ class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
-    this.loadConfig("./server/config/config.json");
-    this.loadConfig("./server/config/secrets.json");
+    //this.loadConfig("./config/config.json");
+    this.loadConfig("./config/secrets.json");
   }
 
   //gets authentication
@@ -1028,14 +1028,12 @@ class MindbodyQueries {
       }
       try {
         const data = JSON.parse(jsonString);
-        if (filename === "./server/config/secrets.json")
-        {
+        if (filename === "./config/secrets.json") {
           this.username = data.username;
           this.password = data.password;
           this.apikey = data.apikey;
         }
-        else if (filename === "./server/config/config.json")
-        {
+        else if (filename === "./config/config.json") {
           this.backoffMultiplier = data.backoffMultiplier;
           this.maxRetries = data.maxRetries;
           this.initialDelay = data.initialDelay;
