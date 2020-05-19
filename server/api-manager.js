@@ -1,7 +1,7 @@
 /*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
 
-import fs from "fs";
+import {appSettings} from "./config/config.js";
 
 const USERNAME = "Siteowner";
 const PASSWORD = "apitest1234";
@@ -978,10 +978,11 @@ class MindbodyQueries {
     //backoff function, backs off a preset amount
     const backoff = (retries, fn, delay = this.initialDelay) => {
       return fn().catch((err) => {
-        if (retries > 1 && !this.atLimit()) {
-          pause(delay).then(() => {
-            return backoff(retries - 1, fn, delay * this.backoffMultiplier);
-          });
+        if (this.atLimit()) {
+          Promise.reject(Error("Mindbody request limit reached"));
+        }
+        if (retries > 1) {
+          setTimeout(backoff(retries - 1, fn, delay * this.backoffMultiplier), delay);
         } else {
           Promise.reject(err);
         }
@@ -1037,6 +1038,7 @@ class MindbodyQueries {
           if (err.message.includes("ENOTFOUND")) {
             return Promise.reject(Error("Mindbody failed too many times: " + err.message));
           }
+          return Promise.reject(err);
         });
     }
     return Promise.reject(Error("Mindbody request limit reached"));
@@ -1052,20 +1054,13 @@ class MindbodyQueries {
   }
 
   loadConfig() {
-    fs.readFile("./server/config/reports.json", "utf8", (err, jsonString) => {
-      if (err) {
-        console.log("File read failed:", err);
-        return;
-      }
-      try {
-        const data = JSON.parse(jsonString);
-        this.backoffMultiplier = data.backoffMultiplier;
-        this.maxRetries = data.maxRetries;
-        this.initialDelay = data.initialDelay;
-      } catch (err) {
-        console.log("Error parsing JSON string:", err);
-      }
-    });
+    try {
+      this.backoffMultiplier = appSettings.backoffMultiplier;
+      this.maxRetries = appSettings.maxRetries;
+      this.initialDelay = appSettings.initialDelay;
+    } catch (err) {
+      console.log("Error:", err);
+    }
   }
 }
 
