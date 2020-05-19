@@ -22,7 +22,7 @@ class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
-    //this.loadConfig("./config/config.json");
+    this.loadConfig("./config/config.json");
     this.loadConfig("./config/secrets.json");
   }
 
