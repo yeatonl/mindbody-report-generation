@@ -30,7 +30,7 @@ function getNumberAttended(classID) {
 
         // resolving in the catch block because of ENOTFOUND error
         // this makes it so the report doesn't crash when this error appears.
-        resolve(-9999);
+        resolve(9999);
       })
     })
 
