@@ -20,7 +20,7 @@
 .eslintcache
 .npm
 .env
-config/secrets.json
+/config/secrets.json
 
 npm-debug.log*
 yarn-debug.log*

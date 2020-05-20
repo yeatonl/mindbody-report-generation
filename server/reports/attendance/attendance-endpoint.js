@@ -138,8 +138,7 @@ export function attendanceRequestHandler(request, response) {
   getAttendanceReport(format, startdate, enddate)
     .then((report) => {
       if (format == "csv") {
-        let fileName = "AttendanceReport.csv";
-        //todo: we should choose a filename that includes helpful info like the date range
+        let fileName = "Attendance " + startdate + "-" + enddate + ".csv";
         response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
         response.contentType("text/csv");
         response.send(report);
