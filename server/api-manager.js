@@ -987,6 +987,7 @@ class MindbodyQueries {
           return Promise.reject(Error("Mindbody request limit reached"));
         }
         if (retries > 1) {
+          console.log("retry countdown from #", retries);
           return pause(delay).then((value) => {
             return backoff(retries - 1, fn, delay * this.backoffMultiplier);
           });
@@ -1027,7 +1028,7 @@ class MindbodyQueries {
                   if (key !== "PaginationResponse") {
                     if (responses.length > 1) {
                       console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
-                      console.log(JSON.stringify(value2));
+                      //console.log(JSON.stringify(value2));
                     }
                     if (data[key]) {
                       data[key] = [...data[key], ...value2];
@@ -1046,7 +1047,7 @@ class MindbodyQueries {
 
   //may be changed later
   atLimit() {
-    const MAX_QUERIES = 800;
+    const MAX_QUERIES = 8000;
     if (this.requestNum >= MAX_QUERIES) {
       return true;
     }
