@@ -982,24 +982,26 @@ class MindbodyQueries {
     }
     //backoff function, backs off a preset amount
     const backoff = (retries, fn, delay = this.initialDelay) => {
+      //const retryNumber = (this.maxRetries - retries) + 1;  //change retry count from 5->1 to 1->5 for display
+      //console.log("Trying retry #" + retryNumber + " to " + request.url);
       return fn().catch((err) => {
+        //console.log("FAILED retry #" + retryNumber + " to " + request.url + " because of error " + err);
         if (this.atLimit()) {
           return Promise.reject(Error("Mindbody request limit reached"));
         }
         if (retries > 1) {
-          return pause(delay).then((value) => {
+          return pause(delay).then(() => {
             return backoff(retries - 1, fn, delay * this.backoffMultiplier);
           });
         }
+        //console.log("Giving up on " + request.url + " after " + this.maxRetries + " attempts");
         return Promise.reject(err);
       });
     };
 
     if (!this.atLimit()) {
-      //return request.makeRequest();
       return backoff(this.maxRetries, makeRequest)
         .then((value) => {
-          //console.log(Object.keys(value));
           if (!value.PaginationResponse) {
             return Promise.resolve(value);
           }
@@ -1014,7 +1016,7 @@ class MindbodyQueries {
             }
             const resultsPerPage = 200;
             request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
-            console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
+            //console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
             allPagePromises.push(backoff(this.maxRetries, makeRequest));
           }
@@ -1026,8 +1028,8 @@ class MindbodyQueries {
                 for (const [key, value2] of Object.entries(responses[i])){
                   if (key !== "PaginationResponse") {
                     if (responses.length > 1) {
-                      console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
-                      console.log(JSON.stringify(value2));
+                      //console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
+                      //console.log(JSON.stringify(value2));
                     }
                     if (data[key]) {
                       data[key] = [...data[key], ...value2];

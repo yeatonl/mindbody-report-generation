@@ -71,7 +71,6 @@ export function getAttendanceReport(format, startdate, enddate) {
     .then((classes) => {
       //console.log("Classes Pagination Data: ", classes.PaginationResponse); // shows pagination data in console
       //console.log(classes);
-      let attendanceReport = [];
       let allNumberAttendedPromises = [];
       let numberOfClasses = Object.keys(classes.Classes).length;
 
