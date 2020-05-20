@@ -975,6 +975,11 @@ class MindbodyQueries {
     let makeRequest = () => {
       return request.makeRequest();
     };
+    function pause(milliseconds) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, milliseconds);
+      });
+    }
     //backoff function, backs off a preset amount
     const backoff = (retries, fn, delay = this.initialDelay) => {
       return fn().catch((err) => {
@@ -982,10 +987,11 @@ class MindbodyQueries {
           return Promise.reject(Error("Mindbody request limit reached"));
         }
         if (retries > 1) {
-          setTimeout(backoff(retries - 1, fn, delay * this.backoffMultiplier), delay);
-        } else {
-          return Promise.reject(err);
+          return pause(delay).then((value) => {
+            return backoff(retries - 1, fn, delay * this.backoffMultiplier);
+          });
         }
+        return Promise.reject(err);
       });
     };
 
