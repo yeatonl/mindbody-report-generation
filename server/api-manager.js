@@ -979,12 +979,12 @@ class MindbodyQueries {
     const backoff = (retries, fn, delay = this.initialDelay) => {
       return fn().catch((err) => {
         if (this.atLimit()) {
-          Promise.reject(Error("Mindbody request limit reached"));
+          return Promise.reject(Error("Mindbody request limit reached"));
         }
         if (retries > 1) {
           setTimeout(backoff(retries - 1, fn, delay * this.backoffMultiplier), delay);
         } else {
-          Promise.reject(err);
+          return Promise.reject(err);
         }
       });
     };
@@ -1033,12 +1033,6 @@ class MindbodyQueries {
               }
               return Promise.resolve(data);
             });
-        })
-        .catch((err) => {
-          if (err.message.includes("ENOTFOUND")) {
-            return Promise.reject(Error("Mindbody failed too many times: " + err.message));
-          }
-          return Promise.reject(err);
         });
     }
     return Promise.reject(Error("Mindbody request limit reached"));
