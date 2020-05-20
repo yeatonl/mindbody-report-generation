@@ -1,0 +1,110 @@
+.checkbox{
+  --checked-color: var(--pcolor-7);
+  --initial-color: var(--gray-15);
+  --hover-color: var(--pcolor-7);
+  --transition-time: 0.1s;
+
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+
+  user-select: none;
+
+  //hide the real checkbox
+  input{
+    display: none;
+  }
+
+  //this is the box that actually gets rendered onscreen
+  .fake-checkbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 1.5rem;
+    height: 1.5rem;
+
+    border: 2px solid var(--initial-color);
+
+    transition: all var(--transition-time) ease-in-out;
+
+    //this is the checkmark that appears when the element is clicked
+    .checkmark{
+      width: 1.25rem;
+      height: 1.25rem;
+
+      opacity: 0;
+
+      transition: all var(--transition-time) ease-in-out;
+
+      *{
+        transition: all var(--transition-time) ease-in-out;
+
+        fill: var(--initial-color);
+      }
+    }
+  }
+
+
+  .label{
+    margin-left: var(--spacing-2);
+
+    transition: all var(--transition-time) ease-in-out;
+  }
+
+
+  &:hover{
+    .fake-checkbox{
+      border-color: var(--hover-color);
+    }
+
+
+    .label{
+      color: var(--hover-color);
+    }
+  }
+
+  &:focus{
+    outline: none;
+    .fake-checkbox{
+      border-color: var(--hover-color);
+    }
+
+    .label{
+      color: var(--hover-color);
+    }
+  }
+
+  //clicking the outer <label> element automatically checks the inner <input> element
+  input:checked{
+    & ~ .fake-checkbox{
+      border-color: var(--checked-color);
+
+      .checkmark{
+        opacity: 1;
+
+        *{
+          fill: var(--checked-color);
+        }
+      }
+    }
+
+
+    & ~ .label{
+      color: var(--checked-color);
+    }
+  }
+
+  &.disabled{
+    filter: grayscale(100%) contrast(50%);
+
+    pointer-events: none;
+  }
+}
+
+#app.light .checkbox{
+  --checked-color: var(--pcolor-4);
+  --initial-color: var(--gray-0);
+  --hover-color: var(--pcolor-4);
+}

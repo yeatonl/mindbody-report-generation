@@ -1,0 +1,29 @@
+.csv-viewer{
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: stretch;
+  max-height: 100vh;
+  padding: var(--spacing-4);
+
+  overflow: hidden;
+
+  > *:not(:last-child){
+    margin-bottom: var(--spacing-4);
+  }
+
+  footer.controls *{
+    flex-grow: 1;
+  }
+
+  .controls{
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+
+    > *:not(:last-child){
+      margin-right: var(--spacing-3);
+    }
+  }
+}

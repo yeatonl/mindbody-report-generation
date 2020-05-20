@@ -1,46 +1,59 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 import { NavLink, Route } from "react-router-dom";
 import "./reports.scss";
+import * as Actions from "store/actions/index.js";
 
-import AttendanceReport from "views/components/reports/attendance/attendance.jsx";
-import SalesReport from "views/components/reports/sales/sales.jsx";
+import Report from "views/subPages/report/report.jsx";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
 
-
-export default class Reports extends React.Component {
+export default connect((state) => {
+  return {
+    interface: state.interface,
+    reports: state.reports,
+  };
+}, null)(class Reports extends React.Component {
   constructor(props){
     super(props);
+  }
 
-    this.state = {
-      reports: [
-        {
-          id: 1,
-          link: "/reports/sales",
-          label: "Sales",
-          component: SalesReport,
-        },
-        {
-          id: 2,
-          link: "/reports/attendance",
-          label: "Attendance",
-          component: AttendanceReport,
-        },
-
-      ],
-
-    };
+  static propTypes = {
+    interface: PropTypes.shape({
+      reportsSidebarSelectedItem: PropTypes.number.isRequired,
+    }),
+    reports: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   }
 
   render() {
+    let sidebarEntries = [];
+
+    for (const [key, value] of Object.entries(this.props.reports)){
+      sidebarEntries.push({
+        label: value.label,
+        link: value.localLink,
+      });
+    }
+
     return (
       <div className="reports">
-        <SecondarySidebar entries={this.state.reports} header="Available Reports" />
-        {this.state.reports.map((report) => {
+        <SecondarySidebar
+          selectedItem={this.props.interface.reportsSidebarSelectedItem}
+          onChange={(selectedItem) => {
+            Actions.setInterfaceEntry("reportsSidebarSelectedItem", selectedItem);
+          }}
+          history={this.props.history}
+          entries={sidebarEntries}
+          header="Available Reports"
+        />
+        {Object.values(this.props.reports).map((report, reportIndex) => {
           return (
-            <Route key={report.id} path={report.link} component={report.component} />
+            <Route key={reportIndex} path={report.localLink}><Report report={report}/></Route>
           );
         })}
+
       </div>
     );
   }
-}
+});

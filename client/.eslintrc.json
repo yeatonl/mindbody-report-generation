@@ -79,7 +79,7 @@
     "no-constructor-return": "error",
     "no-div-regex": "error",
     "no-else-return": "error",
-    "no-empty-function": "error",
+    "no-empty-function": "off",
     "no-eq-null": "error",
     "no-eval": "error",
     "no-extend-native": "error",
@@ -92,7 +92,7 @@
     "no-iterator": "error",
     "no-labels": "error",
     "no-loop-func": "error",
-    "no-magic-numbers": "error",
+    "no-magic-numbers": "off",
     "no-multi-spaces": "error",
     "no-multi-str": "error",
     "no-new": "error",
@@ -106,7 +106,7 @@
     "no-script-url": "error",
     "no-self-compare": "error",
     "no-sequences": "error",
-    "no-throw-literal": "error",
+    "no-throw-literal": "off",
     "no-unmodified-loop-condition": "error",
     "no-unused-expressions": "error",
     "no-useless-call": "error",
@@ -135,9 +135,7 @@
     "block-spacing": "error",
     "array-element-newline": [
       "error",
-      {
-        "multiline": true
-      }
+      "consistent"
     ],
     "array-bracket-spacing": [
       "error",
@@ -154,8 +152,8 @@
     "comma-dangle": [
       "error",
       {
-        "arrays": "always",
-        "objects": "always"
+        "arrays": "always-multiline",
+        "objects": "always-multiline"
       }
     ],
     "comma-spacing": [

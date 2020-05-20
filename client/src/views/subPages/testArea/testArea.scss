@@ -1,0 +1,17 @@
+.test-area{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  > *{
+    margin: var(--spacing-4);
+  }
+
+  .row{
+    display: flex;
+    align-items: flex-start;
+    > *{
+      margin: var(--spacing-3);
+    }
+  }
+}

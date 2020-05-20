@@ -1,0 +1,72 @@
+.icon-button{
+  --base-color: var(--scolor-10);
+  --active-color: var(--scolor-8);
+  --initial-color: var(--gray-15);
+  display: flex;
+
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: cen;
+  box-sizing: content-box;
+
+  width: 1.75rem;
+
+  margin: 0;
+  padding: 0;
+
+
+  background-color: transparent;
+  border: none;
+
+
+  svg{
+    width: 100%;
+    height: 100%;
+  }
+
+  &.inline{
+    width: 1.5em;
+    min-width: 1.5em;
+    padding: 0.5em;
+  }
+
+  .stroke{
+    transition: 0.1s all ease-in-out;
+
+    fill: none;
+    stroke: var(--initial-color);
+  }
+  .fill{
+    transition: 0.1s all ease-in-out;
+
+    fill: var(--initial-color);
+  }
+
+  &:hover{
+    .stroke{
+      stroke: var(--base-color);
+    }
+
+    .fill{
+      fill: var(--base-color);
+    }
+  }
+
+  &:focus, &:active, &.active{
+    outline: none;
+    .stroke{
+      stroke: var(--active-color);
+    }
+
+    .fill{
+      fill: var(--active-color);
+    }
+  }
+}
+
+#app.light .icon-button{
+  --base-color: var(--scolor-6);
+  --active-color: var(--scolor-8);
+  --initial-color: var(--gray-0);
+}
