@@ -5,5 +5,13 @@ This is a tool for generating more useful reports from the Mindbody API.
 To use for the first time:
 
 1. Run `npm install` from both /client and /server directories 
-2. From /server, run `npm start`. Note that node.js v13.9 or later is required. 
-3. From /client, perhaps in a separate terminal, run `npm start`. The client should open automatically in your default browser, but can also be reached at http://localhost:3000
+2. Add secrets.json in /server/config in the format: 
+
+`{
+    "username":"your username",
+    "password":"your passwords",
+    "apikey":"your apikey"
+}`
+
+3. From /server, run `npm start`. Note that node.js v13.9 or later is required. 
+4. From /client, perhaps in a separate terminal, run `npm start`. The client should open automatically in your default browser, but can also be reached at http://localhost:3000
