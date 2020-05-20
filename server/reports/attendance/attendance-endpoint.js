@@ -51,10 +51,6 @@ function formatJSON(data, headers) {
 
 export function getAttendanceReport(format, startdate, enddate, minStudents) {
   //access Mindbody Endpoints
-  var attendanceReport = {
-    data: [],
-    headers: ["classId", "class", "capacity", "registered", "attended"],
-  };
   return MindbodyAccess.getAuth()
     .then((value) => {
       MindbodyAccess.authToken = value.AccessToken;
