@@ -38,7 +38,6 @@ export default class MindbodyRequest {
     }
     return fetch(this.url, request)
       .then((response) => {
-        console.log("AA")
         return response.json();
       });
   }

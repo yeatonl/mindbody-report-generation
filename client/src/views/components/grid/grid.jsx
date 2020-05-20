@@ -56,7 +56,7 @@ export default class Table extends React.Component {
           let onlyRegex = value.slice(1).slice(0, value.length - 2); //remove the leading and trailing /
           return element[key].match(onlyRegex);
         }
-        return element[key].toLowerCase().startsWith(value);
+        return element[key]?.toString().toLowerCase().startsWith(value);
       });
     }
 
