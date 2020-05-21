@@ -1,7 +1,7 @@
 import MindbodyAccess from "../../api-manager.js";
 import J2C from "json2csv";
 
-const MINSTUDENTS = 4;
+const MINSTUDENTS_DEFAULT = 4;
 
 // reformats date to mm/dd/yyyy format and returns it as a string
 function reformatDate(date) {
@@ -118,7 +118,7 @@ export function attendanceRequestHandler(request, response) {
   let format = request.query.format; //gets format value in URL query
   let startdate = request.query.startdate; //gets startdate value in URL query
   let enddate = request.query.enddate; //gets enddate value in URL query
-  let minStudents = Number(request.query.minStudents); 
+  let minStudents = Number(request.query.minStudents);
 
   //error handling
   //"throws error" if format isn't JSON or CSV
@@ -138,9 +138,9 @@ export function attendanceRequestHandler(request, response) {
     let today = new Date();
     enddate = reformatDate(today);
   }
-  //sets minStudents to MINSTUDENTS if field is NaN
+  //sets minStudents to MINSTUDENTS_DEFAULT if field is NaN
   if (Number.isNaN(minStudents)) {
-    minStudents = MINSTUDENTS;
+    minStudents = MINSTUDENTS_DEFAULT;
   }
 
   getAttendanceReport(format, startdate, enddate, minStudents)
