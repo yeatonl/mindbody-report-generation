@@ -1,7 +1,10 @@
 /*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
 
-import fs from "fs";
+
+import {appSettings} from "./config/config.js";
+import {secrets} from "./config/secrets.js";
+
 
 //see commit 52f3c1d0c984db4582830a4ce08b31491cbf4f8e for old code
 
@@ -22,8 +25,7 @@ class MindbodyQueries {
   constructor() {
     this.requestNum = 0;
     this.authToken = null;
-    this.loadConfig("./config/config.json");
-    this.loadConfig("./config/secrets.json");
+    this.loadConfig();
   }
 
   //gets authentication
@@ -967,11 +969,37 @@ class MindbodyQueries {
     request.addAuth(this.authToken);
     this.requestNum++;
     let allPagePromises = [];
+
+    let makeRequest = () => {
+      return request.makeRequest();
+    };
+    function pause(milliseconds) {
+      return new Promise((resolve) => {
+        setTimeout(resolve, milliseconds);
+      });
+    }
+    //backoff function, backs off a preset amount
+    const backoff = (retries, fn, delay = this.initialDelay) => {
+      //const retryNumber = (this.maxRetries - retries) + 1;  //change retry count from 5->1 to 1->5 for display
+      //console.log("Trying retry #" + retryNumber + " to " + request.url);
+      return fn().catch((err) => {
+        //console.log("FAILED retry #" + retryNumber + " to " + request.url + " because of error " + err);
+        if (this.atLimit()) {
+          return Promise.reject(Error("Mindbody request limit reached"));
+        }
+        if (retries > 1) {
+          return pause(delay).then(() => {
+            return backoff(retries - 1, fn, delay * this.backoffMultiplier);
+          });
+        }
+        //console.log("Giving up on " + request.url + " after " + this.maxRetries + " attempts");
+        return Promise.reject(err);
+      });
+    };
+
     if (!this.atLimit()) {
-      //return request.makeRequest();
-      return request.makeRequest()
+      return backoff(this.maxRetries, makeRequest)
         .then((value) => {
-          //console.log(Object.keys(value));
           if (!value.PaginationResponse) {
             return Promise.resolve(value);
           }
@@ -986,8 +1014,9 @@ class MindbodyQueries {
             }
             const resultsPerPage = 200;
             request.url = url + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
+            //console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
-            allPagePromises.push(request.makeRequest());
+            allPagePromises.push(backoff(this.maxRetries, makeRequest));
           }
           return Promise.all(allPagePromises)
             .then((responses) => {
@@ -996,6 +1025,10 @@ class MindbodyQueries {
               for (let i = 0; i < responses.length; ++i) {
                 for (const [key, value2] of Object.entries(responses[i])){
                   if (key !== "PaginationResponse") {
+                    if (responses.length > 1) {
+                      //console.log("In a multipage response, page #" + i + " had " + value2.length + " results: ");
+                      //console.log(JSON.stringify(value2));
+                    }
                     if (data[key]) {
                       data[key] = [...data[key], ...value2];
                     } else {
@@ -1020,28 +1053,19 @@ class MindbodyQueries {
     return false;
   }
 
-  loadConfig(filename) {
-    fs.readFile(filename, "utf8", (err, jsonString) => {
-      if (err) {
-        console.log("File read failed:", err);
-        return;
-      }
-      try {
-        const data = JSON.parse(jsonString);
-        if (filename === "./config/secrets.json") {
-          this.username = data.username;
-          this.password = data.password;
-          this.apikey = data.apikey;
-        }
-        else if (filename === "./config/config.json") {
-          this.backoffMultiplier = data.backoffMultiplier;
-          this.maxRetries = data.maxRetries;
-          this.initialDelay = data.initialDelay;
-        }
-      } catch (err) {
-        console.log("Error parsing JSON string:", err);
-      }
-    });
+
+  loadConfig() {
+    try {
+      this.backoffMultiplier = appSettings.backoffMultiplier;
+      this.maxRetries = appSettings.maxRetries;
+      this.initialDelay = appSettings.initialDelay;
+      this.username = secrets.username;
+      this.password = secrets.password;
+      this.apikey = secrets.apikey;
+    } catch (err) {
+      console.log("Error:", err);
+    }
+
   }
 }
 
