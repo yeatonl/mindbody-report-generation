@@ -1,0 +1,6 @@
+{
+  "backoffMultiplier": 2,
+  "maxRetries": 5,
+  "initialDelay": 500,
+  "cacheMaxAgeInSeconds": 28800
+}

@@ -193,7 +193,6 @@ export class CommissionReport {
     };
     console.log("Requesting sales...");
     return MindbodyAccess.getSales(payload).then((data) => {
-      console.log("In CommissionReport.requestSales, we received " + data.Sales.length + " records.");
       self.sales = self.parseSales(data.Sales);
     });
   }

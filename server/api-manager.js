@@ -1,10 +1,10 @@
 /*eslint-disable comma-spacing */
 /*eslint-disable no-console*/
 
-import {appSettings} from "./config/config.js";
 
-const USERNAME = "Siteowner";
-const PASSWORD = "apitest1234";
+import {appSettings} from "./config/config.js";
+import {secrets} from "./config/secrets.js";
+
 
 //see commit 52f3c1d0c984db4582830a4ce08b31491cbf4f8e for old code
 
@@ -17,8 +17,6 @@ const URL_SALE = BASE + "sale";
 const URL_STAFF = BASE + "staff";
 const URL_ENROLLMENT = BASE + "enrollment";
 const URL_APPOINTMENT = BASE + "appointment";
-//const APIKEY = "76af57a017f64fcd9fc16cc5032404a0";
-const APIKEY = "7db287c206374b2f911ddc918879983d"; //dan's API key. Use it if you really need it
 const SITEID = "-99";
 
 import MindbodyRequest from "./requests.js";
@@ -35,11 +33,11 @@ class MindbodyQueries {
   getAuth() {
     var request = new MindbodyRequest(
       URL_AUTH,
-      APIKEY,
+      this.apikey,
       SITEID,
       "POST",
-      { "Username": USERNAME,
-        "Password": PASSWORD }
+      { "Username": this.username,
+        "Password": this.password }
     );
     this.requestNum++;
     if (!this.atLimit()) {
@@ -57,7 +55,7 @@ class MindbodyQueries {
   getActivationCode() {
     var request = new MindbodyRequest(
       URL_SITE + "/activationcode",
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -77,7 +75,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clients?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -97,7 +95,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/activesessiontimes?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -109,7 +107,7 @@ class MindbodyQueries {
   getAppointmentOptions() {
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/appointmentoptions",
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -133,7 +131,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/bookableitems?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -153,7 +151,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/scheduleitems?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -174,7 +172,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/staffappointments?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -202,7 +200,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLASS + "/classes?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -225,7 +223,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLASS + "/classdescriptions?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -247,7 +245,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLASS + "/classschedules?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -264,7 +262,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLASS + "/classvisits?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -286,7 +284,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLASS + "/waitlistentries?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -307,7 +305,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/activeclientmemberships?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -327,7 +325,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientaccountbalances?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -351,7 +349,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/contactlogs?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -371,7 +369,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientcontracts?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -387,7 +385,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientdirectdebitinfo?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -407,7 +405,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientduplicates?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -424,7 +422,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientformulanotes?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -440,7 +438,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientindexes?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -461,7 +459,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientpurchases?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -477,7 +475,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientreferraltypes?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -505,7 +503,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientservices?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -530,7 +528,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientvisits?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -547,7 +545,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/crossregionalclientassociations?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -562,7 +560,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/customclientfields?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -577,7 +575,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_CLIENTS + "/requiredclientfields?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -599,7 +597,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_ENROLLMENT + "/enrollments?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -617,7 +615,7 @@ class MindbodyQueries {
   getAcceptedCardTypes() {
     var request = new MindbodyRequest(
       URL_SALE + "/acceptedcardtypes",
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -637,7 +635,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SALE + "/contracts?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -649,7 +647,7 @@ class MindbodyQueries {
   getCustomPaymentMethods() {
     var request = new MindbodyRequest(
       URL_SALE + "/custompaymentmethods",
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -665,7 +663,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SALE + "/giftcardbalance?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -683,7 +681,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SALE + "/giftcards?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -700,7 +698,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SALE + "/packages?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -721,7 +719,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SALE + "/products?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -740,7 +738,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SALE + "/sales?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -764,7 +762,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SALE + "/services?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -776,7 +774,7 @@ class MindbodyQueries {
   getGenders() {
     var request = new MindbodyRequest(
       URL_SITE + "/genders",
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -788,7 +786,7 @@ class MindbodyQueries {
   getLocations() {
     var request = new MindbodyRequest(
       URL_SITE + "/locations",
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -804,7 +802,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SITE + "/memberships?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -821,7 +819,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SITE + "/programs?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -840,7 +838,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SITE + "/resources?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -857,7 +855,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SITE + "/sessiontypes?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -873,7 +871,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_SITE + "/sites?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -894,7 +892,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_STAFF + "/staff?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -910,7 +908,7 @@ class MindbodyQueries {
     var query = QueryString.stringify(parameters);
     var request = new MindbodyRequest(
       URL_STAFF + "/staffpermissions?" + query,
-      APIKEY,
+      this.apikey,
       SITEID,
       "GET",
       ""
@@ -922,7 +920,7 @@ class MindbodyQueries {
   postClient(parameters) {
     var request = new MindbodyRequest(
       URL_CLIENTS + "/addclient",
-      APIKEY,
+      this.apikey,
       SITEID,
       "POST",
       parameters,
@@ -934,7 +932,7 @@ class MindbodyQueries {
   postRemoveClientFromClass(parameters) {
     var request = new MindbodyRequest(
       URL_CLASS + "/removeclientfromclass",
-      APIKEY,
+      this.apikey,
       SITEID,
       "POST",
       parameters,
@@ -946,7 +944,7 @@ class MindbodyQueries {
   postAddClientToClass(parameters) {
     var request = new MindbodyRequest(
       URL_CLASS + "/addclienttoclass",
-      APIKEY,
+      this.apikey,
       SITEID,
       "POST",
       parameters,
@@ -958,7 +956,7 @@ class MindbodyQueries {
   postCheckoutShoppingCart(parameters) {
     var request = new MindbodyRequest(
       URL_SALE + "/checkoutshoppingcart",
-      APIKEY,
+      this.apikey,
       SITEID,
       "POST",
       parameters,
@@ -1055,14 +1053,19 @@ class MindbodyQueries {
     return false;
   }
 
+
   loadConfig() {
     try {
       this.backoffMultiplier = appSettings.backoffMultiplier;
       this.maxRetries = appSettings.maxRetries;
       this.initialDelay = appSettings.initialDelay;
+      this.username = secrets.username;
+      this.password = secrets.password;
+      this.apikey = secrets.apikey;
     } catch (err) {
       console.log("Error:", err);
     }
+
   }
 }
 

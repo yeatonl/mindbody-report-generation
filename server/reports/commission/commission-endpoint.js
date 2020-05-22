@@ -8,7 +8,7 @@ function formatStaff(response) {
   staffIdToNameDict[CommissionReport.noPriorInstructorKey] = "- Sales with no prior instructor -";
   for (let staffIndex in response.StaffMembers) {
     let staff = response.StaffMembers[staffIndex];
-    //console.log("staffInfo: " + JSON.stringify(staff));
+    console.log("staffInfo: " + JSON.stringify(staff));
     staffIdToNameDict[staff.Id] = staff.FirstName + " " + staff.LastName;
   }
   return staffIdToNameDict;
@@ -64,14 +64,14 @@ export function handleCommissionRptRequest(request, response) {
 
   let startDate = request.query.startdate;
   if (!startDate) {
-    startDate = "1/1/1";
+    startDate = "05/14/2020";
     //response.send("Missing \"startdate\" parameter.");
     //return;
   }
 
   let endDate = request.query.enddate;
   if (!endDate) {
-    endDate = "1/1/3000";
+    endDate = "05/14/2020";
     //response.send("Missing \"enddate\" parameter.");
     //return;
   }
@@ -85,11 +85,11 @@ export function handleCommissionRptRequest(request, response) {
   rptGenerator.generate()
     .then((reportTemp) => {
       rawReportData = reportTemp;
-      //console.log("CommissionReport.generate() returned this data: " + JSON.stringify(rawReportData));
+      console.log("CommissionReport.generate() returned this data: " + JSON.stringify(rawReportData));
       return MindbodyAccess.getStaff({StaffIds: Object.keys(rawReportData)});
     })
     .then((staffResponse) => {
-      //console.log("getStaff returned: " + JSON.stringify(staffResponse));
+      console.log("getStaff returned: " + JSON.stringify(staffResponse));
 
       //lookup staff names from the IDs returned by CommissionReport
       let staffIdToNameDict = formatStaff(staffResponse);
@@ -151,3 +151,4 @@ export function getCommissionReport(options) {
     return report;
   });
 }
+
