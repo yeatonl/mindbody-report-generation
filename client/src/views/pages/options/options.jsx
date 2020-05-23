@@ -35,20 +35,6 @@ export default connect((state) => {
             }}/>
           </div>
         </section>
-        <section>
-          <div className="header">Miscellaneous</div>
-          <div className="content">
-            <div>Other stuff goes here</div>
-          </div>
-        </section>
-        <section>
-          <div className="header">MindBody API</div>
-          <div className="content">
-            <div>
-              Api stuff goes here
-            </div>
-          </div>
-        </section>
       </div>
     );
   }
