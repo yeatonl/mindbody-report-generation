@@ -131,10 +131,10 @@ export function handleCommissionRptRequest(request, response) {
 export function getCommissionReport(options) {
   var generator = new CommissionReport();
   if (options.startDate) {
-    generator.setStartDate(options.startDate);
+    generator.setStartDate(options.startdate);
   }
   if (options.endDate) {
-    generator.setEndDate(options.endDate);
+    generator.setEndDate(options.enddate);
   }
 
   var report;
