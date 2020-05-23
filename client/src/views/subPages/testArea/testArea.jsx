@@ -385,7 +385,6 @@ export default class JsonViewer extends React.Component {
           ]}/>
         </div>
         <Checkbox label="tick me" onChange={(val) => {
-          console.log("Checkbox changed", val);
         }}/>
         <Checkbox label="Light theme" onChange={(val) => {
           if (val){
