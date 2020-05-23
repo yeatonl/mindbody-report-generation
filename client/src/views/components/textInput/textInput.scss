@@ -85,6 +85,15 @@
 
       font-size: var(--font-size-1);
     }
+
+    input::placeholder{
+      color: transparent;
+    }
+
+    input:placeholder-shown:focus::placeholder{
+      color: var(--gray-10);
+    }
+
     input:hover ~ .label, input:focus ~ .label{
       color: var(--active-color);
     }
