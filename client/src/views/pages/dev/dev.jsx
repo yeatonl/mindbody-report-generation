@@ -32,7 +32,7 @@ export default connect((state) => {
   static propTypes = {
     history: PropTypes.object.isRequired,
     interface: PropTypes.object.isRequired,
-    devSidebarSelectedItem: PropTypes.string.isRequired,
+    devSidebarSelectedItem: PropTypes.string,
   }
 
   render() {
