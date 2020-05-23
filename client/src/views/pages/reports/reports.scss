@@ -1,4 +1,5 @@
 .reports{
-  display: flex;
+  display: grid;
   flex-grow: 1;
+  grid-template-columns: auto 1fr;
 }
