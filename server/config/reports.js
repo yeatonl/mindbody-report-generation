@@ -246,7 +246,7 @@ const reports = {
     "parameters": [
       {
         "key": "type",
-        "type": "STRING",
+        "type": "TEXT",
         "label": "Types",
         "description": "An optional parameter to filter on a specific session type.",
         "tooltip": "Reduces the number of programs returned",
@@ -259,16 +259,16 @@ const reports = {
           {
             "regex": ".*",
             "result": false,
-            "message": "Not a valid session type"
+            "message": "Not a valid session type (all, class, enrollment, appointment, resource, media, or arrival)"
           }
         ],
         "span": "2",
-        "invalidMessage": "Not a valid session type",
+        "invalidMessage": "Not a valid session type (all, class, enrollment, appointment, resource, media, or arrival)",
         "data": {}
       },
       {
         "key": "onlineonly",
-        "type": "STRING",
+        "type": "TEXT",
         "label": "Online Only",
         "description": "Get programs that are online only.",
         "tooltip": "Reduces the number of programs returned",
