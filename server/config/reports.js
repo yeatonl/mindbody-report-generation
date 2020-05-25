@@ -11,6 +11,7 @@ const reports = {
       {
         "key": "startdate",
         "type": "DATE",
+        "placeholder": "MM/DD/YYYY",
         "label": "Start date",
         "description": "Controls the date at which the report data begins. Only data after this date will be returned. Must be in the format MM/DD/YYYY",
         "tooltip": "Data before this date will be excluded. If left blank, defaults to two weeks ago.",
@@ -32,6 +33,7 @@ const reports = {
       {
         "key": "enddate",
         "type": "DATE",
+        "placeholder": "MM/DD/YYYY",
         "label": "End date",
         "description": "Controls the date at which the report data ends. Only data before this date will be returned. Must be in the format MM/DD/YYYY.  If left blank, defaults to today.",
         "tooltip": "Data after this date will be excluded",
@@ -63,6 +65,7 @@ const reports = {
     "parameters": [
       {
         "key": "startdate",
+        "placeholder": "MM/DD/YYYY",
         "type": "DATE",
         "label": "Start date",
         "description": "Controls the date at which the report data begins. Only data after this date will be returned. Must be in the format MM/DD/YYYY.  If left blank, defaults to two weeks ago.",
@@ -86,6 +89,7 @@ const reports = {
       {
         "key": "enddate",
         "type": "DATE",
+        "placeholder": "MM/DD/YYYY",
         "label": "End date",
         "description": "Controls the date at which the report data ends. Only data before this date will be returned. Must be in the format MM/DD/YYYY.  If left blank, defaults to today.",
         "tooltip": "Data after this date will be excluded",

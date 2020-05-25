@@ -1,14 +1,14 @@
 .report{
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  align-items: flex-start;
+  overflow-x: auto;
+
+  overflow-y: auto;
 
   header{
     display: flex;
     flex-direction: column;
-    width: 100%;
     margin: var(--spacing-4);
 
 

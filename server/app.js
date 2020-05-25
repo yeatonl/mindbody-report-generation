@@ -5,30 +5,43 @@ import {handleCommissionRptRequest} from "./reports/commission/commission-endpoi
 import {attendanceRequestHandler} from "./reports/attendance/attendance-endpoint.js";
 import * as basic from "./reports/basic/basic-endpoint.js";
 
-var app = express();
+const API_PORT = 8080;
+const WEB_PORT = 4000;
+
+
+const apiServer = express();
 const PORT = 8080;
 
 //endpoint for attendance report
-app.get("/reports/attendance", cors(), attendanceRequestHandler);
+apiServer.get("/reports/attendance", cors(), attendanceRequestHandler);
 
 //endpoint for commission report
-app.get("/reports/commission", cors(), handleCommissionRptRequest);
+apiServer.get("/reports/commission", cors(), handleCommissionRptRequest);
 
 //endpoints for unprocessed data
-app.get("/reports/classes", cors(), basic.classesRequestHandler);
-app.get("/reports/sales", cors(), basic.salesRequestHandler);
-app.get("/reports/staff", cors(), basic.staffRequestHandler);
-app.get("/reports/locations", cors(), basic.locationsRequestHandler);
-app.get("/reports/resources", cors(), basic.resourcesRequestHandler);
-app.get("/reports/programs", cors(), basic.programsRequestHandler);
+apiServer.get("/reports/classes", cors(), basic.classesRequestHandler);
+apiServer.get("/reports/sales", cors(), basic.salesRequestHandler);
+apiServer.get("/reports/staff", cors(), basic.staffRequestHandler);
+apiServer.get("/reports/locations", cors(), basic.locationsRequestHandler);
+apiServer.get("/reports/resources", cors(), basic.resourcesRequestHandler);
+apiServer.get("/reports/programs", cors(), basic.programsRequestHandler);
 
 //endpoint for report metadata
-app.get("/reports", cors(), (req, res) => {
+apiServer.get("/reports", cors(), (req, res) => {
   res.send(JSON.stringify(Reports));
 });
 
 //start up the server, now that the endpoint handlers are installed.
-app.listen(PORT, function() {
-  console.log("Mindbody report server listening at http://localhost:%s", PORT);
+apiServer.listen(API_PORT, function() {
+  console.log("MindBody Onion API server listening at http://localhost:%s", API_PORT);
+});
+
+
+const webServer = express();
+webServer.use(express.static("build"))
+
+//start up the server, now that the endpoint handlers are installed.
+webServer.listen(WEB_PORT, function() {
+  console.log("MindBody Onion web server listening at http://localhost:%s", WEB_PORT);
 });
 
