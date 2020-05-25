@@ -1,9 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { NavLink, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import SecondarySidebar from "views/components/secondarySidebar/secondarySidebar.jsx";
 
-import CsvViewer from "views/subPages/csvViewer/csvViewer.jsx";
 import TestArea from "views/subPages/testArea/testArea.jsx";
 
 import "./dev.scss";
@@ -20,11 +20,6 @@ export default connect((state) => {
     this.state = {
       reports: [
         {
-          link: "/dev/csv-viewer",
-          label: "CSV Viewer",
-          component: CsvViewer,
-        },
-        {
           link: "/dev/test-area",
           label: "Test Area",
           component: TestArea,
@@ -32,6 +27,12 @@ export default connect((state) => {
         },
       ],
     };
+  }
+
+  static propTypes = {
+    history: PropTypes.object.isRequired,
+    interface: PropTypes.object.isRequired,
+    devSidebarSelectedItem: PropTypes.string,
   }
 
   render() {

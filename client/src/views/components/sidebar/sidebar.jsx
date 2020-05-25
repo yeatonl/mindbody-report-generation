@@ -11,10 +11,6 @@ export default class Sidebar extends React.Component {
     return (
       <aside className="sidebar">
         <div className="prominent-items">
-          <NavLink to="/home" className="nav-item" activeClassName="active">
-            <HomeIcon className="icon"/>
-            <span className="label">Home</span>
-          </NavLink>
           <NavLink to="/reports" className="nav-item" activeClassName="active">
             <ReportsIcon className="icon"/>
             <span className="label">Reports</span>
