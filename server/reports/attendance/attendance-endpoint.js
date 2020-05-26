@@ -24,8 +24,8 @@ function getNumberAttended(classID) {
           reject("getNumberAttended Rejected. numberAttended var is empty");
       })
       .catch((error) => {
-        console.log("In getNumberAttended Catch block. Could not find class!\n", error);
-        console.log("Filling attendance with dummy value of -9999\n");
+        console.log("Error on attendance-endpoint.getNumberAttended. Could not find class. " + error + 
+          "  Filling attendance with dummy value of -9999.");
 
         // resolving in the catch block because of ENOTFOUND error
         // this makes it so the report doesn't crash when this error appears.
@@ -57,6 +57,7 @@ export function getAttendanceReport(format, startdate, enddate) {
   return MindbodyAccess.getAuth()
     .then((value) => {
       MindbodyAccess.authToken = value.AccessToken;
+      console.log("getAttendanceReport is getting info on classes...");
       return MindbodyAccess.getClasses({
         StartDateTime: startdate,
         EndDateTime: enddate,
@@ -73,6 +74,11 @@ export function getAttendanceReport(format, startdate, enddate) {
 
       //iterates through every class in classes
       for (let i = 0; i < numberOfClasses; ++i) {
+        const progressFrequency = 350; // Report progress occasionally
+        if (i % progressFrequency == 0) {
+          console.log("getAttendanceReport is getting info on class visits...");
+        }
+
         let classId = classes.Classes[i].Id;
 
         // adds attendance parameter to classData
@@ -88,7 +94,7 @@ export function getAttendanceReport(format, startdate, enddate) {
             ]); // pushes current class's data to attendanceReport
           })
           .catch((err) => {
-            console.log("ERROR! ", err);
+            console.log("Error in attendance-endpoint.getAttendanceReport from getNumberAttended: " + err);
           });
         allNumberAttendedPromises.push(numberAttendedPromise);
       }
@@ -116,6 +122,9 @@ export function getAttendanceReport(format, startdate, enddate) {
 //endpoint URL example
 //http://localhost:8080/reports/attendance?format=csv&startdate=01/01/2020&enddate=12/31/2020
 export function attendanceRequestHandler(request, response) {
+  console.log("----------------------------------");
+  console.log("attendanceRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
+
   let format = request.query.format; //gets format value in URL query
   let startdate = request.query.startdate; //gets startdate value in URL query
   let enddate = request.query.enddate; //gets enddate value in URL query
@@ -147,8 +156,10 @@ export function attendanceRequestHandler(request, response) {
       }
     })
     .catch((m) => {
-      //todo: make an error message consistent with commission report
-      console.log("Error! In attendance-report-endpoint catch block.");
-      console.log(m);
+      console.log("Error in attendance-endpoint.getAttendanceReport catch block: " + m);
+    })
+    .finally(() => {
+      MindbodyAccess.logNumRequests();
     });
+
 }
