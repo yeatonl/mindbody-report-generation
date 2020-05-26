@@ -5,8 +5,8 @@ Winter-Spring TH-R Capstone Team D Project This is a tool for generating more us
 1. Node 13.9 or later
 
 ## Installation
-1. Go to https://github.com/yeatonl/mindbody-report-generation/releases/tag/0.0.1
-2. Download the first file under Assets (should be something like mindbody-onion-X-X-X.7z)
+1. Go to https://github.com/yeatonl/mindbody-report-generation/releases
+2. Download the first file under the newest release's Assets (should be something like mindbody-onion-X-X-X.7z)
 3. Extract the downloaded archive.
 4. Go into the resulting directory. This is your installation directory.
 5. Add `secrets.js` in the `config` directory. Use this format:
