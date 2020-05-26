@@ -239,6 +239,7 @@ const reports = {
     "localLink": "/reports/staff",
     "headers": [],
     "data": [],
+    "parameters": [],
   },
   "LOCATIONS": {
     "label": "Locations",
@@ -248,6 +249,7 @@ const reports = {
     "localLink": "/reports/locations",
     "headers": [],
     "data": [],
+    "parameters": [],
   },
   "PROGRAMS": {
     "label": "Programs",
