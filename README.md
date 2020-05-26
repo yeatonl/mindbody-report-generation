@@ -1,4 +1,4 @@
-# mindbody-report-generation
+# MindBody Onion
 Winter-Spring TH-R Capstone Team D Project This is a tool for generating more useful reports from the Mindbody API.
 
 ## Dependencies
@@ -37,4 +37,3 @@ Supposing that the report you want to add is called *example-report*:
 2. Add an `example-report.js` file in this subdirectory. Use functions from `/server/api-manager.js` to interface with MindBody.
 3. Add the endpoint `/reports/example-report` to `/server/app.js`.
 4. Add a new key:value pair to `/server/config/reports.js`. The key should be "EXAMPLE_REPORT" and the value should be a JSON object describing the metadata of the report. 
-
