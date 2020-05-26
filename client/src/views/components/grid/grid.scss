@@ -5,7 +5,6 @@
   flex-direction: column;
   flex-shrink: 0;
   box-sizing: border-box;
-  overflow-y: auto;
 
   border: 4px solid var(--grid-fg);
 
@@ -14,6 +13,7 @@
   }
 
   .gd-header{
+
     font-size: var(--font-size-3);
 
     background-color: var(--grid-fg);
@@ -35,7 +35,6 @@
 
   .gd-body{
     display: grid;
-    overflow-y: overlay;
   }
 
   .gd-row{
