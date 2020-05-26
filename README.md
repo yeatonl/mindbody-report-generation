@@ -9,12 +9,12 @@ Winter-Spring TH-R Capstone Team D Project This is a tool for generating more us
 2. Download the first file under Assets (should be something like mindbody-onion-X-X-X.7z)
 3. Extract the downloaded archive.
 4. Go into the resulting directory. This is your installation directory.
-5. Add `secrets.json` in the `config` directory. Use this format:
+5. Add `secrets.js` in the `config` directory. Use this format:
 ```
-{
-    "username":"your username",
-    "password":"your passwords",
-    "apikey":"your apikey"
+export const secrets = {
+	"username": "$USERNAME",
+	"password": "$PASSWORD",
+	"apikey": "$API_KEY"
 }
 ```
 6. Run `npm install`
@@ -27,7 +27,7 @@ Winter-Spring TH-R Capstone Team D Project This is a tool for generating more us
 ## Development
 1. Clone this repository
 2. Run `npm install` from both the /server and /client directories
-3. Add `secrets.json` to `/server/config`.
+3. Add `secrets.js` to `/server/config`.
 4. Running `npm start` in `/server` will start the Node API server and the web server
 6. Running `npm start` in `/client` will start the development web server (you'll probably want to use this one, since it has features like hot reload)
 
