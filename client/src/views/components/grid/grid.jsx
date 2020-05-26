@@ -47,7 +47,7 @@ export default class Table extends React.Component {
     };
 
     let data = this.props.data.sort((first, second) => {
-      return String(first[this.state.sortedColumn]).localeCompare(String(second[this.state.sortedColumn]));
+      return String(first[this.state.sortedColumn]).localeCompare(String(second[this.state.sortedColumn]), undefined, {numeric: true});
     });
 
     for (const [key, value] of Object.entries(this.state.filters)){
