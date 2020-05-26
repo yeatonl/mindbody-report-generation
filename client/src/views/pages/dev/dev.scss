@@ -1,5 +1,5 @@
 .dev{
-  display: flex;
+  display: grid;
   flex-grow: 1;
-  box-sizing: border-box;
+  grid-template-columns: auto 1fr;
 }

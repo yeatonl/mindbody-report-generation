@@ -55,7 +55,8 @@ export default connect((state) => {
   }
 
   downloadData = () => {
-    //tbd
+    let url = Urls.API_BASE + encodeQueryParameters(this.props.report.csvEndpoint, this.state.parametersData);
+    window.open(url, "_blank");
   }
 
   loadDataFromEndpoint = () => {
@@ -86,19 +87,18 @@ export default connect((state) => {
             />
             <Button
               ghost
+              label="Download"
+              tempLabel="Downloaded"
+              onClick={this.downloadData}
+              title="Download as a CSV file"
+            />
+            <Button
+              ghost
               label="Copy"
               tempLabel="Copied"
               disabled={!(data && data.length > 0)}
               onClick={this.copyDataToClipboard}
               title="Copy the CSV data to clipboard"
-            />
-            <Button
-              ghost
-              label="Download"
-              tempLabel="Downloaded"
-              disabled={!(data && length > 0)}
-              onClick={this.downloadData}
-              title="Download as a CSV file"
             />
             <IconButton
               className={this.state.showParameterDocumentation ? "active" : ""}

@@ -1,6 +1,7 @@
 export default class BaseReducer {
   initialState = {};
 
+  //eslint-disable-next-line default-param-last
   reducer = (state = this.initialState, action) => {
     const method = this[action.type];
 
@@ -10,4 +11,4 @@ export default class BaseReducer {
 
     return method.call(this, state, action);
   };
-} 
+}
