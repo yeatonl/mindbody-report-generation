@@ -28,6 +28,10 @@ export default connect((state) => {
       parametersData: {},
       showParameterDocumentation: false,
     };
+
+    for (const [key, value] of Object.entries(this.props.report.parameters)){
+      this.state.parametersData[value.key] = value.initial;
+    }
   }
 
   static propTypes = {
@@ -40,8 +44,6 @@ export default connect((state) => {
       key: PropTypes.string.isRequired,
     }),
   }
-
-
 
   copyDataToClipboard = () => {
     Promise.all(this.props.report.data.map(async(row) => {
