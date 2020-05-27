@@ -171,6 +171,27 @@ const reports = {
         "invalidMessage": "Must be of the form MM/DD/YYYY",
         "data": {},
         "initial": currentDate
+      },
+      {
+        "key": "minStudents",
+        "type": "TEXT",
+        "label": "Min students",
+        "description": "Threshold for how many students must attend a class for that classes data to be in the attendance report.",
+        "tooltip": "Classes with less than minStudents that attended it will not be included in the attendance report.",
+        "span": 2,
+        "validation": [
+          {
+            "regex": "^\\d+$",
+            "result": true,
+            "message": ""
+          },
+          {
+            "regex": ".*",
+            "result": false,
+            "message": "Format: A positive number"
+          }
+        ],
+        "data": {}
       }
     ]
   },
