@@ -1,9 +1,9 @@
 let date = new Date();
 let currentDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
-​
+
 date.setTime(date.getTime()-14*24*60*60*1000); //two weeks ago
 let twoWeeksAgoDate = date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
-​
+
 const reports = {
   "ATTENDANCE": {
     "label": "Attendance",
@@ -330,5 +330,5 @@ const reports = {
     ]
   }
 };
-​
+
 export default reports;
