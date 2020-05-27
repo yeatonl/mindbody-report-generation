@@ -118,7 +118,7 @@ function getOptions() {
 
 var options = getOptions();
 if (options) {
-  console.log("Options received: " + options);
+  console.log(options);
   if (argv.report === "commission") {
     getCommissionReport(options).then((report) => {
       writeToFile(report, options);
