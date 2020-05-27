@@ -18,6 +18,7 @@ const URL_STAFF = BASE + "staff";
 const URL_ENROLLMENT = BASE + "enrollment";
 const URL_APPOINTMENT = BASE + "appointment";
 const SITEID = "-99";
+const MAX_QUERIES = 800;
 
 import MindbodyRequest from "./requests.js";
 import QueryString from "query-string";
@@ -1090,7 +1091,6 @@ class MindbodyQueries {
 
   //may be changed later
   atLimit() {
-    const MAX_QUERIES = 800;
     if (this.requestNum >= MAX_QUERIES) {
       return true;
     }
@@ -1107,11 +1107,25 @@ class MindbodyQueries {
       this.password = secrets.password;
       this.apikey = secrets.apikey;
     } catch (err) {
-      console.log("Error:", err);
+      console.log("Error in api-manager.loadConfig: " + err);
     }
 
   }
 
+  logNumRequests() {
+    let message = "In this entire Mindbody Onion session, " + this.requestNum + " API requests of " +
+      MAX_QUERIES + " have been used. ";
+    const numFreeCalls = 1000;
+    if (MAX_QUERIES < numFreeCalls) {
+      message = message + (MAX_QUERIES - this.requestNum) + " free daily requests remain.";
+    } else {
+      const minBilledCalls = Math.max(0, this.requestNum - numFreeCalls);
+      message = message + "These requests cost somewhere between $" +
+        (minBilledCalls * 0.003).toFixed(2) + " and $" + (this.requestNum * 0.003).toFixed(2) + ".";
+    }
+    console.log(message);
+  }
+  
   //returns a 32-bit hashCode for string. This is based on Java's hashCode
   /*eslint-disable */  // eslint complaints so much about this low-level code :(
   getCacheHashCode(string) {
@@ -1144,7 +1158,7 @@ MindbodyAccess.getAuth()
     console.log(clientsList);
   }
   .catch((error) => {
-    console.log("Error occurred in [name the context]: " + error.toString());
+    console.log("Error in [name of the context]: " + error);
   });
   */
 

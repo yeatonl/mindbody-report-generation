@@ -41,6 +41,8 @@ export function getClasses(options) {
 }
 
 export function classesRequestHandler(request, response) {
+  console.log("-------------------------------");
+  console.log("classesRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
   var format = basic.getFormat(request.query.format);
   if (!format) {
     response.send("invalid report format");
@@ -50,6 +52,8 @@ export function classesRequestHandler(request, response) {
     sendResponse(response, classes, format, "classes");
   }).catch((message) => {
     response.send(message);
+  }).finally(() => {
+    MindbodyAccess.logNumRequests();
   });
 }
 
@@ -91,6 +95,8 @@ export function getSales(options) {
 }
 
 export function salesRequestHandler(request, response) {
+  console.log("----------------------------");
+  console.log("salesRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
   var format = basic.getFormat(request.query.format);
   if (!format) {
     response.send("invalid report format");
@@ -100,6 +106,8 @@ export function salesRequestHandler(request, response) {
     sendResponse(response, sales, format, "sales");
   }).catch((message) => {
     response.send(message);
+  }).finally(() => {
+    MindbodyAccess.logNumRequests();
   });
 }
 
@@ -115,6 +123,8 @@ export function getStaff(options) {
 }
 
 export function staffRequestHandler(request, response) {
+  console.log("----------------------------");
+  console.log("staffRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
   var format = basic.getFormat(request.query.format);
   if (!format) {
     response.send("invalid report format");
@@ -124,6 +134,8 @@ export function staffRequestHandler(request, response) {
     sendResponse(response, staff, format, "staff");
   }).catch((message) => {
     response.send(message);
+  }).finally(() => {
+    MindbodyAccess.logNumRequests();
   });
 }
 
@@ -139,6 +151,8 @@ export function getLocations(options) {
 }
 
 export function locationsRequestHandler(request, response) {
+  console.log("--------------------------------");
+  console.log("locationsRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
   var format = basic.getFormat(request.query.format);
   if (!format) {
     response.send("invalid report format");
@@ -148,6 +162,8 @@ export function locationsRequestHandler(request, response) {
     sendResponse(response, locations, format, "locations");
   }).catch((message) => {
     response.send(message);
+  }).finally(() => {
+    MindbodyAccess.logNumRequests();
   });
 }
 
@@ -163,6 +179,8 @@ export function getResources(options) {
 }
 
 export function resourcesRequestHandler(request, response) {
+  console.log("--------------------------------");
+  console.log("resourcesRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
   var format = basic.getFormat(request.query.format);
   if (!format) {
     response.send("invalid report format");
@@ -172,6 +190,8 @@ export function resourcesRequestHandler(request, response) {
     sendResponse(response, resources, format, "resources");
   }).catch((message) => {
     response.send(message);
+  }).finally(() => {
+    MindbodyAccess.logNumRequests();
   });
 }
 
@@ -210,6 +230,8 @@ export function getPrograms(options) {
 }
 
 export function programsRequestHandler(request, response) {
+  console.log("-------------------------------");
+  console.log("programsRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
   var format = basic.getFormat(request.query.format);
   if (!format) {
     response.send("invalid report format");
@@ -219,5 +241,7 @@ export function programsRequestHandler(request, response) {
     sendResponse(response, programs, format, "programs");
   }).catch((message) => {
     response.send(message);
+  }).finally(() => {
+    MindbodyAccess.logNumRequests();
   });
 }
