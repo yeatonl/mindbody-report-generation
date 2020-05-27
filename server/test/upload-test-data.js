@@ -10,7 +10,7 @@ const WEEK = 7;
 
 fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
   if (err) {
-    console.log("File read failed:", err);
+    console.log("Error in upload-test-data. File read failed:" + err);
     return;
   }
   try {
@@ -156,9 +156,9 @@ fs.readFile("./" + fileName, "utf8", (err, jsonString) => {
         return Promise.all(promises);
       })
       .catch((err) => {
-        console.log("Error parsing JSON string:", err);
+        console.log("Error in upload-test-data when parsing JSON string (1): " + err);
       });
   } catch (err) {
-    console.log("Error parsing JSON string:", err);
+    console.log("Error in upload-test-data when parsing JSON string (2): " + err);
   }
 });

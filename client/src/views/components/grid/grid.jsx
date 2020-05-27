@@ -38,16 +38,16 @@ export default class Table extends React.Component {
     //this lets us color alternate rows differently, but we need each row to span all available cells
     let subGridStyle = {
       gridColumn: `span ${this.props.headers.length}`,
-      gridTemplateColumns: `repeat(${this.props.headers.length}, 1fr)`,
+      gridTemplateColumns: `repeat(${this.props.headers.length}, minmax(200px, 1fr))`,
     };
 
     let subGridHeaderStyle = {
       gridColumn: `span ${this.props.headers.length}`,
-      gridTemplateColumns: `repeat(${this.props.headers.length}, 1fr)`,
+      gridTemplateColumns: `repeat(${this.props.headers.length}, minmax(200px, 1fr))`,
     };
 
     let data = this.props.data.sort((first, second) => {
-      return String(first[this.state.sortedColumn]).localeCompare(String(second[this.state.sortedColumn]));
+      return String(first[this.state.sortedColumn]).localeCompare(String(second[this.state.sortedColumn]), undefined, {numeric: true});
     });
 
     for (const [key, value] of Object.entries(this.state.filters)){

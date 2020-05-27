@@ -8,7 +8,7 @@ function formatStaff(response) {
   staffIdToNameDict[CommissionReport.noPriorInstructorKey] = "- Sales with no prior instructor -";
   for (let staffIndex in response.StaffMembers) {
     let staff = response.StaffMembers[staffIndex];
-    console.log("staffInfo: " + JSON.stringify(staff));
+    //console.log("In commission-endpoint.formatStaff, staff was: " + JSON.stringify(staff));
     staffIdToNameDict[staff.Id] = staff.FirstName + " " + staff.LastName;
   }
   return staffIdToNameDict;
@@ -47,8 +47,8 @@ function toCSV(rawReportData, staffIdToNameDict) {
 http://localhost:8080/reports/commission?format=csv&startdate=04/29/2020&enddate=04/30/2020
 */
 export function handleCommissionRptRequest(request, response) {
-  //console.log("handleCommissionRptRequest:");
-  //console.log("request: " + request.baseUrl + " - " + JSON.stringify(request.query));
+  console.log("------------------------------------");
+  console.log("handleCommissionRptRequest received: " + request.path + " - " + JSON.stringify(request.query));
 
   //validate input parameters
   //query string looks like: ?format=[json|csv]&startdate=[whatever]&enddate=[whatever]
@@ -85,11 +85,11 @@ export function handleCommissionRptRequest(request, response) {
   rptGenerator.generate()
     .then((reportTemp) => {
       rawReportData = reportTemp;
-      console.log("CommissionReport.generate() returned this data: " + JSON.stringify(rawReportData));
+      //console.log("In handleCommissionRptRequest, generate() returned this data: " + JSON.stringify(rawReportData));
       return MindbodyAccess.getStaff({StaffIds: Object.keys(rawReportData)});
     })
     .then((staffResponse) => {
-      console.log("getStaff returned: " + JSON.stringify(staffResponse));
+      //console.log("In handleCommissionRptRequest, getStaff returned: " + JSON.stringify(staffResponse));
 
       //lookup staff names from the IDs returned by CommissionReport
       let staffIdToNameDict = formatStaff(staffResponse);
@@ -121,20 +121,21 @@ export function handleCommissionRptRequest(request, response) {
       }
     })
     .catch((error) => {
-      //todo: generate some error message page... especially handling "exceeded 1000 requests/day" error
-      console.log("Caught error in CommissionReport");
-      console.log(error);
+      console.log("Error in handleCommissionRptRequest catch block: " + error);
       response.send(error.toString());
+    })
+    .finally(() => {
+      MindbodyAccess.logNumRequests();
     });
 }
 
 export function getCommissionReport(options) {
   var generator = new CommissionReport();
   if (options.startDate) {
-    generator.setStartDate(options.startDate);
+    generator.setStartDate(options.startdate);
   }
   if (options.endDate) {
-    generator.setEndDate(options.endDate);
+    generator.setEndDate(options.enddate);
   }
 
   var report;
@@ -151,3 +152,4 @@ export function getCommissionReport(options) {
     return report;
   });
 }
+

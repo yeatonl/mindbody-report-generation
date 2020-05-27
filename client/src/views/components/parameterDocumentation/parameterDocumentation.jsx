@@ -40,7 +40,7 @@ export default class ParametersDocumentation extends React.Component {
                 <div>Regex: /{rule.regex}/</div>
                 <div>If it matches, treat the input as {rule.result ? "valid" : "invalid"}. </div>
                 {rule.message &&
-                    <div>And display this message: "{rule.message}" </div>
+                    <div>And display this message: &quot;{rule.message}&quot; </div>
                 }
               </div>;
             })}

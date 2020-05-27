@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { HashRouter, Route, Redirect, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import HomePage from "views/pages/home/home.jsx";
 import ReportsPage from "views/pages/reports/reports.jsx";
 import OptionsPage from "views/pages/options/options.jsx";
 import DevPage from "views/pages/dev/dev.jsx";
@@ -29,8 +28,7 @@ export default connect((state) => {
       <HashRouter>
         <Sidebar />
         <Switch>
-          <Redirect exact from="/" to="home" />
-          <Route path="/home" component={HomePage} />
+          <Redirect exact from="/" to="reports" />
           <Route path="/reports" component={ReportsPage} />
           <Route path="/options" component={OptionsPage} />
           <Route path="/dev" component={DevPage} />

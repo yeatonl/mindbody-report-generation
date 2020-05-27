@@ -15,6 +15,7 @@ export default class TextInput extends React.Component {
     this.state = {
       valid: null,
       message: "",
+      value: props.initial,
     };
   }
 
@@ -25,6 +26,8 @@ export default class TextInput extends React.Component {
     minimal: PropTypes.bool,
     /**called after the user stops typing with the current value */
     onDelayedChange: PropTypes.func,
+    /**don't set to ""*/
+    placeholder: PropTypes.string,
     /**called when the users presses enter */
     onEnter: PropTypes.func,
     title: PropTypes.string,
@@ -36,6 +39,7 @@ export default class TextInput extends React.Component {
      *  message: "" //message to display if the regex matched
      * }] */
     validation: PropTypes.array,
+    initial: PropTypes.string,
   };
 
   static defaultProps = {
@@ -44,9 +48,24 @@ export default class TextInput extends React.Component {
     minimal: false,
     onDelayedChange: () => {},
     onEnter: null,
+    placeholder: " ",
     title: "",
     style: {},
     validation: [],
+    initial: "",
+  }
+
+  validate = (value) => {
+    if (this.props.validation){
+      for (let i = 0; i < this.props.validation.length; i++){
+        let test = this.props.validation[i];
+
+        if (value.match(test.regex)){
+          this.setState({valid: test.result, message: test.message});
+          break;
+        }
+      }
+    }
   }
 
   render = () => {
@@ -66,29 +85,22 @@ export default class TextInput extends React.Component {
       <div className={wrapperClassName} style={this.props.style}>
         <label className={inputClassName} title={this.props.title}>
           <input
-            placeholder=" "
+            value={this.state.value}
+            placeholder={this.props.placeholder}
             onChange={(e) => {
               let value = e.target.value;
+              this.setState({value});
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
+                this.validate(value);
                 this.props.onDelayedChange(value);
               }, 500);
-
-              if (this.props.validation){
-                for (let i = 0; i < this.props.validation.length; i++){
-                  let test = this.props.validation[i];
-
-                  if (value.match(test.regex)){
-                    this.setState({valid: test.result, message: test.message});
-                    break;
-                  }
-                }
-              }
             }}
             onKeyDown={(e) => {
               let value = e.target.value;
               if (this.props.onEnter){
                 if (e.keyCode === 13){ //enter
+                  this.validate(value);
                   clearTimeout(this.timeout);
                   this.props.onEnter(value);
                 }

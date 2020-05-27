@@ -33,12 +33,14 @@ export default class ReportParameters extends React.Component {
       style={{gridColumn: "span " + param.span}}
       key={index}
       label={param.label}
+      placeholder={param.placeholder}
       title={param.tooltip}
       onDelayedChange={(value) => {
         this.props.onChange(param.key, value);
       }}
       validation={param.validation}
       onEnter={() => {}}
+      initial={param.initial}
     />;
   }
 

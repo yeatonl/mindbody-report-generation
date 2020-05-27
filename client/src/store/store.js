@@ -6,10 +6,12 @@ const loadState = () => {
   try {
     const serializedState = localStorage.getItem("state");
     if (serializedState === null) {
+      //eslint-disable-next-line no-undefined
       return undefined;
     }
     return JSON.parse(serializedState);
   } catch (err) {
+    //eslint-disable-next-line no-undefined
     return undefined;
   }
 };
