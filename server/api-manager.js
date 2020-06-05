@@ -652,8 +652,9 @@ class MindbodyQueries {
 
   /**@returns Who knows, no docs*/
   getCustomPaymentMethods() {
+    var query = QueryString.stringify(this.addPaginationLimit());
     var request = new MindbodyRequest(
-      URL_SALE + "/custompaymentmethods",
+      URL_SALE + "/custompaymentmethods?" + query,
       this.apikey,
       SITEID,
       "GET",
@@ -791,8 +792,9 @@ class MindbodyQueries {
 
   /**@returns Locations, e.g stores*/
   getLocations() {
+    var query = QueryString.stringify(this.addPaginationLimit());
     var request = new MindbodyRequest(
-      URL_SITE + "/locations",
+      URL_SITE + "/locations?" + query,
       this.apikey,
       SITEID,
       "GET",
@@ -1047,8 +1049,9 @@ class MindbodyQueries {
             if (this.atLimit()) {
               return Promise.reject(Error("Mindbody request limit reached"));
             }
-            const resultsPerPage = 200;
-            request.url = initialUrl + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
+            const resultsPerPage = 200; //optionally add a "limit=200" clause
+            let limitClause = (initialUrl.includes("limit=")) ? "" : "&limit=" + resultsPerPage;
+            request.url = initialUrl + limitClause + "&offset=" + resultsSeenSoFar;
             //console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
             allPagePromises.push(backoff(this.maxRetries, makeRequest));
@@ -1089,7 +1092,8 @@ class MindbodyQueries {
     return Promise.reject(Error("Mindbody request limit reached"));
   }
 
-  //may be changed later
+  //todo: We should redo this so it's "check against (limit-1), then increment requestNum".
+  //the current way of checking this can spuriously report that we exceeded MAX_QUERIES.
   atLimit() {
     if (this.requestNum >= MAX_QUERIES) {
       return true;
