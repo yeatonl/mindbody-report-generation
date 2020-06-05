@@ -188,7 +188,6 @@ export class CommissionReport {
     var payload = {
       StartSaleDateTime: this.startDate,
       EndSaleDateTime: this.endDate,
-      Limit: 200,
       //for cash payments only: PaymentMethodId: 1
     };
     console.log("Requesting sales...");
