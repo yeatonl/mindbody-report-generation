@@ -79,7 +79,7 @@ class MindbodyQueries {
   *  @param {string} LastModifiedDate Filters the results to include only the clients that have been modified on or after this date.
   *//*eslint-enable */
   getClients(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clients?" + query,
       this.apikey,
@@ -99,7 +99,7 @@ class MindbodyQueries {
   * @param {string} EndTime Filters results to times that end on or before this time on the current date. Any date provided is ignored.
   *//*eslint-enable */
   getActiveSessionTimes(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/activesessiontimes?" + query,
       this.apikey,
@@ -135,7 +135,7 @@ class MindbodyQueries {
   *  @param {boolean} IgnoreDefaultSessionLength When true, availabilities that are nondefault return, for example, a 30-minute availability with a 60-minute default session length. When false, only availabilities that have the default session length return.
   *//*eslint-enable */
   getBookableItems(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/bookableitems?" + query,
       this.apikey,
@@ -155,7 +155,7 @@ class MindbodyQueries {
   *  @param {boolean} IgnorePrepFinishTimes When true, appointment preparation and finish unavailabilities are not returned.
   *//*eslint-enable */
   getScheduleItems(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/scheduleitems?" + query,
       this.apikey,
@@ -176,7 +176,7 @@ class MindbodyQueries {
   *  @param {string} ClientId The client ID to be returned.
   *//*eslint-enable */
   getStaffAppointments(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_APPOINTMENT + "/staffappointments?" + query,
       this.apikey,
@@ -204,7 +204,7 @@ class MindbodyQueries {
   *  @param {string} LastModifiedDate When included in the request, only records modified on or after the LastModifiedDate specified are included in the response.
   *//*eslint-enable */
   getClasses(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLASS + "/classes?" + query,
       this.apikey,
@@ -227,7 +227,7 @@ class MindbodyQueries {
   *  @param {number} LocationId The ID of the requested location.
   *//*eslint-enable */
   getClassDescriptions(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLASS + "/classdescriptions?" + query,
       this.apikey,
@@ -249,7 +249,7 @@ class MindbodyQueries {
   *  @param {number[]} StaffIds The staff IDs.
   *//*eslint-enable */
   getClassSchedules(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLASS + "/classschedules?" + query,
       this.apikey,
@@ -266,7 +266,7 @@ class MindbodyQueries {
   *  @param {string} LastModifiedDate When included in the request, only records modified on or after the LastModifiedDate specified are included in the response.
   *//*eslint-enable */
   getClassVisits(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLASS + "/classvisits?" + query,
       this.apikey,
@@ -288,7 +288,7 @@ class MindbodyQueries {
   *  @param {number[]} WaitlistEntryIds The requested waiting list entry IDs. Either ClassScheduleIds, ClientIds, WaitlistEntryIds, or ClassIds is required; the others become optional.
   *//*eslint-enable */
   getWaitlistEntries(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLASS + "/waitlistentries?" + query,
       this.apikey,
@@ -309,7 +309,7 @@ class MindbodyQueries {
   *  @param {number} ClientAssociatedSitesOffset Used to retrieve a client’s memberships from multiple sites within an organization when the client is associated with more than ten sites. To change which ten sites are searched, change this offset value. A value of 0 means that no sites are skipped and the first ten sites are returned. You can use the CrossRegionalClientAssociations value from GET CrossRegionalClientAssociations to determine how many sites the client is associated with. Note that you must always have CrossRegionalLookup set to true to use this parameter.
   *//*eslint-enable */
   getActiveClientMemberships(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/activeclientmemberships?" + query,
       this.apikey,
@@ -329,7 +329,7 @@ class MindbodyQueries {
   *  @param {number} ClassId The class ID of the event for which you want a balance.
   *//*eslint-enable */
   getClientAccountBalances(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientaccountbalances?" + query,
       this.apikey,
@@ -353,7 +353,7 @@ class MindbodyQueries {
   *  @param {number[]} SubtypeIds Filters the results to contact logs assigned one or more of these subtype IDs.
   *//*eslint-enable */
   getContactLogs(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/contactlogs?" + query,
       this.apikey,
@@ -373,7 +373,7 @@ class MindbodyQueries {
   *  @param {number} ClientAssociatedSitesOffset 	Determines how many sites are skipped over when retrieving a client’s cross regional contracts. Used when a client ID is linked to more than ten sites in an organization. Only a maximum of ten site databases are queried when this call is made and CrossRegionalLookup is set to true. To change which sites are queried, change this offset value.
   *//*eslint-enable */
   getClientContracts(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientcontracts?" + query,
       this.apikey,
@@ -389,7 +389,7 @@ class MindbodyQueries {
   *  @param {string} ClientId The ID of the client.
   *//*eslint-enable */
   getClientDirectDebitInfo(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientdirectdebitinfo?" + query,
       this.apikey,
@@ -409,7 +409,7 @@ class MindbodyQueries {
   *  @param {string} Email The client’s email address.
   *//*eslint-enable */
   getClientDuplicates(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientduplicates?" + query,
       this.apikey,
@@ -426,7 +426,7 @@ class MindbodyQueries {
   *  @param {number} AppointmentId The appointment ID of the appointment that the formula notes are related to.
   *//*eslint-enable */
   getClientFormulaNotes(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientformulanotes?" + query,
       this.apikey,
@@ -442,7 +442,7 @@ class MindbodyQueries {
   *  @param {boolean} RequiredOnly When true, filters the results to only indexes that are required on creation. When false or omitted, returns all of the client indexes.
   *//*eslint-enable */
   getClientIndexes(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientindexes?" + query,
       this.apikey,
@@ -463,7 +463,7 @@ class MindbodyQueries {
   *  @param {number} SaleId Filters results to the single record associated with this ID.
   *//*eslint-enable */
   getClientPurchases(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientpurchases?" + query,
       this.apikey,
@@ -479,7 +479,7 @@ class MindbodyQueries {
   *  @param {boolean} IncludeInactive When true, filters the results to include subtypes and inactive referral types. When false, includes no subtypes and only active types.
   *//*eslint-enable */
   getClientReferralTypes(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientreferraltypes?" + query,
       this.apikey,
@@ -507,7 +507,7 @@ class MindbodyQueries {
   *  @param {number} SessionTypeId Filters results to pricing options that will pay for the given session type ID. Use this to find pricing options that will pay for a specific appointment type.
   *//*eslint-enable */
   getClientServices(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientservices?" + query,
       this.apikey,
@@ -532,7 +532,7 @@ class MindbodyQueries {
   *  @param {boolean} CrossRegionalLookup When true, indicates that past and scheduled client visits across all sites in the region are returned. When false, indicates that only visits at the current site are returned.
   *//*eslint-enable */
   getClientVisits(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/clientvisits?" + query,
       this.apikey,
@@ -549,7 +549,7 @@ class MindbodyQueries {
   *  @param {string} Email Looks up the cross regional associations by the client’s email address. Either ClientId or Email must be provided. If both are provided, the ClientId is used by default.
   *//*eslint-enable */
   getCrossRegionalClientAssociations(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/crossregionalclientassociations?" + query,
       this.apikey,
@@ -564,7 +564,7 @@ class MindbodyQueries {
   * This is probably what ecdysiast is using for custom stuff.
   *//*eslint-enable */
   getCustomClientFields(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/customclientfields?" + query,
       this.apikey,
@@ -579,7 +579,7 @@ class MindbodyQueries {
   * Gets the list of fields that a new client has to fill out in business mode, specifically for the sign-up process. AddClient and UpdateClient validate against these fields.
   *//*eslint-enable */
   getRequiredClientFields(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_CLIENTS + "/requiredclientfields?" + query,
       this.apikey,
@@ -601,7 +601,7 @@ class MindbodyQueries {
   *  @param {number[]} StaffIds List of the IDs for the requested staff IDs. If omitted, all staff IDs return.
   *//*eslint-enable */
   getEnrollments(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_ENROLLMENT + "/enrollments?" + query,
       this.apikey,
@@ -639,7 +639,7 @@ class MindbodyQueries {
   *  @param {number} ConsumerId The ID of the client.
   *//*eslint-enable */
   getContracts(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SALE + "/contracts?" + query,
       this.apikey,
@@ -652,8 +652,9 @@ class MindbodyQueries {
 
   /**@returns Who knows, no docs*/
   getCustomPaymentMethods() {
+    var query = QueryString.stringify(this.addPaginationLimit());
     var request = new MindbodyRequest(
-      URL_SALE + "/custompaymentmethods",
+      URL_SALE + "/custompaymentmethods?" + query,
       this.apikey,
       SITEID,
       "GET",
@@ -667,7 +668,7 @@ class MindbodyQueries {
   *  @param {string} barcodeId The barcode ID of the gift card for which you want to retrieve the balance.
   *//*eslint-enable */
   getGiftCardBalance(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SALE + "/giftcardbalance?" + query,
       this.apikey,
@@ -685,7 +686,7 @@ class MindbodyQueries {
   *  @param {boolean} SoldOnline When true, only returns gift cards that are sold online.
   *//*eslint-enable */
   getGiftCards(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SALE + "/giftcards?" + query,
       this.apikey,
@@ -702,7 +703,7 @@ class MindbodyQueries {
   *  @param {number[]} PackageIds A list of the packages IDs to filter by.
   *//*eslint-enable */
   getPackages(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SALE + "/packages?" + query,
       this.apikey,
@@ -723,7 +724,7 @@ class MindbodyQueries {
   *  @param {number} LocationId The location ID to use to determine the tax for the products that this request returns.
   *//*eslint-enable */
   getProducts(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SALE + "/products?" + query,
       this.apikey,
@@ -742,7 +743,7 @@ class MindbodyQueries {
   *  @param {number} PaymentMethodId Filters results to sales paid for by the given payment method ID.
   *//*eslint-enable */
   getSales(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SALE + "/sales?" + query,
       this.apikey,
@@ -766,7 +767,7 @@ class MindbodyQueries {
   *  @param {number} StaffId Sets Price and OnlinePrice to the particular pricing of a specific staff member, if allowed by the business.
   *//*eslint-enable */
   getServices(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SALE + "/services?" + query,
       this.apikey,
@@ -791,8 +792,9 @@ class MindbodyQueries {
 
   /**@returns Locations, e.g stores*/
   getLocations() {
+    var query = QueryString.stringify(this.addPaginationLimit());
     var request = new MindbodyRequest(
-      URL_SITE + "/locations",
+      URL_SITE + "/locations?" + query,
       this.apikey,
       SITEID,
       "GET",
@@ -806,7 +808,7 @@ class MindbodyQueries {
   *  @param {number[]} MembershipIds The requested membership IDs.
   *//*eslint-enable */
   getMemberships(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SITE + "/memberships?" + query,
       this.apikey,
@@ -823,7 +825,7 @@ class MindbodyQueries {
   *  @param {boolean} OnlineOnly If true, filters results to show only those programs that are shown online. If false, all programs are returned.
   *//*eslint-enable */
   getPrograms(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SITE + "/programs?" + query,
       this.apikey,
@@ -842,7 +844,7 @@ class MindbodyQueries {
   *  @param {string} EndDateTime The time the resource ends. This parameter is ignored if EndDateTime or LocationID is not set.
   *//*eslint-enable */
   getResources(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SITE + "/resources?" + query,
       this.apikey,
@@ -859,7 +861,7 @@ class MindbodyQueries {
   *  @param {boolean} OnlineOnly When true, indicates that only the session types that can be booked online should be returned.
   *//*eslint-enable */
   getSessionTypes(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SITE + "/sessiontypes?" + query,
       this.apikey,
@@ -875,7 +877,7 @@ class MindbodyQueries {
   *  @param {number[]} SiteIds List of the requested site IDs. When omitted, returns all sites that the source has access to.
   *//*eslint-enable */
   getSites(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_SITE + "/sites?" + query,
       this.apikey,
@@ -896,7 +898,7 @@ class MindbodyQueries {
   *  @param {number} LocationId Return only staff members that are available at the specified location. You must supply a valid SessionTypeID and StartDateTime to use this parameter.
   *//*eslint-enable */
   getStaff(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_STAFF + "/staff?" + query,
       this.apikey,
@@ -912,7 +914,7 @@ class MindbodyQueries {
   *  @param {number} StaffId The ID of the staff member whose permissions you want to return.
   *//*eslint-enable */
   getStaffPermissions(parameters) {
-    var query = QueryString.stringify(parameters);
+    var query = QueryString.stringify(this.addPaginationLimit(parameters));
     var request = new MindbodyRequest(
       URL_STAFF + "/staffpermissions?" + query,
       this.apikey,
@@ -1047,8 +1049,9 @@ class MindbodyQueries {
             if (this.atLimit()) {
               return Promise.reject(Error("Mindbody request limit reached"));
             }
-            const resultsPerPage = 200;
-            request.url = initialUrl + "&limit=" + resultsPerPage + "&offset=" + resultsSeenSoFar;
+            const resultsPerPage = 200; //optionally add a "limit=200" clause
+            let limitClause = (initialUrl.includes("limit=")) ? "" : "&limit=" + resultsPerPage;
+            request.url = initialUrl + limitClause + "&offset=" + resultsSeenSoFar;
             //console.log(" - in decorateAndMake, we wanted " + totalResults + " records, so we made this extra multi-page request: " + request.url);
             resultsSeenSoFar += resultsPerPage;
             allPagePromises.push(backoff(this.maxRetries, makeRequest));
@@ -1089,7 +1092,8 @@ class MindbodyQueries {
     return Promise.reject(Error("Mindbody request limit reached"));
   }
 
-  //may be changed later
+  //todo: We should redo this so it's "check against (limit-1), then increment requestNum".
+  //the current way of checking this can spuriously report that we exceeded MAX_QUERIES.
   atLimit() {
     if (this.requestNum >= MAX_QUERIES) {
       return true;
@@ -1142,6 +1146,27 @@ class MindbodyQueries {
     return hash;
   };
   /*eslint-enable */
+
+  // Adds "&limit=200" so that we always request the maximum number of results.
+  addPaginationLimit(parameters) {
+    if (!parameters) {
+      parameters = {};
+    }
+    // Check for a previously set value of "limit" or "Limit"
+    let previousVal = parameters["limit"];
+    if (!previousVal) {
+      previousVal = parameters["Limit"];
+    }
+    if (previousVal) {
+      console.warn("In MindbodyQueries.addPaginationLimit, the incoming parameters " +
+        "unexpectedly had a \"limit\" value of " + previousVal + " that we overwrote.");
+      delete parameters["limit"];
+      delete parameters["Limit"];
+    }
+
+    parameters["limit"] = 200;
+    return parameters;
+  };
 }
 
 const MindbodyAccess = new MindbodyQueries();
@@ -1161,6 +1186,4 @@ MindbodyAccess.getAuth()
     console.log("Error in [name of the context]: " + error);
   });
   */
-
-
 
