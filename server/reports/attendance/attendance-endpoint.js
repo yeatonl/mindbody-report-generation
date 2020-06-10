@@ -1,14 +1,15 @@
 import MindbodyAccess from "../../api-manager.js";
 import J2C from "json2csv";
 
-//returns the current date
-function getDate() {
-  let today = new Date();
-  let dd = String(today.getDate()).padStart(2, "0");
-  let mm = String(today.getMonth() + 1).padStart(2, "0");
-  let yyyy = today.getFullYear();
-  today = mm + "/" + dd + "/" + yyyy;
-  return today;
+const MINSTUDENTS_DEFAULT = 4;
+
+// reformats date to mm/dd/yyyy format and returns it as a string
+function reformatDate(date) {
+  let dd = String(date.getDate()).padStart(2, "0");
+  let mm = String(date.getMonth() + 1).padStart(2, "0");
+  let yyyy = date.getFullYear();
+  let reformattedDate = mm + "/" + dd + "/" + yyyy;
+  return reformattedDate;
 }
 
 // takes a classID as a parameter and 
@@ -24,12 +25,11 @@ function getNumberAttended(classID) {
           reject("getNumberAttended Rejected. numberAttended var is empty");
       })
       .catch((error) => {
-        console.log("In getNumberAttended Catch block. Could not find class!\n", error);
-        console.log("Filling attendance with dummy value of -9999\n");
-
+        console.log("Error on attendance-endpoint.getNumberAttended. Could not find class. " + error + 
+          "  Filling attendance with dummy value of 9999.");
         // resolving in the catch block because of ENOTFOUND error
         // this makes it so the report doesn't crash when this error appears.
-        resolve(-9999);
+        resolve(9999);
       })
     })
 
@@ -48,15 +48,12 @@ function formatJSON(data, headers) {
   return results;
 }
 
-export function getAttendanceReport(format, startdate, enddate) {
+export function getAttendanceReport(format, startdate, enddate, minStudents) {
   //access Mindbody Endpoints
-  var attendanceReport = {
-    data: [],
-    headers: ["classId", "class", "capacity", "registered", "attended"],
-  };
   return MindbodyAccess.getAuth()
     .then((value) => {
       MindbodyAccess.authToken = value.AccessToken;
+      console.log("getAttendanceReport is getting info on classes...");
       return MindbodyAccess.getClasses({
         StartDateTime: startdate,
         EndDateTime: enddate,
@@ -73,22 +70,29 @@ export function getAttendanceReport(format, startdate, enddate) {
 
       //iterates through every class in classes
       for (let i = 0; i < numberOfClasses; ++i) {
+        const progressFrequency = 350; // Report progress occasionally
+        if (i % progressFrequency == 0) {
+          console.log("getAttendanceReport is getting info on class visits...");
+        }
+
         let classId = classes.Classes[i].Id;
 
         // adds attendance parameter to classData
         let numberAttendedPromise = getNumberAttended(classId)
           .then((numberAttended) => {
-            attendanceReport.data.push([
-              classId,
-              classes.Classes[i].ClassDescription.Name,
-              classes.Classes[i].StartDateTime,
-              classes.Classes[i].MaxCapacity, 
-              classes.Classes[i].TotalBooked, 
-              numberAttended
-            ]); // pushes current class's data to attendanceReport
+            if (numberAttended >= minStudents) {
+              attendanceReport.data.push([
+                classId,
+                classes.Classes[i].ClassDescription.Name,
+                classes.Classes[i].StartDateTime,
+                classes.Classes[i].MaxCapacity, 
+                classes.Classes[i].TotalBooked, 
+                numberAttended
+              ]); // pushes current class's data to attendanceReport
+            }
           })
           .catch((err) => {
-            console.log("ERROR! ", err);
+            console.log("Error in attendance-endpoint.getAttendanceReport from getNumberAttended: " + err);
           });
         allNumberAttendedPromises.push(numberAttendedPromise);
       }
@@ -114,11 +118,15 @@ export function getAttendanceReport(format, startdate, enddate) {
 
 //gets attendance data from mindbody endpoints and outputs it as .csv or JSON to our endpoint
 //endpoint URL example
-//http://localhost:8080/reports/attendance?format=csv&startdate=01/01/2020&enddate=12/31/2020
+//http://localhost:8080/reports/attendance?format=csv&startdate=01/01/2020&enddate=12/31/2020&minStudents=4
 export function attendanceRequestHandler(request, response) {
+  console.log("----------------------------------");
+  console.log("attendanceRequestHandler received: " + request.path + " - " + JSON.stringify(request.query));
+
   let format = request.query.format; //gets format value in URL query
   let startdate = request.query.startdate; //gets startdate value in URL query
   let enddate = request.query.enddate; //gets enddate value in URL query
+  let minStudents = Number(request.query.minStudents);
 
   //error handling
   //"throws error" if format isn't JSON or CSV
@@ -126,19 +134,28 @@ export function attendanceRequestHandler(request, response) {
     response.send("Bad format parameter. Must be \"json\" or \"csv\"");
     return;
   }
-  //sets startdate to current day if field is NULL
+  //sets startdate to 2 weeks prior to current day if field is NULL
   if (!startdate) {
-    startdate = getDate();
+    let today = new Date();
+    today.setDate(today.getDate()-14);
+    let twoWeeksPrior = reformatDate(today);
+    startdate = twoWeeksPrior;
   }
   //sets enddate to current day if field is NULL
   if (!enddate) {
-    enddate = getDate();
+    let today = new Date();
+    enddate = reformatDate(today);
+  }
+  //sets minStudents to MINSTUDENTS_DEFAULT if field is NaN
+  if (Number.isNaN(minStudents)) {
+    minStudents = MINSTUDENTS_DEFAULT;
   }
 
-  getAttendanceReport(format, startdate, enddate)
+  getAttendanceReport(format, startdate, enddate, minStudents)
     .then((report) => {
       if (format == "csv") {
         let fileName = "Attendance " + startdate + "-" + enddate + ".csv";
+        //todo: we should choose a filename that includes helpful info like the date range
         response.setHeader("Content-Disposition", "attachment ; filename=\"" + fileName + "\"");
         response.contentType("text/csv");
         response.send(report);
@@ -147,8 +164,10 @@ export function attendanceRequestHandler(request, response) {
       }
     })
     .catch((m) => {
-      //todo: make an error message consistent with commission report
-      console.log("Error! In attendance-report-endpoint catch block.");
-      console.log(m);
+      console.log("Error in attendance-endpoint.getAttendanceReport catch block: " + m);
+    })
+    .finally(() => {
+      MindbodyAccess.logNumRequests();
     });
+
 }

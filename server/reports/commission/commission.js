@@ -108,7 +108,7 @@ export class CommissionReport {
         item.name = this.products[purchase.BarcodeId].Name;
         item.price = this.products[purchase.BarcodeId].Price;
       } else {
-        console.warn(`${purchase.BarcodeId} not in products`);
+        //console.warn(`${purchase.BarcodeId} not in products`);
       }
     } else {
       item.name = purchase.Id;
@@ -116,7 +116,7 @@ export class CommissionReport {
         item.name = this.services[purchase.Id].Name;
         item.price = this.services[purchase.Id].Price;
       } else {
-        console.warn(`${purchase.Id} not in services`);
+        //console.warn(`${purchase.Id} not in services`);
       }
     }
     return item;
@@ -188,7 +188,6 @@ export class CommissionReport {
     var payload = {
       StartSaleDateTime: this.startDate,
       EndSaleDateTime: this.endDate,
-      Limit: 200,
       //for cash payments only: PaymentMethodId: 1
     };
     console.log("Requesting sales...");

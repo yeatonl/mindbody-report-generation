@@ -15,6 +15,7 @@ export default class TextInput extends React.Component {
     this.state = {
       valid: null,
       message: "",
+      value: props.initial,
     };
   }
 
@@ -38,6 +39,7 @@ export default class TextInput extends React.Component {
      *  message: "" //message to display if the regex matched
      * }] */
     validation: PropTypes.array,
+    initial: PropTypes.string,
   };
 
   static defaultProps = {
@@ -50,6 +52,7 @@ export default class TextInput extends React.Component {
     title: "",
     style: {},
     validation: [],
+    initial: "",
   }
 
   validate = (value) => {
@@ -82,9 +85,11 @@ export default class TextInput extends React.Component {
       <div className={wrapperClassName} style={this.props.style}>
         <label className={inputClassName} title={this.props.title}>
           <input
+            value={this.state.value}
             placeholder={this.props.placeholder}
             onChange={(e) => {
               let value = e.target.value;
+              this.setState({value});
               clearTimeout(this.timeout);
               this.timeout = setTimeout(() => {
                 this.validate(value);
